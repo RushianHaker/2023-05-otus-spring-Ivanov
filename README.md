@@ -1,2 +1,2 @@
 # otus_spring
-ДЗ из курса по Spring в Otus
+Иванов Максим Александрович, Разработчик на Spring Framework, OTUS-Spring-2023-05
