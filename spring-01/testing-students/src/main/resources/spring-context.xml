@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="questionDao" class="ru.otus.testing.dao.impl.QuestionDaoImpl">
+    </bean>
+
+    <bean id="answerDao" class="ru.otus.testing.dao.impl.AnswerDaoImpl">
+    </bean>
+
+    <bean id="testService" class="ru.otus.testing.service.impl.TestServiceImpl">
+        <constructor-arg index="0" ref="questionDao"/>
+        <constructor-arg index="1" ref="answerDao"/>
+    </bean>
+</beans>
