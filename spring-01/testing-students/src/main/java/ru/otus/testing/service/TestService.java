@@ -1,12 +1,10 @@
 package ru.otus.testing.service;
 
 
-import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 public interface TestService {
-    HashMap<Question, ArrayList<Answer>> getTestList();
+    List<Question> getTestList();
 }

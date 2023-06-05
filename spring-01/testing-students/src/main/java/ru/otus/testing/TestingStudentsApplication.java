@@ -9,12 +9,12 @@ public class TestingStudentsApplication {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
         TestService service = context.getBean(TestService.class);
-        var mapQuestions = service.getTestList();
+        var listQuestions = service.getTestList();
 
-        for (var question : mapQuestions.keySet()) {
+        for (var question : listQuestions) {
             PrintService.print("\n" + "Question: " + question.getQuestion());
             PrintService.print("Answers:");
-            for (var answer : mapQuestions.get(question)) {
+            for (var answer : question.getAnswer()) {
                 PrintService.print("* " + answer.getAnswer());
             }
         }

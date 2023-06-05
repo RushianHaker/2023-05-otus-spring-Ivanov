@@ -12,12 +12,11 @@ import ru.otus.testing.service.TestService;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 
 public class TestServiceImpl implements TestService {
     private final QuestionDao questionDao;
-
     private final AnswerDao answerDao;
     private final ClassPathResource classPathResource;
 
@@ -27,8 +26,8 @@ public class TestServiceImpl implements TestService {
         this.classPathResource = classPathResource;
     }
 
-    public HashMap<Question, ArrayList<Answer>> getTestList() {
-        var mapQuestions = new HashMap<Question, ArrayList<Answer>>();
+    public List<Question> getTestList() {
+        var listQuestions = new ArrayList<Question>();
 
         try (var reader = new CSVReader(new InputStreamReader(classPathResource.getInputStream()))) {
             String[] nextLine;
@@ -39,12 +38,12 @@ public class TestServiceImpl implements TestService {
                 listAnswers.add(answerDao.createAnswer(nextLine[1]));
                 listAnswers.add(answerDao.createAnswer(nextLine[2]));
 
-                mapQuestions.put(questionDao.createQuestion(nextLine[0]), listAnswers);
+                listQuestions.add(questionDao.createQuestion(nextLine[0], listAnswers));
             }
         } catch (CsvValidationException | IOException e) {
             throw new RuntimeException("Csv read error: " + e);
         }
 
-        return mapQuestions;
+        return listQuestions;
     }
 }
