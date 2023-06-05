@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface QuestionDao {
     Question createQuestion(String name, List<Answer> answerList);
+
+    List<Question> findAll();
 }
