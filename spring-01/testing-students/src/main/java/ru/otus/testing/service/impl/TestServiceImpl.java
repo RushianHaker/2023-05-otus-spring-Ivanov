@@ -19,16 +19,18 @@ public class TestServiceImpl implements TestService {
     private final QuestionDao questionDao;
 
     private final AnswerDao answerDao;
+    private final ClassPathResource classPathResource;
 
-    public TestServiceImpl(QuestionDao questionDao, AnswerDao answerDao) {
+    public TestServiceImpl(QuestionDao questionDao, AnswerDao answerDao, ClassPathResource classPathResource) {
         this.questionDao = questionDao;
         this.answerDao = answerDao;
+        this.classPathResource = classPathResource;
     }
 
     public HashMap<Question, ArrayList<Answer>> getTestList() {
         var mapQuestions = new HashMap<Question, ArrayList<Answer>>();
 
-        try (var reader = new CSVReader(new InputStreamReader(new ClassPathResource("/test.csv").getInputStream()))) {
+        try (var reader = new CSVReader(new InputStreamReader(classPathResource.getInputStream()))) {
             String[] nextLine;
 
             while ((nextLine = reader.readNext()) != null) {
