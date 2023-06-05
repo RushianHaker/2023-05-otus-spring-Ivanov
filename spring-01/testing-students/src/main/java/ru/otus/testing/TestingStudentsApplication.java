@@ -2,7 +2,7 @@ package ru.otus.testing;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.otus.testing.service.TestService;
-import ru.otus.testing.utils.PrintUtil;
+import ru.otus.testing.utils.PrintService;
 
 public class TestingStudentsApplication {
 
@@ -12,10 +12,10 @@ public class TestingStudentsApplication {
         var mapQuestions = service.getTestList();
 
         for (var question : mapQuestions.keySet()) {
-            PrintUtil.print("\n" + "Question: " + question.getQuestion());
-            PrintUtil.print("Answers:");
+            PrintService.print("\n" + "Question: " + question.getQuestion());
+            PrintService.print("Answers:");
             for (var answer : mapQuestions.get(question)) {
-                PrintUtil.print("* " + answer.getAnswer());
+                PrintService.print("* " + answer.getAnswer());
             }
         }
 
