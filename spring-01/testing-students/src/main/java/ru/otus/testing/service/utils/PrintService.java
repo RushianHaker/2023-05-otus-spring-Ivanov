@@ -1,4 +1,4 @@
-package ru.otus.testing.utils;
+package ru.otus.testing.service.utils;
 
 
 public final class PrintService {
