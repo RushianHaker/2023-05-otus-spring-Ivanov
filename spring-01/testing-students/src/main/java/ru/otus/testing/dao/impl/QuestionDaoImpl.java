@@ -19,10 +19,6 @@ public class QuestionDaoImpl implements QuestionDao {
         this.classPathResource = classPathResource;
     }
 
-    public Question createQuestion(String name, List<Answer> answerList) {
-        return new Question(name, answerList);
-    }
-
     public List<Question> findAll() {
         var listQuestions = new ArrayList<Question>();
 
@@ -37,7 +33,7 @@ public class QuestionDaoImpl implements QuestionDao {
                         listAnswers.add(new Answer(nextLine[i]));
                     }
 
-                    listQuestions.add(createQuestion(nextLine[0], listAnswers));
+                    listQuestions.add(new Question(nextLine[0], listAnswers));
                 }
             }
         } catch (CsvValidationException | IOException e) {
