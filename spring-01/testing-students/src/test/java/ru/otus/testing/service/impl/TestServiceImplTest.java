@@ -1,19 +1,19 @@
 package ru.otus.testing.service.impl;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.testing.service.TestService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+
 class TestServiceImplTest {
 
     ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
     TestService service = context.getBean(TestService.class);
 
+    @DisplayName("Single test successful")
     @Test
     void getTestListTest() {
         var listQuesting = service.getTest();
