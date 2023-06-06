@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.otus.testing.service.TestService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class TestServiceImplTest {
@@ -24,9 +24,9 @@ class TestServiceImplTest {
         assertEquals("That is your name?", listQuesting.get(0).getQuestion());
 
         assertEquals("Max", listQuesting.get(0).getAnswer().get(0).getAnswer());
-        assertEquals(true, listQuesting.get(0).getAnswer().get(0).isCorrect());
+        assertTrue(listQuesting.get(0).getAnswer().get(0).isCorrect());
 
         assertEquals("Anna", listQuesting.get(0).getAnswer().get(1).getAnswer());
-        assertEquals(false, listQuesting.get(0).getAnswer().get(1).isCorrect());
+        assertFalse(listQuesting.get(0).getAnswer().get(1).isCorrect());
     }
 }
