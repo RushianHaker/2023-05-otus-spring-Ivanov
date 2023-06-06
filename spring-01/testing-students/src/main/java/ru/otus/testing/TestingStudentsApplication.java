@@ -2,7 +2,7 @@ package ru.otus.testing;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.otus.testing.service.TestService;
-import ru.otus.testing.service.utils.PrintService;
+import ru.otus.testing.utils.PrintService;
 
 public class TestingStudentsApplication {
 
