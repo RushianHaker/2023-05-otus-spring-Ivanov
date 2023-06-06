@@ -30,7 +30,11 @@ public class QuestionDaoImpl implements QuestionDao {
                     var listAnswers = new ArrayList<Answer>();
 
                     for (int i = 1; i < nextLine.length; i++) {
-                        listAnswers.add(new Answer(nextLine[i]));
+                        if (nextLine[i].contains("correct:")) {
+                            listAnswers.add(new Answer(nextLine[i].replaceFirst("correct:", ""), true));
+                        } else {
+                            listAnswers.add(new Answer(nextLine[i], false));
+                        }
                     }
 
                     listQuestions.add(new Question(nextLine[0], listAnswers));

@@ -1,5 +1,5 @@
-That is your name?,Max,Anna
-How old are you?,21,35
-Are you love driving car?,Yes,No
-Who'd take my phone?,I don't know,This is my dog
-That is going on?,This is test for students,This is matrix
+That is your name?,correct:Max,Anna
+How old are you?,correct:21,35
+Are you love driving car?,correct:Yes,No
+Who'd take my phone?,I don't know,correct:This is my dog
+That is going on?,correct:This is test for students,This is matrix
