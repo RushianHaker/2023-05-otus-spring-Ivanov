@@ -6,5 +6,5 @@ import ru.otus.testing.model.Question;
 import java.util.List;
 
 public interface TestService {
-    List<Question> getTestList();
+    List<Question> getTest();
 }

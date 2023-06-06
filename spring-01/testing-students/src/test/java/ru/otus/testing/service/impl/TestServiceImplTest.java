@@ -16,7 +16,7 @@ class TestServiceImplTest {
 
     @Test
     void getTestListTest() {
-        var listQuesting = service.getTestList();
+        var listQuesting = service.getTest();
 
         assertEquals(5, listQuesting.size());
         assertEquals(2, listQuesting.get(0).getAnswer().size());

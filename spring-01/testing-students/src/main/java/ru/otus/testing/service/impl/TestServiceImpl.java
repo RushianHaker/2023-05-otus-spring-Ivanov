@@ -14,7 +14,7 @@ public class TestServiceImpl implements TestService {
         this.questionDao = questionDao;
     }
 
-    public List<Question> getTestList() {
+    public List<Question> getTest() {
         return questionDao.findAll();
     }
 }
