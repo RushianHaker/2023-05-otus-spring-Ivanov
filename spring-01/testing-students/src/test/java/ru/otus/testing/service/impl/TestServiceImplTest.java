@@ -22,7 +22,11 @@ class TestServiceImplTest {
         assertEquals(2, listQuesting.get(0).getAnswer().size());
 
         assertEquals("That is your name?", listQuesting.get(0).getQuestion());
+
         assertEquals("Max", listQuesting.get(0).getAnswer().get(0).getAnswer());
+        assertEquals(true, listQuesting.get(0).getAnswer().get(0).isCorrect());
+
         assertEquals("Anna", listQuesting.get(0).getAnswer().get(1).getAnswer());
+        assertEquals(false, listQuesting.get(0).getAnswer().get(1).isCorrect());
     }
 }
