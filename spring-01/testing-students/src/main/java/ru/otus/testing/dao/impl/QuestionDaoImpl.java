@@ -34,12 +34,15 @@ public class QuestionDaoImpl implements QuestionDao {
             String[] nextLine;
 
             while ((nextLine = reader.readNext()) != null) {
-                var listAnswers = new ArrayList<Answer>();
+                if (nextLine.length > 2) {
+                    var listAnswers = new ArrayList<Answer>();
 
-                listAnswers.add(answerDao.createAnswer(nextLine[1]));
-                listAnswers.add(answerDao.createAnswer(nextLine[2]));
+                    for (int i = 1; i < nextLine.length; i++) {
+                        listAnswers.add(answerDao.createAnswer(nextLine[i]));
+                    }
 
-                listQuestions.add(createQuestion(nextLine[0], listAnswers));
+                    listQuestions.add(createQuestion(nextLine[0], listAnswers));
+                }
             }
         } catch (CsvValidationException | IOException e) {
             throw new RuntimeException("Csv read error: " + e);
