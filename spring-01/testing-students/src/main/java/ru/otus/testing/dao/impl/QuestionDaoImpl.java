@@ -27,23 +27,26 @@ public class QuestionDaoImpl implements QuestionDao {
 
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine.length > 2) {
-                    var listAnswers = new ArrayList<Answer>();
-
-                    for (int i = 1; i < nextLine.length; i++) {
-                        if (nextLine[i].contains("correct:")) {
-                            listAnswers.add(new Answer(nextLine[i].replaceFirst("correct:", ""), true));
-                        } else {
-                            listAnswers.add(new Answer(nextLine[i], false));
-                        }
-                    }
-
-                    listQuestions.add(new Question(nextLine[0], listAnswers));
+                    listQuestions.add(new Question(nextLine[0], findAnswers(nextLine)));
                 }
             }
+
         } catch (CsvValidationException | IOException e) {
             throw new RuntimeException("Csv read error: " + e);
         }
 
         return listQuestions;
+    }
+
+    public List<Answer> findAnswers(String[] nextLine) {
+        var listAnswers = new ArrayList<Answer>();
+        for (int i = 1; i < nextLine.length; i++) {
+            if (nextLine[i].contains("correct:")) {
+                listAnswers.add(new Answer(nextLine[i].replaceFirst("correct:", ""), true));
+            } else {
+                listAnswers.add(new Answer(nextLine[i], false));
+            }
+        }
+        return listAnswers;
     }
 }
