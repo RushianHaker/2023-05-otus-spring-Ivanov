@@ -2,6 +2,7 @@ package ru.otus.testing.model;
 
 public class Answer {
     private String answer;
+
     private boolean correct;
 
     public Answer(String answer, boolean correct) {
