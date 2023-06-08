@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 class TestServiceImplTest {
     QuestionDao questionDao = mock(QuestionDao.class);
-    TestService service = new TestServiceImpl(questionDao);
+    TestService service = new TestServiceImpl(questionDao, new PrintServiceImpl());
 
     @Test
     void getTestListTest() {

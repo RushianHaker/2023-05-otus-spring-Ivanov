@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TestService {
     List<Question> getTest();
+
+    void printTest();
 }
