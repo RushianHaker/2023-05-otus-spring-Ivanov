@@ -1,6 +1,7 @@
 package ru.otus.testing.dao.impl;
 
 import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvRuntimeException;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.core.io.ClassPathResource;
 import ru.otus.testing.dao.QuestionDao;
@@ -30,9 +31,10 @@ public class QuestionDaoImpl implements QuestionDao {
                     listQuestions.add(new Question(nextLine[0], findAnswers(nextLine)));
                 }
             }
-
-        } catch (CsvValidationException | IOException e) {
-            throw new RuntimeException("Csv read error: " + e);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("File error" + e);
+        } catch (CsvValidationException e) {
+            throw new CsvRuntimeException("Csv error: " + e);
         }
 
         return listQuestions;
