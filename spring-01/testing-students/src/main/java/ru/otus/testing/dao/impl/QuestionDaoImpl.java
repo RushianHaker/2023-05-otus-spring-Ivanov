@@ -27,14 +27,14 @@ public class QuestionDaoImpl implements QuestionDao {
             String[] nextLine;
 
             while ((nextLine = reader.readNext()) != null) {
-                if (nextLine.length > 2) {
-                    listQuestions.add(new Question(nextLine[0], findAnswers(nextLine)));
-                }
+                listQuestions.add(new Question(nextLine[0], findAnswers(nextLine)));
             }
-        } catch (IOException e) {
-            throw new IllegalArgumentException("File error" + e);
+        } catch (IndexOutOfBoundsException e) {
+            throw new ArrayIndexOutOfBoundsException("Array was throw exception: " + e);
         } catch (CsvValidationException e) {
-            throw new CsvRuntimeException("Csv error: " + e);
+            throw new CsvRuntimeException("User-defined csv validator fails: " + e);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Reads resource or next line from the buffer was throw exception: " + e);
         }
 
         return listQuestions;
