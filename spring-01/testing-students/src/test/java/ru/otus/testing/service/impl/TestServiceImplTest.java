@@ -1,42 +1,49 @@
 package ru.otus.testing.service.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
+import ru.otus.testing.service.PrintService;
 import ru.otus.testing.service.TestService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 
 class TestServiceImplTest {
-    QuestionDao questionDao = mock(QuestionDao.class);
-    TestService service = new TestServiceImpl(questionDao, new PrintServiceImpl());
+    private QuestionDao questionDao;
+    private PrintService printService;
+    private TestService service;
+
+    @BeforeEach
+    void setUp() {
+        questionDao = mock(QuestionDao.class);
+        printService = mock(PrintService.class);
+        service = new TestServiceImpl(questionDao, printService);
+    }
 
     @Test
     void getTestListTest() {
-        when(questionDao.findAll()).thenReturn(
-                List.of(new Question("test question",
-                        List.of(
-                                new Answer("test answer 1", true),
-                                new Answer("test answer 2", false))
-                )));
+        var answer1 = new Answer("test answer 1", true);
+        var answer2 = new Answer("test answer 2", false);
+        var question = new Question("test question", List.of(answer1, answer2));
 
-        var listQuesting = service.getTest();
+        when(questionDao.findAll()).thenReturn(List.of(question));
 
-        assertEquals(1, listQuesting.size());
-        assertEquals(2, listQuesting.get(0).getAnswer().size());
+        service.printTest();
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(printService, times(4)).print(captor.capture());
 
-        assertEquals("test question", listQuesting.get(0).getQuestion());
-
-        assertEquals("test answer 1", listQuesting.get(0).getAnswer().get(0).getAnswer());
-        assertTrue(listQuesting.get(0).getAnswer().get(0).isCorrect());
-
-        assertEquals("test answer 2", listQuesting.get(0).getAnswer().get(1).getAnswer());
-        assertFalse(listQuesting.get(0).getAnswer().get(1).isCorrect());
+        String actualOutput = captor.getAllValues().stream()
+                .collect(Collectors.joining(System.lineSeparator()));
+        assertTrue(actualOutput.contains(question.getQuestion()));
+        assertTrue(actualOutput.contains(answer1.getAnswer()));
+        assertTrue(actualOutput.contains(answer2.getAnswer()));
     }
 }
