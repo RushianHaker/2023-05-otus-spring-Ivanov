@@ -1,11 +1,8 @@
 package ru.otus.testing.service.impl;
 
 import ru.otus.testing.dao.QuestionDao;
-import ru.otus.testing.model.Question;
-import ru.otus.testing.service.TestService;
 import ru.otus.testing.service.PrintService;
-
-import java.util.List;
+import ru.otus.testing.service.TestService;
 
 
 public class TestServiceImpl implements TestService {
@@ -18,12 +15,8 @@ public class TestServiceImpl implements TestService {
         this.printService = printService;
     }
 
-    public List<Question> getTest() {
-        return questionDao.findAll();
-    }
-
     public void printTest() {
-        for (var question : getTest()) {
+        for (var question : questionDao.findAll()) {
             printService.print("\n" + "Question: " + question.getQuestion());
             printService.print("Answers:");
             for (var answer : question.getAnswer()) {
