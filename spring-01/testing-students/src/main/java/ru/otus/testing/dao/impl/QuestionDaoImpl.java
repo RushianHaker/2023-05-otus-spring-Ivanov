@@ -40,7 +40,7 @@ public class QuestionDaoImpl implements QuestionDao {
         return listQuestions;
     }
 
-    public List<Answer> findAnswers(String[] nextLine) {
+    private List<Answer> findAnswers(String[] nextLine) {
         var listAnswers = new ArrayList<Answer>();
         for (int i = 1; i < nextLine.length; i++) {
             if (nextLine[i].contains("correct:")) {
