@@ -29,7 +29,7 @@ class TestServiceImplTest {
     }
 
     @Test
-    void getTestListTest() {
+    void printTest() {
         var answer1 = new Answer("test answer 1", true);
         var answer2 = new Answer("test answer 2", false);
         var question = new Question("test question", List.of(answer1, answer2));
