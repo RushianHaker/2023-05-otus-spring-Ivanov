@@ -4,7 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.core.io.ClassPathResource;
 import ru.otus.testing.dao.QuestionDao;
-import ru.otus.testing.exception.QuestionDaoImplException;
+import ru.otus.testing.exception.QuestionDaoException;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
 
@@ -30,11 +30,11 @@ public class QuestionDaoImpl implements QuestionDao {
                 listQuestions.add(new Question(nextLine[0], findAnswers(nextLine)));
             }
         } catch (IndexOutOfBoundsException e) {
-            throw new QuestionDaoImplException("Array was throw exception: ", e);
+            throw new QuestionDaoException("Array was throw exception: ", e);
         } catch (CsvValidationException e) {
-            throw new QuestionDaoImplException("User-defined csv validator fails: ", e);
+            throw new QuestionDaoException("User-defined csv validator fails: ", e);
         } catch (IOException e) {
-            throw new QuestionDaoImplException("Reads resource or next line from the buffer was throw exception: ", e);
+            throw new QuestionDaoException("Reads resource or next line from the buffer was throw exception: ", e);
         }
 
         return listQuestions;
