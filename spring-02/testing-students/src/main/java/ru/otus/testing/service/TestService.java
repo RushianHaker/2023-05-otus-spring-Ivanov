@@ -4,4 +4,6 @@ package ru.otus.testing.service;
 public interface TestService {
 
     void printTest();
+
+    void testing();
 }

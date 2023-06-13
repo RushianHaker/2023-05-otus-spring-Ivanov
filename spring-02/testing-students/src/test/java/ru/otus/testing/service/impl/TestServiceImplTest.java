@@ -7,7 +7,9 @@ import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
 import ru.otus.testing.service.PrintService;
+import ru.otus.testing.service.TestResultService;
 import ru.otus.testing.service.TestService;
+import ru.otus.testing.service.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +27,9 @@ class TestServiceImplTest {
     void setUp() {
         questionDao = mock(QuestionDao.class);
         printService = mock(PrintService.class);
-        service = new TestServiceImpl(questionDao, printService);
+        UserService userService = mock(UserService.class);
+        TestResultService testResultService = mock(TestResultService.class);
+        service = new TestServiceImpl(questionDao, printService, userService, testResultService);
     }
 
     @Test

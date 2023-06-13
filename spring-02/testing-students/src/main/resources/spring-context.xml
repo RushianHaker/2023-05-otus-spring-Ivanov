@@ -15,8 +15,17 @@
     <bean id="printService" class="ru.otus.testing.service.impl.PrintServiceImpl">
     </bean>
 
+    <bean id="userService" class="ru.otus.testing.service.impl.UserServiceImpl">
+        <constructor-arg index="0" ref="printService"/>
+    </bean>
+
+    <bean id="testResultService" class="ru.otus.testing.service.impl.TestResultServiceImpl">
+    </bean>
+
     <bean id="testService" class="ru.otus.testing.service.impl.TestServiceImpl">
         <constructor-arg index="0" ref="questionDao"/>
         <constructor-arg index="1" ref="printService"/>
+        <constructor-arg index="2" ref="userService"/>
+        <constructor-arg index="3" ref="testResultService"/>
     </bean>
 </beans>
