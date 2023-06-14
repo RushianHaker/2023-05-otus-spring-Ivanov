@@ -1,21 +1,24 @@
 package ru.otus.testing.service.impl;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import ru.otus.testing.model.User;
 import ru.otus.testing.service.TestResultService;
 
-
+@Service
 public class TestResultServiceImpl implements TestResultService {
 
-    private static final int PASS_NUMBER = 4;
+    @Value("${application.completeCount}")
+    private int completeCount;
 
     @Override
     public void checkTestResult(User user, int result) {
-        if (result >= PASS_NUMBER) {
+        if (result >= completeCount) {
             System.out.println(user.getName() + " " + user.getLastName() +
-                    " you are pass the test with " + result + " points !");
+                    " you PASS the test with " + result + " points !");
         } else {
             System.out.println(user.getName() + " " + user.getLastName() +
-                    " you aren't pass the test, your result is " + result + " !");
+                    " you NOT PASS the test, your result is " + result + " !");
         }
     }
 }

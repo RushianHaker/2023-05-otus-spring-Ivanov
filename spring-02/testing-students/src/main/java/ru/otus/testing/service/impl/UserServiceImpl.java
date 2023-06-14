@@ -1,6 +1,7 @@
 package ru.otus.testing.service.impl;
 
 
+import org.springframework.stereotype.Service;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.User;
 import ru.otus.testing.service.PrintService;
@@ -10,6 +11,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final PrintService printService;
@@ -24,11 +26,11 @@ public class UserServiceImpl implements UserService {
     public User handShakeWithUser() {
         printService.print("\n" + "Hello, please write your name: ");
         var name = scanner.next();
-        printService.print("\n" + "now, please write your last name: ");
+        printService.print("Ok, now please write your last name: ");
         var lastName = scanner.next();
 
         var user = new User(name, lastName);
-        printService.print("Hello, " + user.getName() + " " + user.getLastName() + " !");
+        printService.print("\n" + "Hello, " + user.getName() + " " + user.getLastName() + " !");
         return user;
     }
 
@@ -39,12 +41,12 @@ public class UserServiceImpl implements UserService {
 
         while (!correct) {
             try {
-                printService.print("Write your answer NUMBER: ");
+                printService.print("\n" + "Write your answer NUMBER: ");
                 userAnswer = scanner.nextInt();
                 correct = true;
             } catch (InputMismatchException e) {
-                System.out.println("Incorrect. Please try again");
-                scanner.nextInt();
+                System.out.println("Incorrect. Please try again !");
+                scanner.next();
             }
         }
         return userAnswer;

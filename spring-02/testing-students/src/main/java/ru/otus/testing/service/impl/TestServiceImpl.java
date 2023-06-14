@@ -1,18 +1,20 @@
 package ru.otus.testing.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.service.PrintService;
 import ru.otus.testing.service.TestResultService;
 import ru.otus.testing.service.TestService;
 import ru.otus.testing.service.UserService;
 
-
+@Service
 public class TestServiceImpl implements TestService {
     private final QuestionDao questionDao;
 
     private final PrintService printService;
 
     private final UserService userService;
+
     private final TestResultService testResultService;
 
     public TestServiceImpl(QuestionDao questionDao, PrintService printService, UserService userService, TestResultService testResultService) {

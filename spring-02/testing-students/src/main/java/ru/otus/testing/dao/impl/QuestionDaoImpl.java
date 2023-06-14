@@ -3,6 +3,8 @@ package ru.otus.testing.dao.impl;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.exception.QuestionDaoException;
 import ru.otus.testing.model.Answer;
@@ -13,6 +15,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class QuestionDaoImpl implements QuestionDao {
     private final ClassPathResource classPathResource;
 
