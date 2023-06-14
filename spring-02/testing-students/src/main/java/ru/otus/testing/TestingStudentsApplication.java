@@ -3,7 +3,6 @@ package ru.otus.testing;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.otus.testing.config.ApplicationConfig;
 import ru.otus.testing.service.TestService;
 

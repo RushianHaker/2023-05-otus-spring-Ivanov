@@ -17,7 +17,8 @@ public class TestServiceImpl implements TestService {
 
     private final TestResultService testResultService;
 
-    public TestServiceImpl(QuestionDao questionDao, PrintService printService, UserService userService, TestResultService testResultService) {
+    public TestServiceImpl(QuestionDao questionDao, PrintService printService,
+                           UserService userService, TestResultService testResultService) {
         this.questionDao = questionDao;
         this.printService = printService;
         this.userService = userService;

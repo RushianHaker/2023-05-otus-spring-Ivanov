@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class UserServiceImpl implements UserService {
 
     private final PrintService printService;
+
     private final Scanner scanner;
 
     public UserServiceImpl(PrintService printService) {
