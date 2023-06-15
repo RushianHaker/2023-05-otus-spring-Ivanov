@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.ClassPathResource;
 import ru.otus.testing.dao.impl.QuestionDaoImpl;
 import ru.otus.testing.service.impl.PrintServiceImpl;
 import ru.otus.testing.service.impl.TestResultServiceImpl;
@@ -17,13 +16,8 @@ import ru.otus.testing.service.impl.UserServiceImpl;
 public class ApplicationConfig {
 
     @Bean
-    public ClassPathResource classResource(@Value("${application.pathToTestFile}") String pathToTestFile) {
-        return new ClassPathResource(pathToTestFile);
-    }
-
-    @Bean
-    public QuestionDaoImpl questionDao(ClassPathResource classResource) {
-        return new QuestionDaoImpl(classResource);
+    public QuestionDaoImpl questionDao(@Value("${application.pathToTestFile}") String pathToTestFile) {
+        return new QuestionDaoImpl(pathToTestFile);
     }
 
     @Bean

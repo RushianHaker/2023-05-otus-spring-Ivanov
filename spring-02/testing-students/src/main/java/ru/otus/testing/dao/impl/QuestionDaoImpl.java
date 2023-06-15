@@ -18,8 +18,8 @@ import java.util.List;
 public class QuestionDaoImpl implements QuestionDao {
     private final ClassPathResource classPathResource;
 
-    public QuestionDaoImpl(ClassPathResource classPathResource) {
-        this.classPathResource = classPathResource;
+    public QuestionDaoImpl(String pathToTestFile) {
+        this.classPathResource = new ClassPathResource(pathToTestFile);
     }
 
     public List<Question> findAll() {
