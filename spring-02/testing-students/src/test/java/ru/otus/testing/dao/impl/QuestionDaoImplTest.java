@@ -1,9 +1,7 @@
 package ru.otus.testing.dao.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import ru.otus.testing.TestingStudentsApplication;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
@@ -15,8 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 class QuestionDaoImplTest {
-    private final ApplicationContext context = new AnnotationConfigApplicationContext(TestingStudentsApplication.class);
-    private final QuestionDao questionDao = context.getBean(QuestionDao.class);
+
+    private QuestionDao questionDao;
+
+    @BeforeEach
+    public void init() {
+        questionDao = new QuestionDaoImpl("test.csv");
+    }
 
     @Test
     void printTest() {
