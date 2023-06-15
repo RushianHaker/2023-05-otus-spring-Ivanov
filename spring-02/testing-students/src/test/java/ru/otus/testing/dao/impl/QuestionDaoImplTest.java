@@ -8,7 +8,7 @@ import ru.otus.testing.model.Question;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
@@ -30,15 +30,6 @@ class QuestionDaoImplTest {
         var questions = questionDao.findAll();
         assertNotNull(questions);
 
-        assertEquals(question.getQuestion(), questions.get(0).getQuestion());
-
-        assertNotNull(questions.get(0).getAnswer());
-        assertEquals(2, questions.get(0).getAnswer().size());
-
-        assertEquals(question.getAnswer().get(0).getAnswer(), questions.get(0).getAnswer().get(0).getAnswer());
-        assertEquals(question.getAnswer().get(0).isCorrect(), questions.get(0).getAnswer().get(0).isCorrect());
-
-        assertEquals(question.getAnswer().get(1).getAnswer(), questions.get(0).getAnswer().get(1).getAnswer());
-        assertEquals(question.getAnswer().get(1).isCorrect(), questions.get(0).getAnswer().get(1).isCorrect());
+        assertThat(questions.get(0)).isEqualToComparingFieldByFieldRecursively(question);
     }
 }
