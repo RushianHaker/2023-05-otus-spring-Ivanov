@@ -3,18 +3,19 @@ package ru.otus.testing.dao.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import ru.otus.testing.config.ApplicationConfig;
+import ru.otus.testing.TestingStudentsApplication;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 class QuestionDaoImplTest {
-    private final ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+    private final ApplicationContext context = new AnnotationConfigApplicationContext(TestingStudentsApplication.class);
     private final QuestionDao questionDao = context.getBean(QuestionDao.class);
 
     @Test

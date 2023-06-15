@@ -8,8 +8,11 @@ import ru.otus.testing.service.TestResultService;
 @Service
 public class TestResultServiceImpl implements TestResultService {
 
-    @Value("${application.completeCount}")
-    private int completeCount;
+    private final int completeCount;
+
+    public TestResultServiceImpl(@Value("${application.completeCount}") int completeCount) {
+        this.completeCount = completeCount;
+    }
 
     @Override
     public void checkTestResult(User user, int result) {

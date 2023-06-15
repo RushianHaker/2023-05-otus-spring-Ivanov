@@ -2,6 +2,7 @@ package ru.otus.testing.dao.impl;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.QuestionDao;
@@ -18,7 +19,7 @@ import java.util.List;
 public class QuestionDaoImpl implements QuestionDao {
     private final ClassPathResource classPathResource;
 
-    public QuestionDaoImpl(String pathToTestFile) {
+    public QuestionDaoImpl(@Value("${application.pathToTestFile}") String pathToTestFile) {
         this.classPathResource = new ClassPathResource(pathToTestFile);
     }
 
