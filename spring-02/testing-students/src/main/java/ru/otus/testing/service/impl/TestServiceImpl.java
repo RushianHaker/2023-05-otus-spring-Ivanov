@@ -3,43 +3,39 @@ package ru.otus.testing.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
-import ru.otus.testing.service.PrintService;
+import ru.otus.testing.service.IOService;
 import ru.otus.testing.service.TestResultService;
 import ru.otus.testing.service.TestService;
 import ru.otus.testing.service.UserService;
 
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 @Service
 public class TestServiceImpl implements TestService {
     private final QuestionDao questionDao;
 
-    private final PrintService printService;
+    private final IOService ioService;
 
     private final UserService userService;
 
     private final TestResultService testResultService;
 
-    private final Scanner scanner;
-
-    public TestServiceImpl(QuestionDao questionDao, PrintService printService,
+    public TestServiceImpl(QuestionDao questionDao, IOService ioService,
                            UserService userService, TestResultService testResultService) {
         this.questionDao = questionDao;
-        this.printService = printService;
+        this.ioService = ioService;
         this.userService = userService;
         this.testResultService = testResultService;
-        this.scanner = new Scanner(System.in);
     }
 
     public void printTest() {
         for (var question : questionDao.findAll()) {
-            printService.print("\n" + "Question: " + question.getQuestion());
-            printService.print("Answers:");
+            ioService.outputString("\n" + "Question: " + question.getQuestion());
+            ioService.outputString("Answers:");
             var answersList = question.getAnswer();
             for (var answer : answersList) {
-                printService.print(answersList.indexOf(answer) + " - " + answer.getAnswer());
+                ioService.outputString(answersList.indexOf(answer) + " - " + answer.getAnswer());
             }
         }
     }
@@ -66,12 +62,10 @@ public class TestServiceImpl implements TestService {
 
         while (!correct) {
             try {
-                printService.print("\n" + "Write your answer NUMBER: ");
-                userAnswer = scanner.nextInt();
+                userAnswer = ioService.readIntWithPrompt("\n" + "Write your answer NUMBER: ");
                 correct = true;
             } catch (InputMismatchException e) {
-                System.out.println("Incorrect. Please try again !");
-                scanner.next();
+                ioService.readNextWithPrompt("Incorrect. Please try again !");
             }
         }
         return userAnswer;

@@ -6,7 +6,7 @@ import org.mockito.ArgumentCaptor;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
-import ru.otus.testing.service.PrintService;
+import ru.otus.testing.service.IOService;
 import ru.otus.testing.service.TestResultService;
 import ru.otus.testing.service.TestService;
 import ru.otus.testing.service.UserService;
@@ -20,13 +20,13 @@ import static org.mockito.Mockito.*;
 
 class TestServiceImplTest {
     private QuestionDao questionDao;
-    private PrintService printService;
+    private IOService printService;
     private TestService service;
 
     @BeforeEach
     void setUp() {
         questionDao = mock(QuestionDao.class);
-        printService = mock(PrintService.class);
+        printService = mock(IOService.class);
         UserService userService = mock(UserService.class);
         TestResultService testResultService = mock(TestResultService.class);
         service = new TestServiceImpl(questionDao, printService, userService, testResultService);
@@ -42,7 +42,7 @@ class TestServiceImplTest {
 
         service.printTest();
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(printService, times(4)).print(captor.capture());
+        verify(printService, times(4)).outputString(captor.capture());
 
         String actualOutput = captor.getAllValues().stream()
                 .collect(Collectors.joining(System.lineSeparator()));
