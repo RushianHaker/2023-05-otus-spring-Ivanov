@@ -10,6 +10,7 @@ import ru.otus.testing.service.TestResultService;
 public class TestResultServiceImpl implements TestResultService {
 
     private final IOService ioService;
+
     private final int completeCount;
 
     public TestResultServiceImpl(IOService ioService, @Value("${application.completeCount}") int completeCount) {
