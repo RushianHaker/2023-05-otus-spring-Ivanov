@@ -29,25 +29,21 @@ public class TestServiceImpl implements TestService {
         this.testResultService = testResultService;
     }
 
-    private void printTest() {
-        for (var question : questionDao.findAll()) {
-            ioService.outputString("\n" + "Question: " + question.getQuestion());
-            ioService.outputString("Answers:");
-            var answersList = question.getAnswer();
-            for (var answer : answersList) {
-                ioService.outputString(answersList.indexOf(answer) + " - " + answer.getAnswer());
-            }
-        }
-    }
 
     public void testing() {
         int correctAnswers = 0;
         var user = userService.handShakeWithUser();
-        printTest();
 
         for (var question : questionDao.findAll()) {
-            var userAnswer = askUserAnswer();
+            ioService.outputString("\n" + "Question: " + question.getQuestion());
+            ioService.outputString("Answers:");
+
             var answersList = question.getAnswer();
+            for (var answer : answersList) {
+                ioService.outputString(answersList.indexOf(answer) + " - " + answer.getAnswer());
+            }
+
+            var userAnswer = askUserAnswer();
             if (checkUserAnswer(userAnswer, answersList)) {
                 correctAnswers++;
             }
