@@ -40,7 +40,7 @@ class TestServiceImplTest {
 
         when(questionDao.findAll()).thenReturn(List.of(question));
 
-        service.printTest();
+        service.testing();
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(printService, times(4)).outputString(captor.capture());
 

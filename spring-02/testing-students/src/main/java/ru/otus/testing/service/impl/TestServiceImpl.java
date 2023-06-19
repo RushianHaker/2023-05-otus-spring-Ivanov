@@ -29,7 +29,7 @@ public class TestServiceImpl implements TestService {
         this.testResultService = testResultService;
     }
 
-    public void printTest() {
+    private void printTest() {
         for (var question : questionDao.findAll()) {
             ioService.outputString("\n" + "Question: " + question.getQuestion());
             ioService.outputString("Answers:");
@@ -55,8 +55,7 @@ public class TestServiceImpl implements TestService {
         testResultService.checkTestResult(user, correctAnswers);
     }
 
-    @Override
-    public int askUserAnswer() {
+    private int askUserAnswer() {
         boolean correct = false;
         int userAnswer = 0;
 
@@ -71,8 +70,7 @@ public class TestServiceImpl implements TestService {
         return userAnswer;
     }
 
-    @Override
-    public boolean checkUserAnswer(int userAnswer, List<Answer> answersList) {
+    private boolean checkUserAnswer(int userAnswer, List<Answer> answersList) {
         for (var answer : answersList) {
             if (answer.isCorrect()) {
                 if (answersList.indexOf(answer) == userAnswer) {
