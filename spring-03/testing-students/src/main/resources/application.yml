@@ -1,6 +1,6 @@
 spring:
   messages:
-    basename: appmessages.properties
+    basename: appmessages
     encoding: "UTF-8"
 
 application:
