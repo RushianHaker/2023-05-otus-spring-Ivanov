@@ -1,0 +1,10 @@
+spring:
+  messages:
+    basename: appmessages.yml
+    encoding: "UTF-8"
+
+application:
+  pathToTestFile: test.csv
+  completeCount: 4
+  message: hello
+  locale: ru_RU
