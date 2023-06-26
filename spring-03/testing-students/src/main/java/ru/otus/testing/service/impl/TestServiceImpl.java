@@ -1,6 +1,8 @@
 package ru.otus.testing.service.impl;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.testing.config.AppProps;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.service.IOService;
@@ -21,12 +23,18 @@ public class TestServiceImpl implements TestService {
 
     private final TestResultService testResultService;
 
-    public TestServiceImpl(QuestionDao questionDao, IOService ioService,
-                           UserService userService, TestResultService testResultService) {
+    private final MessageSource messageSource;
+
+    private final AppProps config;
+
+    public TestServiceImpl(QuestionDao questionDao, IOService ioService, UserService userService,
+                           TestResultService testResultService, MessageSource messageSource, AppProps config) {
         this.questionDao = questionDao;
         this.ioService = ioService;
         this.userService = userService;
         this.testResultService = testResultService;
+        this.messageSource = messageSource;
+        this.config = config;
     }
 
 
@@ -35,8 +43,9 @@ public class TestServiceImpl implements TestService {
         var user = userService.handShakeWithUser();
 
         for (var question : questionDao.findAll()) {
-            ioService.outputString("\n" + "Question: " + question.getQuestion());
-            ioService.outputString("Answers:");
+            ioService.outputString(messageSource.getMessage("print_question", new String[]{question.getQuestion()},
+                    config.getLocale()));
+            ioService.outputString(messageSource.getMessage("print_answers", null, config.getLocale()));
 
             var answersList = question.getAnswer();
             for (var answer : answersList) {
@@ -57,10 +66,12 @@ public class TestServiceImpl implements TestService {
 
         while (!correct) {
             try {
-                userAnswer = ioService.readIntWithPrompt("\n" + "Write your answer NUMBER: ");
+                userAnswer = ioService.readIntWithPrompt(messageSource.getMessage("ask_user_to_write_answer_number",
+                        null, config.getLocale()));
                 correct = true;
             } catch (InputMismatchException e) {
-                ioService.readNextWithPrompt("Incorrect. Please try again !");
+                ioService.readNextWithPrompt(messageSource.getMessage("incorrect_user_answer", null,
+                        config.getLocale()));
             }
         }
         return userAnswer;

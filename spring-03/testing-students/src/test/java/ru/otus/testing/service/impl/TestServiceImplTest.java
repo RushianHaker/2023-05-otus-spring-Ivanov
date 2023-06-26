@@ -3,6 +3,9 @@ package ru.otus.testing.service.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.MessageSource;
+import ru.otus.testing.config.AppProps;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
@@ -17,19 +20,21 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-
+@SpringBootTest
 class TestServiceImplTest {
     private QuestionDao questionDao;
     private IOService printService;
     private TestService service;
 
     @BeforeEach
-    void setUp() {
+    void init() {
         questionDao = mock(QuestionDao.class);
         printService = mock(IOService.class);
         UserService userService = mock(UserService.class);
         TestResultService testResultService = mock(TestResultService.class);
-        service = new TestServiceImpl(questionDao, printService, userService, testResultService);
+        AppProps appProps = mock(AppProps.class);
+        MessageSource messageSource = mock(MessageSource.class);
+        service = new TestServiceImpl(questionDao, printService, userService, testResultService, messageSource, appProps);
     }
 
     @Test

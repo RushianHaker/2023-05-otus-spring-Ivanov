@@ -2,9 +2,10 @@ package ru.otus.testing.dao.impl;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
+import ru.otus.testing.config.AppProps;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.exception.QuestionDaoException;
 import ru.otus.testing.model.Answer;
@@ -17,10 +18,16 @@ import java.util.List;
 
 @Repository
 public class QuestionDaoImpl implements QuestionDao {
+    private final AppProps config;
+
+    private final MessageSource messageSource;
+
     private final ClassPathResource classPathResource;
 
-    public QuestionDaoImpl(@Value("${application.pathToTestFile}") String pathToTestFile) {
-        this.classPathResource = new ClassPathResource(pathToTestFile);
+    public QuestionDaoImpl(MessageSource messageSource, AppProps config) {
+        this.config = config;
+        this.messageSource = messageSource;
+        this.classPathResource = new ClassPathResource(this.config.getPathToTestFile());
     }
 
     public List<Question> findAll() {
@@ -30,7 +37,8 @@ public class QuestionDaoImpl implements QuestionDao {
             String[] nextLine;
 
             while ((nextLine = reader.readNext()) != null) {
-                listQuestions.add(new Question(nextLine[0], findAnswers(nextLine)));
+                listQuestions.add(new Question(messageSource.getMessage(nextLine[0], null, config.getLocale()),
+                        findAnswers(nextLine)));
             }
         } catch (IndexOutOfBoundsException e) {
             throw new QuestionDaoException("Array was throw exception: ", e);
@@ -45,13 +53,24 @@ public class QuestionDaoImpl implements QuestionDao {
 
     private List<Answer> findAnswers(String[] nextLine) {
         var listAnswers = new ArrayList<Answer>();
+
         for (int i = 1; i < nextLine.length; i++) {
-            if (nextLine[i].contains("correct:")) {
-                listAnswers.add(new Answer(nextLine[i].replaceFirst("correct:", ""), true));
+            String message = messageSource.getMessage(nextLine[i], null, config.getLocale());
+            String[] argSplitAnswers = message.split(",");
+
+            if (argSplitAnswers.length == 0) {
+                return listAnswers;
             } else {
-                listAnswers.add(new Answer(nextLine[i], false));
+                for (String answer : argSplitAnswers) {
+                    if (answer.contains("correct:")) {
+                        listAnswers.add(new Answer(answer.replaceFirst("correct:", ""), true));
+                    } else {
+                        listAnswers.add(new Answer(answer, false));
+                    }
+                }
             }
         }
+
         return listAnswers;
     }
 }

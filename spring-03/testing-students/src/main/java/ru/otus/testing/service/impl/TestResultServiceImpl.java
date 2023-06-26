@@ -1,7 +1,8 @@
 package ru.otus.testing.service.impl;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.testing.config.AppProps;
 import ru.otus.testing.model.User;
 import ru.otus.testing.service.IOService;
 import ru.otus.testing.service.TestResultService;
@@ -11,21 +12,24 @@ public class TestResultServiceImpl implements TestResultService {
 
     private final IOService ioService;
 
-    private final int completeCount;
+    private final MessageSource messageSource;
 
-    public TestResultServiceImpl(IOService ioService, @Value("${application.completeCount}") int completeCount) {
+    private final AppProps config;
+
+    public TestResultServiceImpl(IOService ioService, MessageSource messageSource, AppProps config) {
         this.ioService = ioService;
-        this.completeCount = completeCount;
+        this.messageSource = messageSource;
+        this.config = config;
     }
 
     @Override
     public void checkTestResult(User user, int result) {
-        if (result >= completeCount) {
-            ioService.outputString(user.getName() + " " + user.getLastName() +
-                    " you PASS the test with " + result + " points !");
+        if (result >= config.getCompleteCount()) {
+            ioService.outputString(messageSource.getMessage("pass_test",
+                    new String[]{user.getName(), user.getLastName(), String.valueOf(result)}, config.getLocale()));
         } else {
-            ioService.outputString(user.getName() + " " + user.getLastName() +
-                    " you NOT PASS the test, your result is " + result + " !");
+            ioService.outputString(messageSource.getMessage("failed_test",
+                    new String[]{user.getName(), user.getLastName(), String.valueOf(result)}, config.getLocale()));
         }
     }
 }

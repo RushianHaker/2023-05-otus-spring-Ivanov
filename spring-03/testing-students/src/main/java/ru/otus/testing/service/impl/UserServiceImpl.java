@@ -1,7 +1,9 @@
 package ru.otus.testing.service.impl;
 
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.testing.config.AppProps;
 import ru.otus.testing.model.User;
 import ru.otus.testing.service.IOService;
 import ru.otus.testing.service.UserService;
@@ -11,17 +13,24 @@ public class UserServiceImpl implements UserService {
 
     private final IOService ioService;
 
-    public UserServiceImpl(IOService ioService) {
+    private final MessageSource messageSource;
+
+    private final AppProps config;
+
+    public UserServiceImpl(IOService ioService, MessageSource messageSource, AppProps config) {
         this.ioService = ioService;
+        this.messageSource = messageSource;
+        this.config = config;
     }
 
     @Override
     public User handShakeWithUser() {
-        var name = ioService.readStringWithPrompt("\n" + "Hello, please write your name: ");
-        var lastName = ioService.readStringWithPrompt("Ok, now please write your last name: ");
+        var name = ioService.readStringWithPrompt(messageSource.getMessage("user_name", null, config.getLocale()));
+        var lastName = ioService.readStringWithPrompt(messageSource.getMessage("user_lastName", null, config.getLocale()));
 
         var user = new User(name, lastName);
-        ioService.outputString("\n" + "Hello, " + user.getName() + " " + user.getLastName() + " !");
+        ioService.outputString(messageSource.getMessage("hand_shake_with_user",
+                new String[]{user.getName(), user.getLastName()}, config.getLocale()));
         return user;
     }
 }

@@ -1,10 +1,9 @@
 spring:
   messages:
-    basename: appmessages.yml
+    basename: appmessages.properties
     encoding: "UTF-8"
 
 application:
   pathToTestFile: test.csv
   completeCount: 4
-  message: hello
-  locale: ru_RU
+  locale: en
