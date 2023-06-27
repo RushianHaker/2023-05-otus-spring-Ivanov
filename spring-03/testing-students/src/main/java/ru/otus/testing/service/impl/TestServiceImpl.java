@@ -3,7 +3,11 @@ package ru.otus.testing.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
-import ru.otus.testing.service.*;
+import ru.otus.testing.service.IOService;
+import ru.otus.testing.service.UserService;
+import ru.otus.testing.service.TestService;
+import ru.otus.testing.service.TestResultService;
+import ru.otus.testing.service.MessageSourceService;
 
 import java.util.InputMismatchException;
 import java.util.List;
