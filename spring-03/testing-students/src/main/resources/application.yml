@@ -8,4 +8,4 @@ spring:
 application:
   pathToTestFile: test_${application.locale}.csv
   completeCount: 4
-  locale: ru
+  locale: en
