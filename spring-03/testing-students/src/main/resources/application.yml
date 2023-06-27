@@ -6,6 +6,6 @@ spring:
     encoding: "UTF-8"
 
 application:
-  pathToTestFile: test.csv
+  pathToTestFile: test_${application.locale}.csv
   completeCount: 4
-  locale: en
+  locale: ru
