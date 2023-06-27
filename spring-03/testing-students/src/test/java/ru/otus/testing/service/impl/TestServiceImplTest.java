@@ -20,6 +20,7 @@ class TestServiceImplTest {
     private QuestionDao questionDao;
     private IOService ioService;
     private TestService service;
+    private MessageSourceService messageSourceService;
 
     @BeforeEach
     void init() {
@@ -27,7 +28,7 @@ class TestServiceImplTest {
         ioService = mock(IOService.class);
         UserService userService = mock(UserService.class);
         TestResultService testResultService = mock(TestResultService.class);
-        MessageSourceService messageSourceService = mock(MessageSourceService.class);
+        messageSourceService = mock(MessageSourceService.class);
         service = new TestServiceImpl(questionDao, ioService, userService, testResultService, messageSourceService);
     }
 
@@ -38,8 +39,11 @@ class TestServiceImplTest {
         var question = new Question("test question", List.of(answer1, answer2));
 
         when(questionDao.findAll()).thenReturn(List.of(question));
+        when(messageSourceService.getMessage("print_question", new String[]{question.getQuestion()}))
+                .thenReturn(question.getQuestion());
 
         service.testing();
+
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(ioService, times(4)).outputString(captor.capture());
 
