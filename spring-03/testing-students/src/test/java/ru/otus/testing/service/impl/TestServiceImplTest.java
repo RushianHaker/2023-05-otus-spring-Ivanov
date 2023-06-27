@@ -3,9 +3,10 @@ package ru.otus.testing.service.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
-import ru.otus.testing.config.AppProps;
+import ru.otus.testing.config.ApplicationConfig;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
@@ -23,18 +24,19 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class TestServiceImplTest {
     private QuestionDao questionDao;
-    private IOService printService;
+    private IOService ioService;
     private TestService service;
+    @Autowired
+    private MessageSource messageSource;
 
     @BeforeEach
     void init() {
         questionDao = mock(QuestionDao.class);
-        printService = mock(IOService.class);
+        ioService = mock(IOService.class);
         UserService userService = mock(UserService.class);
         TestResultService testResultService = mock(TestResultService.class);
-        AppProps appProps = mock(AppProps.class);
-        MessageSource messageSource = mock(MessageSource.class);
-        service = new TestServiceImpl(questionDao, printService, userService, testResultService, messageSource, appProps);
+        ApplicationConfig config = mock(ApplicationConfig.class);
+        service = new TestServiceImpl(questionDao, ioService, userService, testResultService, messageSource, config);
     }
 
     @Test
@@ -47,7 +49,7 @@ class TestServiceImplTest {
 
         service.testing();
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(printService, times(4)).outputString(captor.capture());
+        verify(ioService, times(4)).outputString(captor.capture());
 
         String actualOutput = captor.getAllValues().stream()
                 .collect(Collectors.joining(System.lineSeparator()));
