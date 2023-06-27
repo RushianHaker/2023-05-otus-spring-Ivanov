@@ -2,14 +2,14 @@ package ru.otus.testing.dao.impl;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import org.springframework.context.MessageSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
-import ru.otus.testing.config.ApplicationConfig;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.exception.QuestionDaoException;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
+import ru.otus.testing.service.MessageSourceService;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,16 +18,23 @@ import java.util.List;
 
 @Repository
 public class QuestionDaoImpl implements QuestionDao {
-    private final ApplicationConfig config;
 
-    private final MessageSource messageSource;
+    private final MessageSourceService messageSourceService;
 
     private final ClassPathResource classPathResource;
 
-    public QuestionDaoImpl(MessageSource messageSource, ApplicationConfig config) {
-        this.config = config;
-        this.messageSource = messageSource;
-        this.classPathResource = new ClassPathResource(this.config.getPathToTestFile());
+    public QuestionDaoImpl(MessageSourceService messageSourceService,
+                           @Value("${application.pathToTestFile}") String path) {
+        this.messageSourceService = messageSourceService;
+        this.classPathResource = new ClassPathResource(path);
+    }
+
+    private static void addAnswersInList(List<Answer> listAnswers, String answer) {
+        if (answer.contains("correct:")) {
+            listAnswers.add(new Answer(answer.replaceFirst("correct:", ""), true));
+        } else {
+            listAnswers.add(new Answer(answer, false));
+        }
     }
 
     public List<Question> findAll() {
@@ -37,7 +44,7 @@ public class QuestionDaoImpl implements QuestionDao {
             String[] nextLine;
 
             while ((nextLine = reader.readNext()) != null) {
-                listQuestions.add(new Question(messageSource.getMessage(nextLine[0], null, config.getLocale()),
+                listQuestions.add(new Question(messageSourceService.getMessage(nextLine[0], null),
                         findAnswers(nextLine)));
             }
         } catch (IndexOutOfBoundsException e) {
@@ -55,18 +62,14 @@ public class QuestionDaoImpl implements QuestionDao {
         var listAnswers = new ArrayList<Answer>();
 
         for (int i = 1; i < nextLine.length; i++) {
-            String message = messageSource.getMessage(nextLine[i], null, config.getLocale());
+            String message = messageSourceService.getMessage(nextLine[i], null);
             String[] argSplitAnswers = message.split(",");
 
             if (argSplitAnswers.length == 0) {
                 return listAnswers;
             } else {
                 for (String answer : argSplitAnswers) {
-                    if (answer.contains("correct:")) {
-                        listAnswers.add(new Answer(answer.replaceFirst("correct:", ""), true));
-                    } else {
-                        listAnswers.add(new Answer(answer, false));
-                    }
+                    addAnswersInList(listAnswers, answer);
                 }
             }
         }

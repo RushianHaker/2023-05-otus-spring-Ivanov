@@ -1,11 +1,10 @@
 package ru.otus.testing.service.impl;
 
 
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.otus.testing.config.ApplicationConfig;
 import ru.otus.testing.model.User;
 import ru.otus.testing.service.IOService;
+import ru.otus.testing.service.MessageSourceService;
 import ru.otus.testing.service.UserService;
 
 @Service
@@ -13,24 +12,22 @@ public class UserServiceImpl implements UserService {
 
     private final IOService ioService;
 
-    private final MessageSource messageSource;
+    private final MessageSourceService messageSourceService;
 
-    private final ApplicationConfig config;
 
-    public UserServiceImpl(IOService ioService, MessageSource messageSource, ApplicationConfig config) {
+    public UserServiceImpl(IOService ioService, MessageSourceService messageSourceService) {
         this.ioService = ioService;
-        this.messageSource = messageSource;
-        this.config = config;
+        this.messageSourceService = messageSourceService;
     }
 
     @Override
     public User handShakeWithUser() {
-        var name = ioService.readStringWithPrompt(messageSource.getMessage("user_name", null, config.getLocale()));
-        var lastName = ioService.readStringWithPrompt(messageSource.getMessage("user_lastName", null, config.getLocale()));
+        var name = ioService.readStringWithPrompt(messageSourceService.getMessage("user_name", null));
+        var lastName = ioService.readStringWithPrompt(messageSourceService.getMessage("user_lastName", null));
 
         var user = new User(name, lastName);
-        ioService.outputString(messageSource.getMessage("hand_shake_with_user",
-                new String[]{user.getName(), user.getLastName()}, config.getLocale()));
+        ioService.outputString(messageSourceService.getMessage("hand_shake_with_user",
+                new String[]{user.getName(), user.getLastName()}));
         return user;
     }
 }
