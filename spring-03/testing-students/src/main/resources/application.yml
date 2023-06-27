@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   messages:
     basename: appmessages
     encoding: "UTF-8"
