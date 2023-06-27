@@ -9,7 +9,6 @@ import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.exception.QuestionDaoException;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
-import ru.otus.testing.service.MessageSourceService;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,25 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class QuestionDaoImpl implements QuestionDao {
-
-    private final MessageSourceService messageSourceService;
+public class QuestionDaoCsvImpl implements QuestionDao {
 
     private final ClassPathResource classPathResource;
 
-    public QuestionDaoImpl(MessageSourceService messageSourceService,
-                           @Value("${application.pathToTestFile}") String path) {
-        this.messageSourceService = messageSourceService;
+    public QuestionDaoCsvImpl(@Value("${application.pathToTestFile}") String path) {
         this.classPathResource = new ClassPathResource(path);
     }
 
-    private static void addAnswersInList(List<Answer> listAnswers, String answer) {
-        if (answer.contains("correct:")) {
-            listAnswers.add(new Answer(answer.replaceFirst("correct:", ""), true));
-        } else {
-            listAnswers.add(new Answer(answer, false));
-        }
-    }
 
     public List<Question> findAll() {
         var listQuestions = new ArrayList<Question>();
@@ -44,8 +32,7 @@ public class QuestionDaoImpl implements QuestionDao {
             String[] nextLine;
 
             while ((nextLine = reader.readNext()) != null) {
-                listQuestions.add(new Question(messageSourceService.getMessage(nextLine[0], null),
-                        findAnswers(nextLine)));
+                listQuestions.add(new Question(nextLine[0], findAnswers(nextLine)));
             }
         } catch (IndexOutOfBoundsException e) {
             throw new QuestionDaoException("Array was throw exception: ", e);
@@ -60,20 +47,13 @@ public class QuestionDaoImpl implements QuestionDao {
 
     private List<Answer> findAnswers(String[] nextLine) {
         var listAnswers = new ArrayList<Answer>();
-
         for (int i = 1; i < nextLine.length; i++) {
-            String message = messageSourceService.getMessage(nextLine[i], null);
-            String[] argSplitAnswers = message.split(",");
-
-            if (argSplitAnswers.length == 0) {
-                return listAnswers;
+            if (nextLine[i].contains("correct:")) {
+                listAnswers.add(new Answer(nextLine[i].replaceFirst("correct:", ""), true));
             } else {
-                for (String answer : argSplitAnswers) {
-                    addAnswersInList(listAnswers, answer);
-                }
+                listAnswers.add(new Answer(nextLine[i], false));
             }
         }
-
         return listAnswers;
     }
 }
