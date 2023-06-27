@@ -3,7 +3,7 @@ package ru.otus.testing.service.impl;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.otus.testing.config.AppProps;
+import ru.otus.testing.config.ApplicationConfig;
 import ru.otus.testing.model.User;
 import ru.otus.testing.service.IOService;
 import ru.otus.testing.service.UserService;
@@ -15,9 +15,9 @@ public class UserServiceImpl implements UserService {
 
     private final MessageSource messageSource;
 
-    private final AppProps config;
+    private final ApplicationConfig config;
 
-    public UserServiceImpl(IOService ioService, MessageSource messageSource, AppProps config) {
+    public UserServiceImpl(IOService ioService, MessageSource messageSource, ApplicationConfig config) {
         this.ioService = ioService;
         this.messageSource = messageSource;
         this.config = config;

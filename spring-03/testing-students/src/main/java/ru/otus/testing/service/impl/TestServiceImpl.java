@@ -2,7 +2,7 @@ package ru.otus.testing.service.impl;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.otus.testing.config.AppProps;
+import ru.otus.testing.config.ApplicationConfig;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.service.IOService;
@@ -25,10 +25,10 @@ public class TestServiceImpl implements TestService {
 
     private final MessageSource messageSource;
 
-    private final AppProps config;
+    private final ApplicationConfig config;
 
     public TestServiceImpl(QuestionDao questionDao, IOService ioService, UserService userService,
-                           TestResultService testResultService, MessageSource messageSource, AppProps config) {
+                           TestResultService testResultService, MessageSource messageSource, ApplicationConfig config) {
         this.questionDao = questionDao;
         this.ioService = ioService;
         this.userService = userService;

@@ -5,7 +5,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
-import ru.otus.testing.config.AppProps;
+import ru.otus.testing.config.ApplicationConfig;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.exception.QuestionDaoException;
 import ru.otus.testing.model.Answer;
@@ -18,13 +18,13 @@ import java.util.List;
 
 @Repository
 public class QuestionDaoImpl implements QuestionDao {
-    private final AppProps config;
+    private final ApplicationConfig config;
 
     private final MessageSource messageSource;
 
     private final ClassPathResource classPathResource;
 
-    public QuestionDaoImpl(MessageSource messageSource, AppProps config) {
+    public QuestionDaoImpl(MessageSource messageSource, ApplicationConfig config) {
         this.config = config;
         this.messageSource = messageSource;
         this.classPathResource = new ClassPathResource(this.config.getPathToTestFile());
