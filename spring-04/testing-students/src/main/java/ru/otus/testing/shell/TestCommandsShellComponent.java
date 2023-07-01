@@ -1,6 +1,5 @@
 package ru.otus.testing.shell;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -10,7 +9,6 @@ import ru.otus.testing.service.MessageSourceService;
 import ru.otus.testing.service.TestService;
 import ru.otus.testing.service.UserService;
 
-@Profile("dev")
 @ShellComponent
 public class TestCommandsShellComponent {
     private final TestService testService;
