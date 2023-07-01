@@ -1,7 +1,8 @@
 package ru.otus.testing.dao.impl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
 import ru.otus.testing.model.Question;
@@ -11,14 +12,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@SpringBootTest
 class QuestionDaoCsvImplTest {
 
+    @Autowired
     private QuestionDao questionDao;
 
-    @BeforeEach
-    public void init() {
-        questionDao = new QuestionDaoCsvImpl("test_en.csv");
-    }
 
     @Test
     void printTest() {
