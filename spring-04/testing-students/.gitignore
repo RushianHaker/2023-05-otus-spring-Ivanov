@@ -15,6 +15,7 @@ target/
 ### IntelliJ IDEA ###
 .idea
 .mvn
+spring-shell.log
 *.iws
 *.iml
 *.ipr
