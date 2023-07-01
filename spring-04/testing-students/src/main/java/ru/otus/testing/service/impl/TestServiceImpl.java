@@ -1,9 +1,14 @@
 package ru.otus.testing.service.impl;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import ru.otus.testing.dao.QuestionDao;
 import ru.otus.testing.model.Answer;
-import ru.otus.testing.service.*;
+import ru.otus.testing.model.User;
+import ru.otus.testing.service.IOService;
+import ru.otus.testing.service.MessageSourceService;
+import ru.otus.testing.service.TestResultService;
+import ru.otus.testing.service.TestService;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -14,26 +19,22 @@ public class TestServiceImpl implements TestService {
 
     private final IOService ioService;
 
-    private final UserService userService;
-
     private final TestResultService testResultService;
 
     private final MessageSourceService messageSourceService;
 
 
-    public TestServiceImpl(QuestionDao questionDao, IOService ioService, UserService userService,
-                           TestResultService testResultService, MessageSourceService messageSourceService) {
+    public TestServiceImpl(QuestionDao questionDao, IOService ioService, TestResultService testResultService,
+                           MessageSourceService messageSourceService) {
         this.questionDao = questionDao;
         this.ioService = ioService;
-        this.userService = userService;
         this.testResultService = testResultService;
         this.messageSourceService = messageSourceService;
     }
 
 
-    public void testing() {
+    public void testing(@NotNull User user) {
         int correctAnswers = 0;
-        var user = userService.handShakeWithUser();
 
         for (var question : questionDao.findAll()) {
             ioService.outputString(messageSourceService.getMessage("print_question",
