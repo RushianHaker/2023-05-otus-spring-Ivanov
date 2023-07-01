@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: test
+  messages:
+    basename: appmessages
+    encoding: "UTF-8"
+
+application:
+  pathToTestFile: test_${application.locale}.csv
+  completeCount: 4
+  locale: en
