@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class TestServiceImplTest {
     @MockBean
-    TestResultService testResultService;
+    private TestResultService testResultService;
     @MockBean
     private QuestionDao questionDao;
     @MockBean
