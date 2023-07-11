@@ -10,7 +10,7 @@ public interface BookDao {
 
     List<Book> getAll();
 
-    void update(Book book);
+    void update(Book book, long id);
 
     void deleteById(long id);
 }

@@ -96,12 +96,11 @@ public class BookServiceImpl implements BookService {
         var genreId = userAnswerService.checkUserAnswer("- Enter books genre id: ");
         var genreName = ioService.readNextWithPrompt("- Enter books genre name: ");
 
-        bookDao.create(new Book(bookId, bookName, bookYear, new Author(authorId, authorName, authorYear),
-                new Genre(genreId, genreName)));
+        bookDao.update(new Book(bookId, bookName, bookYear, new Author(authorId, authorName, authorYear),
+                new Genre(genreId, genreName)), bookId);
 
         return "Info about book with id: " + bookId + ", was updated";
     }
-
 
     @ShellMethod(value = "delete-book", key = {"delete-book", "-d-book"})
     @Override
