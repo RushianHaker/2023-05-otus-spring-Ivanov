@@ -15,7 +15,7 @@ public class AuthorMapper implements RowMapper<Author> {
     public Author mapRow(ResultSet resultSet, int rowNum) {
         try {
             return new Author(resultSet.getLong("id"), resultSet.getString("name"),
-                    resultSet.getInt("year"));
+                    resultSet.getLong("year"));
         } catch (SQLException e) {
             throw new AuthorDaoJdbcException("Author dao mapper was throw exception", e);
         }

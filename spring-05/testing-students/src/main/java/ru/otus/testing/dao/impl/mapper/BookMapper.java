@@ -15,7 +15,7 @@ public class BookMapper implements RowMapper<Book> {
     public Book mapRow(ResultSet resultSet, int rowNum) {
         try {
             return new Book(resultSet.getLong("id"), resultSet.getString("name"),
-                    resultSet.getInt("year"));
+                    resultSet.getLong("year"), null, null);
         } catch (SQLException e) {
             throw new BookDaoJdbcException("Book dao mapper was throw exception", e);
         }
