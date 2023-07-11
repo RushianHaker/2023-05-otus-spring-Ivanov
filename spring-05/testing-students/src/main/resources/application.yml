@@ -1,11 +1,15 @@
 spring:
   profiles:
     active: dev
-  messages:
-    basename: appmessages
-    encoding: "UTF-8"
-
-application:
-  pathToTestFile: test_${application.locale}.csv
-  completeCount: 4
-  locale: en
+  datasource:
+    url: jdbc:h2:mem:testdb
+  sql:
+    init:
+      mode: always
+      data-locations: data.sql
+      schema-locations: schema.sql
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true

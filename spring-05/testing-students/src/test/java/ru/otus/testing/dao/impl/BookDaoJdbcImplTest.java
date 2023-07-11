@@ -2,22 +2,20 @@ package ru.otus.testing.dao.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.testing.dao.QuestionDao;
-import ru.otus.testing.model.Answer;
-import ru.otus.testing.model.Question;
+import ru.otus.testing.dao.BookDao;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class QuestionDaoCsvImplTest {
+//todo
+class BookDaoJdbcImplTest {
 
-    private QuestionDao questionDao;
+    private BookDao bookDao;
 
     @BeforeEach
     public void init() {
-        questionDao = new QuestionDaoCsvImpl("test_en.csv");
+        bookDao = new BookDaoJdbcImpl("test_en.csv");
     }
 
     @Test
@@ -26,10 +24,10 @@ class QuestionDaoCsvImplTest {
         var answer2 = new Answer("Lenin", false);
         var question = new Question("HO-HO-HO Who i am?", List.of(answer1, answer2));
 
-        var questions = questionDao.findAll();
+        var questions = bookDao.findAll();
         assertNotNull(questions);
 
-        var questionDaoList = questionDao.findAll();
+        var questionDaoList = bookDao.findAll();
         assertNotNull(questionDaoList);
 
         assertEquals(questionDaoList.get(0).getQuestion(), question.getQuestion());

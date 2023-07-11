@@ -3,10 +3,9 @@ package ru.otus.testing.service.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import ru.otus.testing.dao.QuestionDao;
-import ru.otus.testing.model.Answer;
-import ru.otus.testing.model.Question;
-import ru.otus.testing.service.*;
+import ru.otus.testing.dao.BookDao;
+import ru.otus.testing.service.BookService;
+import ru.otus.testing.service.IOService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,21 +13,21 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-
-class TestServiceImplTest {
-    private QuestionDao questionDao;
+//todo
+class TestServiceImplBook {
+    private BookDao bookDao;
     private IOService ioService;
-    private TestService service;
+    private BookService service;
     private MessageSourceService messageSourceService;
 
     @BeforeEach
     void init() {
-        questionDao = mock(QuestionDao.class);
+        bookDao = mock(BookDao.class);
         ioService = mock(IOService.class);
         UserService userService = mock(UserService.class);
         TestResultService testResultService = mock(TestResultService.class);
         messageSourceService = mock(MessageSourceService.class);
-        service = new TestServiceImpl(questionDao, ioService, userService, testResultService, messageSourceService);
+        service = new BookServiceImpl(bookDao, ioService, userService, testResultService, messageSourceService);
     }
 
     @Test
@@ -37,7 +36,7 @@ class TestServiceImplTest {
         var answer2 = new Answer("test answer 2", false);
         var question = new Question("test question", List.of(answer1, answer2));
 
-        when(questionDao.findAll()).thenReturn(List.of(question));
+        when(bookDao.findAll()).thenReturn(List.of(question));
         when(messageSourceService.getMessage("print_question", new String[]{question.getQuestion()}))
                 .thenReturn(question.getQuestion());
 
