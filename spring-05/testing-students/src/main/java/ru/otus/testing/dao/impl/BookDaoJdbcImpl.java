@@ -12,11 +12,12 @@ import java.util.Map;
 
 @Repository
 public class BookDaoJdbcImpl implements BookDao {
-    private final static BookMapper BOOK_MAPPER = new BookMapper();
+    private final BookMapper mapper;
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public BookDaoJdbcImpl(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    public BookDaoJdbcImpl(BookMapper mapper, NamedParameterJdbcOperations namedParameterJdbcOperations) {
+        this.mapper = mapper;
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
@@ -33,12 +34,14 @@ public class BookDaoJdbcImpl implements BookDao {
     public Book getById(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, \"name\", \"year\", author, genre, author_year from books where id = :id", params, BOOK_MAPPER);
+                "select id, \"name\", \"year\", author, genre, author_year from books where id = :id",
+                params, mapper);
     }
 
     @Override
     public List<Book> getAll() {
-        return namedParameterJdbcOperations.query("select id, \"name\", \"year\", author, genre, author_year from books", BOOK_MAPPER);
+        return namedParameterJdbcOperations.query(
+                "select id, \"name\", \"year\", author, genre, author_year from books", mapper);
     }
 
     @Override

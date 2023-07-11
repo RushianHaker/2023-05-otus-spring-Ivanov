@@ -12,10 +12,12 @@ import java.util.Map;
 
 @Repository
 public class AuthorDaoJdbcImpl implements AuthorDao {
-    private final static AuthorMapper AUTHOR_MAPPER = new AuthorMapper();
+    private final AuthorMapper mapper;
+
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public AuthorDaoJdbcImpl(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    public AuthorDaoJdbcImpl(AuthorMapper mapper, NamedParameterJdbcOperations namedParameterJdbcOperations) {
+        this.mapper = mapper;
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
@@ -29,17 +31,18 @@ public class AuthorDaoJdbcImpl implements AuthorDao {
     public Author getById(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, \"name\", \"year\" from authors where id = :id", params, AUTHOR_MAPPER);
+                "select id, \"name\", \"year\" from authors where id = :id", params, mapper);
     }
 
     @Override
     public List<Author> getAll() {
-        return namedParameterJdbcOperations.query("select id, \"name\", \"year\" from authors", AUTHOR_MAPPER);
+        return namedParameterJdbcOperations.query("select id, \"name\", \"year\" from authors", mapper);
     }
 
     @Override
     public void update(Author author, long id) {
-        namedParameterJdbcOperations.update("update authors set id = :id, \"name\" = :name, \"year\" = :year where id = :search_id",
+        namedParameterJdbcOperations.update(
+                "update authors set id = :id, \"name\" = :name, \"year\" = :year where id = :search_id",
                 Map.of("id", author.getId(),"name", author.getName(), "year", author.getYear(),
                         "search_id", id));
     }

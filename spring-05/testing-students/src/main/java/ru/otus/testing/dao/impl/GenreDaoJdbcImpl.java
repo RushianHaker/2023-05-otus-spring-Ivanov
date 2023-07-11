@@ -12,11 +12,13 @@ import java.util.Map;
 
 @Repository
 public class GenreDaoJdbcImpl implements GenreDao {
-    private final static GenreMapper GENRE_MAPPER = new GenreMapper();
+    private final GenreMapper mapper;
+
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
 
-    public GenreDaoJdbcImpl(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    public GenreDaoJdbcImpl(GenreMapper mapper, NamedParameterJdbcOperations namedParameterJdbcOperations) {
+        this.mapper = mapper;
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
@@ -30,12 +32,12 @@ public class GenreDaoJdbcImpl implements GenreDao {
     public Genre getById(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, \"name\" from genres where id = :id", params, GENRE_MAPPER);
+                "select id, \"name\" from genres where id = :id", params, mapper);
     }
 
     @Override
     public List<Genre> getAll() {
-        return namedParameterJdbcOperations.query("select id, \"name\" from genres", GENRE_MAPPER);
+        return namedParameterJdbcOperations.query("select id, \"name\" from genres", mapper);
     }
 
     @Override

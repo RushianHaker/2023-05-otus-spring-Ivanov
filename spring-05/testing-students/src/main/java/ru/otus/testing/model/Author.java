@@ -7,7 +7,9 @@ import lombok.Setter;
 @Setter
 public class Author {
     private final String name;
+
     private final Long year;
+
     private long id;
 
     public Author(String name, Long year) {

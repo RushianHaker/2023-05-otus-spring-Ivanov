@@ -8,9 +8,13 @@ import lombok.Setter;
 @Setter
 public class Book {
     private final String name;
+
     private final Long year;
+
     private final Author author;
+
     private final Genre genre;
+
     private long id;
 
     public Book(String name, Long year, Author author, Genre genre) {

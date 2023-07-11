@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface BookDao {
     void create(Book book);
+
     Book getById(long id);
 
     List<Book> getAll();
