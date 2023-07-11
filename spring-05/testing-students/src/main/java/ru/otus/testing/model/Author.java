@@ -1,5 +1,5 @@
 package ru.otus.testing.model;
 
 
-public record Author(long id, String name, Long year) {
+public record Author(Long id, String name, Long year) {
 }

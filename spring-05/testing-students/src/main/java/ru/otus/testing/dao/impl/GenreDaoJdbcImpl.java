@@ -22,7 +22,7 @@ public class GenreDaoJdbcImpl implements GenreDao {
 
     @Override
     public void create(Genre book) {
-        namedParameterJdbcOperations.update("insert into genres (id, name) values (:id, :name)",
+        namedParameterJdbcOperations.update("insert into genres (id, \"name\") values (:id, :name)",
                 Map.of("id", book.id(), "name", book.name()));
     }
 
@@ -30,17 +30,17 @@ public class GenreDaoJdbcImpl implements GenreDao {
     public Genre getById(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, name from genres where id = :id", params, GENRE_MAPPER);
+                "select id, \"name\" from genres where id = :id", params, GENRE_MAPPER);
     }
 
     @Override
     public List<Genre> getAll() {
-        return namedParameterJdbcOperations.query("select id, name from genres", GENRE_MAPPER);
+        return namedParameterJdbcOperations.query("select id, \"name\" from genres", GENRE_MAPPER);
     }
 
     @Override
     public void update(Genre book) {
-        namedParameterJdbcOperations.update("update genres set id = :id, name = :name",
+        namedParameterJdbcOperations.update("update genres set id = :id, \"name\" = :name",
                 Map.of("id", book.id(), "name", book.name()));
     }
 

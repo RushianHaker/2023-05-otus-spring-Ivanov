@@ -21,7 +21,7 @@ public class AuthorDaoJdbcImpl implements AuthorDao {
 
     @Override
     public void create(Author book) {
-        namedParameterJdbcOperations.update("insert into authors (id, name, year) values (:id, :name, :year)",
+        namedParameterJdbcOperations.update("insert into authors (id, \"name\", \"year\",) values (:id, :name, :year)",
                 Map.of("id", book.id(), "name", book.name(), "year", book.year()));
     }
 
@@ -29,17 +29,17 @@ public class AuthorDaoJdbcImpl implements AuthorDao {
     public Author getById(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, name, year from authors where id = :id", params, AUTHOR_MAPPER);
+                "select id, \"name\", \"year\", from authors where id = :id", params, AUTHOR_MAPPER);
     }
 
     @Override
     public List<Author> getAll() {
-        return namedParameterJdbcOperations.query("select id, name, year from authors", AUTHOR_MAPPER);
+        return namedParameterJdbcOperations.query("select id, \"name\", \"year\" from authors", AUTHOR_MAPPER);
     }
 
     @Override
     public void update(Author book) {
-        namedParameterJdbcOperations.update("update authors set id = :id, name = :name, year = :year",
+        namedParameterJdbcOperations.update("update authors set id = :id, \"name\" = :name, \"year\" = :year",
                 Map.of("id", book.id(), "name", book.name(), "year", book.year()));
     }
 

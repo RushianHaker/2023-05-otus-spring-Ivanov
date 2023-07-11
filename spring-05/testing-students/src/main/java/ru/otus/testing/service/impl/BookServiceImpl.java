@@ -73,8 +73,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public String readAll() {
         var booksList = bookDao.getAll();
-        for (var bookInfo: booksList) {
-            ioService.outputString(bookInfo.toString());
+        ioService.outputString("Books info list: ");
+        for (var bookInfo : booksList) {
+            ioService.outputString(
+                    "Book-" + bookInfo.id() + ")" +
+                            " id: " + bookInfo.id() +
+                            ", name: " + bookInfo.name() +
+                            ", year: " + bookInfo.year() +
+                            ", author: " + bookInfo.author().name() +
+                            ", genre: " + bookInfo.genre().name());
         }
 
         return "That was all books list, size - " + booksList.size();
