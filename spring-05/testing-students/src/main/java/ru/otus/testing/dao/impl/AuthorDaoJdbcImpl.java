@@ -20,16 +20,16 @@ public class AuthorDaoJdbcImpl implements AuthorDao {
     }
 
     @Override
-    public void create(Author book) {
-        namedParameterJdbcOperations.update("insert into authors (id, \"name\", \"year\",) values (:id, :name, :year)",
-                Map.of("id", book.id(), "name", book.name(), "year", book.year()));
+    public void create(Author author) {
+        namedParameterJdbcOperations.update("insert into authors (id, \"name\", \"year\") values (:id, :name, :year)",
+                Map.of("id", author.getId(),"name", author.getName(), "year", author.getYear()));
     }
 
     @Override
     public Author getById(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, \"name\", \"year\", from authors where id = :id", params, AUTHOR_MAPPER);
+                "select id, \"name\", \"year\" from authors where id = :id", params, AUTHOR_MAPPER);
     }
 
     @Override
@@ -38,9 +38,10 @@ public class AuthorDaoJdbcImpl implements AuthorDao {
     }
 
     @Override
-    public void update(Author book) {
-        namedParameterJdbcOperations.update("update authors set id = :id, \"name\" = :name, \"year\" = :year",
-                Map.of("id", book.id(), "name", book.name(), "year", book.year()));
+    public void update(Author author, long id) {
+        namedParameterJdbcOperations.update("update authors set id = :id, \"name\" = :name, \"year\" = :year where id = :search_id",
+                Map.of("id", author.getId(),"name", author.getName(), "year", author.getYear(),
+                        "search_id", id));
     }
 
     @Override

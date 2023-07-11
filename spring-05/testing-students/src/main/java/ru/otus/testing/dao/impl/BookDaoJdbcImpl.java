@@ -24,8 +24,9 @@ public class BookDaoJdbcImpl implements BookDao {
     public void create(Book book) {
         namedParameterJdbcOperations.update("insert into books (id, \"name\", \"year\", author, genre, author_year) " +
                         "values (:id, :name, :year, :author, :genre, :author_year)",
-                Map.of("id", book.id(), "name", book.name(), "year", book.year(),
-                        "author", book.author().name(), "genre", book.genre().name(), "author_year", book.author().year()));
+                Map.of("id", book.getId(),"name", book.getName(), "year", book.getYear(),
+                        "author", book.getAuthor().getName(), "genre", book.getGenre().getName(),
+                        "author_year", book.getAuthor().getYear()));
     }
 
     @Override
@@ -43,9 +44,10 @@ public class BookDaoJdbcImpl implements BookDao {
     @Override
     public void update(Book book, long id) {
         namedParameterJdbcOperations.update("update books set id = :id, \"name\" = :name, \"year\" = :year " +
-                        ", author = :author, genre = :genre, author_year = :author_year where id = :id",
-                Map.of("id", book.id(), "name", book.name(), "year", book.year(),
-                        "author", book.author().name(), "genre", book.genre().name(), "author_year", book.author().year()));
+                        ", author = :author, genre = :genre, author_year = :author_year where id = :search_id",
+                Map.of("id", book.getId(), "name", book.getName(), "year", book.getYear(),
+                        "author", book.getAuthor().getName(), "genre", book.getGenre().getName(),
+                        "author_year", book.getAuthor().getYear(), "search_id", id));
     }
 
     @Override

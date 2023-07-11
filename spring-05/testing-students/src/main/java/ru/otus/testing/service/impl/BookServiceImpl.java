@@ -1,7 +1,6 @@
 package ru.otus.testing.service.impl;
 
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
+import org.springframework.stereotype.Service;
 import ru.otus.testing.dao.BookDao;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
@@ -9,7 +8,7 @@ import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.IOService;
 
-@ShellComponent
+@Service
 public class BookServiceImpl implements BookService {
 
     private final BookDao bookDao;
@@ -24,8 +23,6 @@ public class BookServiceImpl implements BookService {
         this.userAnswerService = userAnswerService;
     }
 
-
-    @ShellMethod(value = "create-book", key = {"create-book", "-c-book"})
     @Override
     public String create() {
         ioService.outputString("Enter books info, please:");
@@ -34,73 +31,68 @@ public class BookServiceImpl implements BookService {
         var bookName = ioService.readNextWithPrompt("- Enter book name: ");
         var bookYear = userAnswerService.checkUserAnswer("- Enter book written year: ");
 
-        var authorId = userAnswerService.checkUserAnswer("- Enter author id: ");
         var authorName = ioService.readNextWithPrompt("- Enter author name: ");
         var authorYear = userAnswerService.checkUserAnswer("- Enter author years: ");
 
-        var genreId = userAnswerService.checkUserAnswer("- Enter books genre id: ");
         var genreName = ioService.readNextWithPrompt("- Enter books genre name: ");
 
-        bookDao.create(new Book(bookId, bookName, bookYear, new Author(authorId, authorName, authorYear),
-                new Genre(genreId, genreName)));
+        bookDao.create(new Book(bookId, bookName, bookYear, new Author(authorName, authorYear),
+                new Genre(genreName)));
 
         return "Book name: " + bookName + ", was created";
     }
 
-    @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
     @Override
     public String readById() {
-        ioService.outputString("Enter books id, that info you want to see:");
+        ioService.outputString("Enter books id, that info you want to see: ");
 
         var bookId = userAnswerService.checkUserAnswer("- Enter book id: ");
 
         return bookDao.getById(bookId).toString();
     }
 
-    @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
     @Override
     public String readAll() {
         var booksList = bookDao.getAll();
-        ioService.outputString("Books info list: ");
+
+        ioService.outputString("Books info list (size: " + booksList.size() + "): ");
         for (var bookInfo : booksList) {
             ioService.outputString(
-                    "Book-" + bookInfo.id() + ")" +
-                            " id: " + bookInfo.id() +
-                            ", name: " + bookInfo.name() +
-                            ", year: " + bookInfo.year() +
-                            ", author: " + bookInfo.author().name() +
-                            ", genre: " + bookInfo.genre().name());
+                    "Book-" + bookInfo.getId() + ")" +
+                            " id: " + bookInfo.getId() +
+                            ", name: " + bookInfo.getName() +
+                            ", year: " + bookInfo.getYear() +
+                            ", author: " + bookInfo.getAuthor().getName() +
+                            ", author years: " + bookInfo.getAuthor().getYear() +
+                            ", genre: " + bookInfo.getGenre().getName());
         }
 
-        return "That was all books list, size - " + booksList.size();
+        return "That was all books list";
     }
 
-    @ShellMethod(value = "update-book", key = {"update-book", "-u-book"})
     @Override
     public String update() {
-        ioService.outputString("Enter books info, please:");
+        ioService.outputString("Enter books info, please: ");
 
-        var bookId = userAnswerService.checkUserAnswer("- Enter book id: ");
+        var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want update: ");
+
         var bookName = ioService.readNextWithPrompt("- Enter book name: ");
         var bookYear = userAnswerService.checkUserAnswer("- Enter book written year: ");
 
-        var authorId = userAnswerService.checkUserAnswer("- Enter author id: ");
         var authorName = ioService.readNextWithPrompt("- Enter author name: ");
         var authorYear = userAnswerService.checkUserAnswer("- Enter author years: ");
 
-        var genreId = userAnswerService.checkUserAnswer("- Enter books genre id: ");
         var genreName = ioService.readNextWithPrompt("- Enter books genre name: ");
 
-        bookDao.update(new Book(bookId, bookName, bookYear, new Author(authorId, authorName, authorYear),
-                new Genre(genreId, genreName)), bookId);
+        bookDao.update(new Book(bookId, bookName, bookYear, new Author(authorName, authorYear),
+                new Genre(genreName)), bookId);
 
         return "Info about book with id: " + bookId + ", was updated";
     }
 
-    @ShellMethod(value = "delete-book", key = {"delete-book", "-d-book"})
     @Override
     public String delete() {
-        var bookId = userAnswerService.checkUserAnswer("- Enter book id: ");
+        var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want delete: ");
 
         bookDao.deleteById(bookId);
 

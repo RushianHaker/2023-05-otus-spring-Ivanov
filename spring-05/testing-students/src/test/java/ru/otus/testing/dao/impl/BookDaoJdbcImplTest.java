@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.BookDao;
+import ru.otus.testing.model.Author;
+import ru.otus.testing.model.Book;
+import ru.otus.testing.model.Genre;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -20,51 +23,57 @@ class BookDaoJdbcImplTest {
         var booksList = bookDao.getAll();
 
         assertNotNull(booksList);
-        assertEquals(1, booksList.get(0).id());
-        assertEquals("Test Book", booksList.get(0).name());
-        assertEquals(1852, booksList.get(0).year());
-        assertEquals("comedy", booksList.get(0).genre().name());
-        assertEquals("Lera", booksList.get(0).author().name());
+        assertEquals(0, booksList.get(0).getId());
+        assertEquals("Test Book", booksList.get(0).getName());
+        assertEquals(1852, booksList.get(0).getYear());
+        assertEquals("comedy", booksList.get(0).getGenre().getName());
+        assertEquals("Lera", booksList.get(0).getAuthor().getName());
+        assertEquals(56, booksList.get(0).getAuthor().getYear());
     }
 
     @Test
     void getById() {
-        var book = bookDao.getById(1);
+        var book = bookDao.getById(0);
 
         assertNotNull(book);
-        assertEquals(1, book.id());
-        assertEquals("Test Book", book.name());
-        assertEquals(1852, book.year());
-        assertEquals("comedy", book.genre().name());
-        assertEquals("Lera", book.author().name());
+        assertEquals(0, book.getId());
+        assertEquals("Test Book", book.getName());
+        assertEquals(1852, book.getYear());
+        assertEquals("comedy", book.getGenre().getName());
+        assertEquals("Lera", book.getAuthor().getName());
+        assertEquals(56, book.getAuthor().getYear());
     }
 
     @Test
     void create() {
-        //todo
+        bookDao.create(new Book(1, "war and peace", 4321L,
+                new Author("Tolstoy", 50L), new Genre("history")));
 
-       /* var book = bookDao.create(1);
+        var book = bookDao.getById(1);
 
         assertNotNull(book);
-        assertEquals(1, book.id());
-        assertEquals("Test Book", book.name());
-        assertEquals(1852, book.year());
-        assertEquals("Lera", book.genre().name());
-        assertEquals("comedy", book.author().name());*/
+        assertEquals(1, book.getId());
+        assertEquals("war and peace", book.getName());
+        assertEquals(4321, book.getYear());
+        assertEquals("Tolstoy", book.getAuthor().getName());
+        assertEquals(50, book.getAuthor().getYear());
+        assertEquals("history", book.getGenre().getName());
     }
 
     @Test
     void update() {
-       //todo
+        bookDao.update(new Book(2, "hello test", 1234L,
+                new Author("Klara", 33L), new Genre("horror")), 0);
 
-      /*  var book = bookDao.update(1);
+        var book = bookDao.getById(2);
 
         assertNotNull(book);
-        assertEquals(1, book.id());
-        assertEquals("Test Book", book.name());
-        assertEquals(1852, book.year());
-        assertEquals("Lera", book.genre().name());
-        assertEquals("comedy", book.author().name());*/
+        assertEquals(2, book.getId());
+        assertEquals("hello test", book.getName());
+        assertEquals(1234, book.getYear());
+        assertEquals("Klara", book.getAuthor().getName());
+        assertEquals(33, book.getAuthor().getYear());
+        assertEquals("horror", book.getGenre().getName());
     }
 
     @Test
@@ -73,9 +82,9 @@ class BookDaoJdbcImplTest {
         var book = bookDao.getAll();
 
         assertEquals(1, book.size());
-        assertEquals("Test Book", book.get(0).name());
+        assertEquals("Test Book", book.get(0).getName());
 
-        bookDao.deleteById(1);
+        bookDao.deleteById(0);
 
         assertEquals(0, bookDao.getAll().size());
     }

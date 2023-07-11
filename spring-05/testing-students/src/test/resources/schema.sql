@@ -1,11 +1,12 @@
 DROP TABLE IF EXISTS books;
 CREATE TABLE books
 (
-    id     BIGINT PRIMARY KEY,
-    "name" VARCHAR(255),
-    "year" int4,
-    author VARCHAR(255),
-    genre  VARCHAR(255)
+    id          BIGINT PRIMARY KEY,
+    "name"      VARCHAR(255),
+    "year"      int4,
+    author      VARCHAR(255),
+    genre       VARCHAR(255),
+    author_year VARCHAR(255)
 );
 
 DROP TABLE IF EXISTS authors;

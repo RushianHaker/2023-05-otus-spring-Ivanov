@@ -1,5 +1,23 @@
 package ru.otus.testing.model;
 
+import lombok.Getter;
+import lombok.Setter;
 
-public record Author(Long id, String name, Long year) {
+@Getter
+@Setter
+public class Author {
+    private final String name;
+    private final Long year;
+    private long id;
+
+    public Author(String name, Long year) {
+        this.name = name;
+        this.year = year;
+    }
+
+    public Author(long id, String name, Long year) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
+    }
 }

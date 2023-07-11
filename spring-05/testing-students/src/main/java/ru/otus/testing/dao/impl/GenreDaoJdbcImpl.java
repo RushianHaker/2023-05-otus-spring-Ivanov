@@ -21,9 +21,9 @@ public class GenreDaoJdbcImpl implements GenreDao {
     }
 
     @Override
-    public void create(Genre book) {
+    public void create(Genre genre) {
         namedParameterJdbcOperations.update("insert into genres (id, \"name\") values (:id, :name)",
-                Map.of("id", book.id(), "name", book.name()));
+                Map.of("id", genre.getId(), "name", genre.getName()));
     }
 
     @Override
@@ -39,9 +39,9 @@ public class GenreDaoJdbcImpl implements GenreDao {
     }
 
     @Override
-    public void update(Genre book) {
-        namedParameterJdbcOperations.update("update genres set id = :id, \"name\" = :name",
-                Map.of("id", book.id(), "name", book.name()));
+    public void update(Genre genre, long id) {
+        namedParameterJdbcOperations.update("update genres set id = :id, \"name\" = :name where id = :search_id",
+                Map.of("id", id, "name", genre.getName(), "search_id", id));
     }
 
     @Override

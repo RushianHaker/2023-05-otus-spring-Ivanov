@@ -1,41 +1,52 @@
 package ru.otus.testing.service.impl;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.testing.dao.BookDao;
+import ru.otus.testing.model.Author;
+import ru.otus.testing.model.Book;
+import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.IOService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 
 @SpringBootTest
 class TestServiceImplBook {
-    @Autowired
+    @MockBean
     private BookDao bookDao;
-    @Autowired
+    @MockBean
     private IOService ioService;
     @Autowired
     private BookService service;
-    @Autowired
-    private UserAnswerServiceImpl userAnswerService;
 
     @Test
-    void printTest() {
-        //todo
-     /*   when(bookDao.findAll()).thenReturn(List.of(question));
-        when(messageSourceService.getMessage("print_question", new String[]{question.getQuestion()}))
-                .thenReturn(question.getQuestion());
+    void getAll() {
+        var book = new Book(0, "war and peace", 4321L,
+                new Author("Tolstoy", 50L), new Genre("history"));
 
-        service.testing();
+        when(bookDao.getAll()).thenReturn(List.of(book));
+
+        service.readAll();
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(ioService, times(4)).outputString(captor.capture());
+        verify(ioService, times(2)).outputString(captor.capture());
 
         String actualOutput = captor.getAllValues().stream()
                 .collect(Collectors.joining(System.lineSeparator()));
-        assertTrue(actualOutput.contains(question.getQuestion()));
-        assertTrue(actualOutput.contains(answer1.getAnswer()));
-        assertTrue(actualOutput.contains(answer2.getAnswer()));*/
+
+        assertTrue(actualOutput.contains(book.getName()));
+        assertTrue(actualOutput.contains(book.getYear().toString()));
+        assertTrue(actualOutput.contains(book.getAuthor().getName()));
+        assertTrue(actualOutput.contains(book.getAuthor().getYear().toString()));
+        assertTrue(actualOutput.contains(book.getGenre().getName()));
     }
 }
