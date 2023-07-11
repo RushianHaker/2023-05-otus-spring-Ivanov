@@ -6,7 +6,6 @@ import ru.otus.testing.service.IOService;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-
 @Service
 public class IOServiceImpl implements IOService {
     private final PrintStream output;

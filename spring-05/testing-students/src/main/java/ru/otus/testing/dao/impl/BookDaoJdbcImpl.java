@@ -22,29 +22,30 @@ public class BookDaoJdbcImpl implements BookDao {
 
     @Override
     public void create(Book book) {
-        namedParameterJdbcOperations.update("insert into books (id, \"name\", \"year\", author, genre) values (:id, :name, :year)",
+        namedParameterJdbcOperations.update("insert into books (id, \"name\", \"year\", author, genre, author_year) " +
+                        "values (:id, :name, :year, :author, :genre, :author_year)",
                 Map.of("id", book.id(), "name", book.name(), "year", book.year(),
-                        "author", book.author().name(), "genre", book.genre().name()));
+                        "author", book.author().name(), "genre", book.genre().name(), "author_year", book.author().year()));
     }
 
     @Override
     public Book getById(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, \"name\", \"year\", author, genre from books where id = :id", params, BOOK_MAPPER);
+                "select id, \"name\", \"year\", author, genre, author_year from books where id = :id", params, BOOK_MAPPER);
     }
 
     @Override
     public List<Book> getAll() {
-        return namedParameterJdbcOperations.query("select id, \"name\", \"year\", author, genre from books", BOOK_MAPPER);
+        return namedParameterJdbcOperations.query("select id, \"name\", \"year\", author, genre, author_year from books", BOOK_MAPPER);
     }
 
     @Override
     public void update(Book book, long id) {
         namedParameterJdbcOperations.update("update books set id = :id, \"name\" = :name, \"year\" = :year " +
-                        ", author = :author, genre = :genre where id = :id",
+                        ", author = :author, genre = :genre, author_year = :author_year where id = :id",
                 Map.of("id", book.id(), "name", book.name(), "year", book.year(),
-                        "author", book.author().name(), "genre", book.genre().name()));
+                        "author", book.author().name(), "genre", book.genre().name(), "author_year", book.author().year()));
     }
 
     @Override

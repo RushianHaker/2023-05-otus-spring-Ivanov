@@ -24,18 +24,6 @@ public class BookServiceImpl implements BookService {
         this.userAnswerService = userAnswerService;
     }
 
-/*    @ShellMethod(value = "start-test", key = {"st", "start-test"})
-    @ShellMethodAvailability(value = "checkLoginUser")
-    public void startTesting() {
-        testService.testing(user);
-    }*/
-
-/*
-    private Availability checkLoginUser() {
-        return user == null ? Availability.unavailable(messageSourceService.getMessage("shell_failed_check_login_user", null)) :
-                Availability.available();
-    }
-*/
 
     @ShellMethod(value = "create-book", key = {"create-book", "-c-book"})
     @Override

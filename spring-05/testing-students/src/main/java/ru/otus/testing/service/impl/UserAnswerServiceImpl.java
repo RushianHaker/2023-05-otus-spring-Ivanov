@@ -1,17 +1,14 @@
 package ru.otus.testing.service.impl;
 
-
 import org.springframework.stereotype.Service;
 import ru.otus.testing.service.IOService;
 import ru.otus.testing.service.UserAnswerService;
 
 import java.util.InputMismatchException;
 
-
 @Service
 public class UserAnswerServiceImpl implements UserAnswerService {
     private final IOService ioService;
-
 
     public UserAnswerServiceImpl(IOService ioService) {
         this.ioService = ioService;
@@ -27,7 +24,7 @@ public class UserAnswerServiceImpl implements UserAnswerService {
                 userAnswer = ioService.readIntWithPrompt(msg);
                 correct = true;
             } catch (InputMismatchException e) {
-                ioService.readNextWithPrompt("Вы ввели не число, попробуйте еще раз");
+                ioService.readNextWithPrompt("Don't supported symbol, please try again");
             }
         }
         return userAnswer;
