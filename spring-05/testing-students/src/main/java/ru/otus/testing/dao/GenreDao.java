@@ -5,7 +5,7 @@ import ru.otus.testing.model.Genre;
 import java.util.List;
 
 public interface GenreDao {
-    void create(Genre genre);
+    Genre create(Genre genre);
 
     Genre getById(long id);
 

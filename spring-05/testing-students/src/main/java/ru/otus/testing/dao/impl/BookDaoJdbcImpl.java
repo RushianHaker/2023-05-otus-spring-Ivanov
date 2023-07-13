@@ -1,6 +1,8 @@
 package ru.otus.testing.dao.impl;
 
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.BookDao;
 import ru.otus.testing.dao.impl.mapper.BookMapper;
@@ -22,35 +24,61 @@ public class BookDaoJdbcImpl implements BookDao {
     }
 
     @Override
-    public void create(Book book) {
-        namedParameterJdbcOperations.update("insert into books (id, \"name\", \"year\", author, genre, author_year) " +
-                        "values (:id, :name, :year, :author, :genre, :author_year)",
-                Map.of("id", book.getId(),"name", book.getName(), "year", book.getYear(),
-                        "author", book.getAuthor().getName(), "genre", book.getGenre().getName(),
-                        "author_year", book.getAuthor().getYear()));
+    public Book create(Book book) {
+        var params = new MapSqlParameterSource();
+        params.addValue("book_name", book.getName());
+        params.addValue("book_year", book.getYear());
+        params.addValue("author_id", book.getAuthor().getId());
+        params.addValue("genre_id", book.getGenre().getId());
+
+        var keyHolder = new GeneratedKeyHolder();
+
+        namedParameterJdbcOperations.update("insert into books (book_name, book_year, author_id, genre_id) " +
+                        "values (:book_name, :book_year, :author_id, :genre_id)", params, keyHolder,
+                new String[]{"id"});
+
+        book.setId(keyHolder.getKey().longValue());
+        return book;
     }
 
     @Override
     public Book getById(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, \"name\", \"year\", author, genre, author_year from books where id = :id",
-                params, mapper);
+                "select b.id, b.book_name, b.book_year, b.author_id, b.genre_id, a.authors_name, a.author_year, " +
+                        " g.genres_name from books b " +
+                        " left join authors a on a.id = b.author_id " +
+                        " left join genres g on g.id = b.genre_id " +
+                        "where b.id = :id", params, mapper);
     }
 
     @Override
     public List<Book> getAll() {
         return namedParameterJdbcOperations.query(
-                "select id, \"name\", \"year\", author, genre, author_year from books", mapper);
+                "select b.id, b.book_name, b.book_year, b.author_id, b.genre_id, a.authors_name, a.author_year, " +
+                        " g.genres_name from books b " +
+                        " left join authors a on a.id = b.author_id " +
+                        " left join genres g on g.id = b.genre_id", mapper);
     }
 
     @Override
-    public void update(Book book, long id) {
-        namedParameterJdbcOperations.update("update books set id = :id, \"name\" = :name, \"year\" = :year " +
-                        ", author = :author, genre = :genre, author_year = :author_year where id = :search_id",
-                Map.of("id", book.getId(), "name", book.getName(), "year", book.getYear(),
-                        "author", book.getAuthor().getName(), "genre", book.getGenre().getName(),
-                        "author_year", book.getAuthor().getYear(), "search_id", id));
+    public Map<String, Long> getByIdAuthorAndGenreIds(long id) {
+        var params = Collections.singletonMap("id", id);
+        return namedParameterJdbcOperations.queryForObject(
+                "select author_id, genre_id from books where id = :id", params,
+                (rs, rowNum) -> {
+                    var authorId = rs.getLong("author_id");
+                    var genreId = rs.getLong("genre_id");
+
+                    return Map.of("author_id",authorId, "genre_id", genreId);
+                });
+    }
+
+    @Override
+    public void update(String name, Long year, long id) {
+        namedParameterJdbcOperations.update("update books set book_name = :book_name, book_year = :book_year " +
+                        "where id = :search_id",
+                Map.of("book_name", name, "book_year", year, "search_id", id));
     }
 
     @Override

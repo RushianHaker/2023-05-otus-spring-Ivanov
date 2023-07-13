@@ -21,7 +21,7 @@ public class UserAnswerServiceImpl implements UserAnswerService {
 
         while (!correct) {
             try {
-                userAnswer = ioService.readIntWithPrompt(msg);
+                userAnswer = ioService.readLongWithPrompt(msg);
                 correct = true;
             } catch (InputMismatchException e) {
                 ioService.readNextWithPrompt("Don't supported symbol, please try again");

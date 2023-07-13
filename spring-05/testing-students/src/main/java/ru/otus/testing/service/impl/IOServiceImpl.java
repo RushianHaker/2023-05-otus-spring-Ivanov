@@ -24,14 +24,14 @@ public class IOServiceImpl implements IOService {
     }
 
     @Override
-    public int readInt() {
-        return input.nextInt();
+    public long readLong() {
+        return input.nextLong();
     }
 
     @Override
-    public int readIntWithPrompt(String prompt) {
+    public long readLongWithPrompt(String prompt) {
         outputString(prompt);
-        return input.nextInt();
+        return input.nextLong();
     }
 
     @Override

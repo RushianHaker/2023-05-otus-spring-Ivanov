@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Book {
+    private long id;
+
     private final String name;
 
     private final Long year;
@@ -14,8 +16,6 @@ public class Book {
     private final Author author;
 
     private final Genre genre;
-
-    private long id;
 
     public Book(String name, Long year, Author author, Genre genre) {
         this.name = name;

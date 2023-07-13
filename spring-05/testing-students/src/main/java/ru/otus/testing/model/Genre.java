@@ -6,9 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Genre {
-    private final String name;
-
     private long id;
+
+    private final String name;
 
     public Genre(String name) {
         this.name = name;

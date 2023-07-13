@@ -5,9 +5,9 @@ public interface IOService {
 
     void outputString(String s);
 
-    int readInt();
+    long readLong();
 
-    int readIntWithPrompt(String prompt);
+    long readLongWithPrompt(String prompt);
 
     String readStringWithPrompt(String prompt);
 

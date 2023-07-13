@@ -5,7 +5,9 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.otus.testing.dao.AuthorDao;
 import ru.otus.testing.dao.BookDao;
+import ru.otus.testing.dao.GenreDao;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Genre;
@@ -23,6 +25,10 @@ import static org.mockito.Mockito.*;
 class TestServiceImplBook {
     @MockBean
     private BookDao bookDao;
+    @MockBean
+    private AuthorDao authorDao;
+    @MockBean
+    private GenreDao genreDao;
     @MockBean
     private IOService ioService;
     @Autowired

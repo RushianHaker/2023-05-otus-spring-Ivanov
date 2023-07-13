@@ -1,6 +1,8 @@
 package ru.otus.testing.dao.impl;
 
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.AuthorDao;
 import ru.otus.testing.dao.impl.mapper.AuthorMapper;
@@ -22,28 +24,38 @@ public class AuthorDaoJdbcImpl implements AuthorDao {
     }
 
     @Override
-    public void create(Author author) {
-        namedParameterJdbcOperations.update("insert into authors (id, \"name\", \"year\") values (:id, :name, :year)",
-                Map.of("id", author.getId(),"name", author.getName(), "year", author.getYear()));
+    public Author create(Author author) {
+        var params = new MapSqlParameterSource();
+        params.addValue("authors_name", author.getName());
+        params.addValue("author_year", author.getYear());
+
+        var kh = new GeneratedKeyHolder();
+
+        namedParameterJdbcOperations.update("insert into authors (authors_name, author_year) " +
+                        "values (:authors_name, :author_year)",
+                params, kh, new String[]{"id"});
+
+        author.setId(kh.getKey().longValue());
+        return author;
     }
 
     @Override
     public Author getById(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
-                "select id, \"name\", \"year\" from authors where id = :id", params, mapper);
+                "select id, authors_name, author_year from authors where id = :id", params, mapper);
     }
 
     @Override
     public List<Author> getAll() {
-        return namedParameterJdbcOperations.query("select id, \"name\", \"year\" from authors", mapper);
+        return namedParameterJdbcOperations.query("select id, authors_name, author_year from authors", mapper);
     }
 
     @Override
     public void update(Author author, long id) {
         namedParameterJdbcOperations.update(
-                "update authors set id = :id, \"name\" = :name, \"year\" = :year where id = :search_id",
-                Map.of("id", author.getId(),"name", author.getName(), "year", author.getYear(),
+                "update authors set authors_name = :authors_name, author_year = :author_year where id = :search_id",
+                Map.of("authors_name", author.getName(), "author_year", author.getYear(),
                         "search_id", id));
     }
 

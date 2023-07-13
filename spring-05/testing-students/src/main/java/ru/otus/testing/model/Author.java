@@ -6,11 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Author {
+    private long id;
+
     private final String name;
 
     private final Long year;
-
-    private long id;
 
     public Author(String name, Long year) {
         this.name = name;

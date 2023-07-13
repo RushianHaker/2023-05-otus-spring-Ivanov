@@ -14,7 +14,7 @@ public class GenreMapper implements RowMapper<Genre> {
     @Override
     public Genre mapRow(ResultSet resultSet, int rowNum) {
         try {
-            return new Genre(resultSet.getLong("id"), resultSet.getString("name"));
+            return new Genre(resultSet.getLong("id"), resultSet.getString("genres_name"));
         } catch (SQLException e) {
             throw new GenreDaoJdbcException("Genre dao mapper was throw exception", e);
         }
