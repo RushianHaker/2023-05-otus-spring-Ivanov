@@ -3,11 +3,11 @@ package ru.otus.testing.dao.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.BookDao;
+import ru.otus.testing.dao.impl.mapper.BookMapper;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Genre;
@@ -15,9 +15,10 @@ import ru.otus.testing.model.Genre;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+
+@Import({BookDaoJdbcImpl.class, BookMapper.class})
 @JdbcTest
 class BookDaoJdbcImplTest {
-
     @Autowired
     private BookDao bookDao;
     @Autowired
