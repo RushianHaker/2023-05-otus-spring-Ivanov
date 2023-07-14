@@ -13,6 +13,7 @@ import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.IOService;
+import ru.otus.testing.service.UserAnswerService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,15 +21,16 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-
-@SpringBootTest
+@SpringBootTest(classes = {BookServiceImpl.class})
 class TestServiceImplBook {
-    @MockBean
-    private BookDao bookDao;
     @MockBean
     private AuthorDao authorDao;
     @MockBean
     private GenreDao genreDao;
+    @MockBean
+    private UserAnswerService userAnswerService;
+    @MockBean
+    private BookDao bookDao;
     @MockBean
     private IOService ioService;
     @Autowired
