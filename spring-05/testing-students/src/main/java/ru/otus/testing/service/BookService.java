@@ -1,14 +1,18 @@
 package ru.otus.testing.service;
 
 
+import ru.otus.testing.model.Book;
+
+import java.util.List;
+
 public interface BookService {
-    String create();
+    Book create();
 
-    String readById();
+    Book readById();
 
-    String readAll();
+    List<Book> readAll();
 
-    String update();
+    void update();
 
-    String delete();
+    void delete();
 }

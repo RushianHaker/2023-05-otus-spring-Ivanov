@@ -54,7 +54,7 @@ class TestServiceImplBook {
         assertTrue(actualOutput.contains(book.getName()));
         assertTrue(actualOutput.contains(book.getYear().toString()));
         assertTrue(actualOutput.contains(book.getAuthor().getName()));
-        assertTrue(actualOutput.contains(book.getAuthor().getYear().toString()));
+        assertTrue(actualOutput.contains(String.valueOf(book.getAuthor().getYear())));
         assertTrue(actualOutput.contains(book.getGenre().getName()));
     }
 }

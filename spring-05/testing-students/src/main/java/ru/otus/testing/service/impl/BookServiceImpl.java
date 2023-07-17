@@ -12,6 +12,8 @@ import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.IOService;
 import ru.otus.testing.service.UserAnswerService;
 
+import java.util.List;
+
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -36,7 +38,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public String create() {
+    public Book create() {
         ioService.outputString("Enter books info, please:");
 
         var bookName = ioService.readNextWithPrompt("- Enter book name: ");
@@ -49,22 +51,29 @@ public class BookServiceImpl implements BookService {
 
         Genre genre = genreDao.create(new Genre(genreName));
         Author author = authorDao.create(new Author(authorName, authorYear));
-        bookDao.create(new Book(bookName, bookYear, author, genre));
-
-        return "Book name: " + bookName + ", was created";
+        return bookDao.create(new Book(bookName, bookYear, author, genre));
     }
 
     @Override
-    public String readById() {
+    public Book readById() {
         ioService.outputString("Enter books id, that info you want to see: ");
-
         var bookId = userAnswerService.checkUserAnswer("- Enter book id: ");
 
-        return bookDao.getById(bookId).toString();
+        var bookInfo = bookDao.getById(bookId);
+        ioService.outputString(
+                "Book-" + bookInfo.getId() + ")" +
+                        " id: " + bookInfo.getId() +
+                        ", name: " + bookInfo.getName() +
+                        ", year: " + bookInfo.getYear() +
+                        ", author: " + bookInfo.getAuthor().getName() +
+                        ", author years: " + bookInfo.getAuthor().getYear() +
+                        ", genre: " + bookInfo.getGenre().getName());
+
+        return bookInfo;
     }
 
     @Override
-    public String readAll() {
+    public List<Book> readAll() {
         var booksList = bookDao.getAll();
 
         ioService.outputString("Books info list (size: " + booksList.size() + "): ");
@@ -78,13 +87,12 @@ public class BookServiceImpl implements BookService {
                             ", author years: " + bookInfo.getAuthor().getYear() +
                             ", genre: " + bookInfo.getGenre().getName());
         }
-
-        return "That was all books list";
+        return booksList;
     }
 
     @Transactional
     @Override
-    public String update() {
+    public void update() {
         ioService.outputString("Enter books info, please: ");
 
         var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want update: ");
@@ -104,16 +112,11 @@ public class BookServiceImpl implements BookService {
         authorDao.update(new Author(authorName, authorYear), ids.get("author_id"));
 
         bookDao.update(bookName, bookYear, bookId);
-
-        return "Info about book with id: " + bookId + ", was updated";
     }
 
     @Override
-    public String delete() {
+    public void delete() {
         var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want delete: ");
-
         bookDao.deleteById(bookId);
-
-        return "Book with id: " + bookId + ", was deleted";
     }
 }

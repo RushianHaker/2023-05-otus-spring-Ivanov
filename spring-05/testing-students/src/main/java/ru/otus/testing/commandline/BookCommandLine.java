@@ -17,26 +17,31 @@ public class BookCommandLine {
 
     @ShellMethod(value = "create-book", key = {"create-book", "-c-book"})
     public String create() {
-        return bookService.create();
+        bookService.create();
+        return "Book was created";
     }
 
     @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
     public String readById() {
-        return bookService.readById();
+        bookService.readById();
+        return "That was all info about this book";
     }
 
     @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
     public String readAll() {
-        return bookService.readAll();
+        bookService.readAll();
+        return "That was all books list";
     }
 
     @ShellMethod(value = "update-book", key = {"update-book", "-u-book"})
     public String update() {
-        return bookService.update();
+        bookService.update();
+        return "Info about book was updated";
     }
 
     @ShellMethod(value = "delete-book", key = {"delete-book", "-d-book"})
     public String delete() {
-        return bookService.delete();
+        bookService.delete();
+        return "Book was deleted";
     }
 }
