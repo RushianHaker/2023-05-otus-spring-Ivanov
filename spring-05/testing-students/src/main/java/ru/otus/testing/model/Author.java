@@ -10,14 +10,14 @@ public class Author {
 
     private final String name;
 
-    private final Long year;
+    private final long year;
 
-    public Author(String name, Long year) {
+    public Author(String name, long year) {
         this.name = name;
         this.year = year;
     }
 
-    public Author(long id, String name, Long year) {
+    public Author(long id, String name, long year) {
         this.id = id;
         this.name = name;
         this.year = year;
