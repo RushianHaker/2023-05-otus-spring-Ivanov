@@ -90,7 +90,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.testing.TestingStudentsApplication</mainClass>
+                            <mainClass>ru.otus.testing.LibraryApplication</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
