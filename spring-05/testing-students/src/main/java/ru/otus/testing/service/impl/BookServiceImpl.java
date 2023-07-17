@@ -106,10 +106,10 @@ public class BookServiceImpl implements BookService {
         var genreName = ioService.readNextWithPrompt("- Enter books genre name: ");
 
         //получение id's из таблицы books
-        var ids = bookDao.getByIdAuthorAndGenreIds(bookId);
+        var bookDaoById = bookDao.getById(bookId);
 
-        genreDao.update(new Genre(genreName), ids.get("genre_id"));
-        authorDao.update(new Author(authorName, authorYear), ids.get("author_id"));
+        genreDao.update(new Genre(genreName), bookDaoById.getGenre().getId());
+        authorDao.update(new Author(authorName, authorYear), bookDaoById.getAuthor().getId());
 
         bookDao.update(bookName, bookYear, bookId);
     }

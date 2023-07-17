@@ -62,19 +62,6 @@ public class BookDaoJdbcImpl implements BookDao {
     }
 
     @Override
-    public Map<String, Long> getByIdAuthorAndGenreIds(long id) {
-        var params = Collections.singletonMap("id", id);
-        return namedParameterJdbcOperations.queryForObject(
-                "select author_id, genre_id from books where id = :id", params,
-                (rs, rowNum) -> {
-                    var authorId = rs.getLong("author_id");
-                    var genreId = rs.getLong("genre_id");
-
-                    return Map.of("author_id",authorId, "genre_id", genreId);
-                });
-    }
-
-    @Override
     public void update(String name, Long year, long id) {
         namedParameterJdbcOperations.update("update books set book_name = :book_name, book_year = :book_year " +
                         "where id = :search_id",
