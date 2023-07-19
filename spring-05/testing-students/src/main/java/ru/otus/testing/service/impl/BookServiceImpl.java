@@ -38,19 +38,10 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book create() {
-        ioService.outputString("Enter books info, please:");
-
-        var bookName = ioService.readNextWithPrompt("- Enter book name: ");
-        var bookYear = userAnswerService.checkUserAnswer("- Enter book written year: ");
-
-        var authorName = ioService.readNextWithPrompt("- Enter author name: ");
-        var authorYear = userAnswerService.checkUserAnswer("- Enter author years: ");
-
-        var genreName = ioService.readNextWithPrompt("- Enter books genre name: ");
-
+    public Book create(String bookName, long bookYear, String authorName, long authorYear, String genreName) {
         Genre genre = genreDao.create(new Genre(genreName));
         Author author = authorDao.create(new Author(authorName, authorYear));
+
         return bookDao.create(new Book(bookName, bookYear, author, genre));
     }
 
@@ -92,19 +83,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public void update() {
-        ioService.outputString("Enter books info, please: ");
-
-        var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want update: ");
-
-        var bookName = ioService.readNextWithPrompt("- Enter book name: ");
-        var bookYear = userAnswerService.checkUserAnswer("- Enter book written year: ");
-
-        var authorName = ioService.readNextWithPrompt("- Enter author name: ");
-        var authorYear = userAnswerService.checkUserAnswer("- Enter author years: ");
-
-        var genreName = ioService.readNextWithPrompt("- Enter books genre name: ");
-
+    public void update(long bookId, String bookName, long bookYear, String authorName, long authorYear, String genreName) {
         //получение id's из таблицы books
         var book = bookDao.getById(bookId);
 
