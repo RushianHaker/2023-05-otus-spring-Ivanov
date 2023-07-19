@@ -62,9 +62,6 @@ class BookDaoJdbcImplTest {
 
     @Test
     void create() {
-        template.update("insert into authors (authors_name, author_year) values ('Tolstoy', 50);");
-        template.update("insert into genres (genres_name) values ('history');");
-
         bookDao.create(new Book("war and peace", 4321L,
                 new Author(2, "Tolstoy", 50L), new Genre(2, "history")));
 
