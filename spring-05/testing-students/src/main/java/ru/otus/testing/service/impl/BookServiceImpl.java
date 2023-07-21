@@ -39,8 +39,16 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public Book create(String bookName, long bookYear, String authorName, long authorYear, String genreName) {
-        Genre genre = genreDao.create(new Genre(genreName));
-        Author author = authorDao.create(new Author(authorName, authorYear));
+        var author = authorDao.getByName(authorName);
+        var genre = genreDao.getByName(genreName);
+
+        if (author == null) {
+            author = authorDao.create(new Author(authorName, authorYear));
+        }
+
+        if (genre == null) {
+            genre = genreDao.create(new Genre(genreName));
+        }
 
         return bookDao.create(new Book(bookName, bookYear, author, genre));
     }
@@ -84,13 +92,18 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public void update(long bookId, String bookName, long bookYear, String authorName, long authorYear, String genreName) {
-        //получение id's из таблицы books
-        var book = bookDao.getById(bookId);
+        var author = authorDao.getByName(authorName);
+        var genre = genreDao.getByName(genreName);
 
-        genreDao.update(new Genre(genreName), book.getGenre().getId());
-        authorDao.update(new Author(authorName, authorYear), book.getAuthor().getId());
+        if (author == null) {
+            author = authorDao.create(new Author(authorName, authorYear));
+        }
 
-        bookDao.update(bookName, bookYear, bookId);
+        if (genre == null) {
+            genre = genreDao.create(new Genre(genreName));
+        }
+
+        bookDao.update(bookName, bookYear, author.getId(), genre.getId(), bookId);
     }
 
     @Override

@@ -47,6 +47,14 @@ public class AuthorDaoJdbcImpl implements AuthorDao {
     }
 
     @Override
+    public Author getByName(String name) {
+        Map<String, String> params = Collections.singletonMap("name", name);
+        var authorList = namedParameterJdbcOperations.query(
+                "select id, authors_name, author_year from authors where authors_name = :name", params, mapper);
+        return authorList.isEmpty() ? null : authorList.get(0);
+    }
+
+    @Override
     public List<Author> getAll() {
         return namedParameterJdbcOperations.query("select id, authors_name, author_year from authors", mapper);
     }

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.BookDao;
 import ru.otus.testing.dao.impl.mapper.BookMapper;
@@ -21,8 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class BookDaoJdbcImplTest {
     @Autowired
     private BookDao bookDao;
-    @Autowired
-    private JdbcTemplate template;
 
     @Test
     void getAll() {
@@ -83,7 +80,7 @@ class BookDaoJdbcImplTest {
 
     @Test
     void update() {
-        bookDao.update("hello test", 1234L, 1);
+        bookDao.update("hello test", 1234L, 1, 1, 1);
 
         var book = bookDao.getById(1);
 
@@ -91,7 +88,14 @@ class BookDaoJdbcImplTest {
 
         assertEquals(1, book.getId());
         assertEquals("hello test", book.getName());
-        assertEquals(1234L, book.getYear());
+        assertEquals(1234, book.getYear());
+
+        assertEquals(1, book.getAuthor().getId());
+        assertEquals(46, book.getAuthor().getYear());
+        assertEquals("Andrey", book.getAuthor().getName());
+
+        assertEquals(1, book.getGenre().getId());
+        assertEquals("comedy", book.getGenre().getName());
     }
 
     @Test

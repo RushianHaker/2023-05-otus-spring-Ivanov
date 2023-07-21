@@ -62,10 +62,12 @@ public class BookDaoJdbcImpl implements BookDao {
     }
 
     @Override
-    public void update(String name, Long year, long id) {
-        namedParameterJdbcOperations.update("update books set book_name = :book_name, book_year = :book_year " +
+    public void update(String name, Long year, long authorId, long genreId, long id) {
+        namedParameterJdbcOperations.update("update books set book_name = :book_name, book_year = :book_year, " +
+                        "author_id = :author_id, genre_id = :genre_id " +
                         "where id = :search_id",
-                Map.of("book_name", name, "book_year", year, "search_id", id));
+                Map.of("book_name", name, "book_year", year, "author_id", authorId,
+                        "genre_id", genreId, "search_id", id));
     }
 
     @Override
