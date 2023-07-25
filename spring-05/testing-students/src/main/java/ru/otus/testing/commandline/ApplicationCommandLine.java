@@ -23,7 +23,7 @@ public class ApplicationCommandLine {
 
 
     @ShellMethod(value = "create-book", key = {"create-book", "-c-book"})
-    public String create() {
+    public String createBook() {
         ioService.outputString("Enter books info, please:");
 
         var bookName = ioService.readNextWithPrompt("- Enter book name: ");
@@ -39,7 +39,7 @@ public class ApplicationCommandLine {
     }
 
     @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
-    public String readById() {
+    public String readBookById() {
         ioService.outputString("Enter books id, that info you want to see: ");
         var bookId = userAnswerService.checkUserAnswer("- Enter book id: ");
 
@@ -54,7 +54,7 @@ public class ApplicationCommandLine {
     }
 
     @ShellMethod(value = "update-book", key = {"update-book", "-u-book"})
-    public String update() {
+    public String updateBook() {
         ioService.outputString("Enter books info, please: ");
 
         var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want update: ");
@@ -72,7 +72,7 @@ public class ApplicationCommandLine {
     }
 
     @ShellMethod(value = "delete-book", key = {"delete-book", "-d-book"})
-    public String delete() {
+    public String deleteBook() {
         var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want delete: ");
 
         bookService.delete(bookId);
