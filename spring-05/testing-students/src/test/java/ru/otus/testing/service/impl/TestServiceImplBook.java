@@ -13,7 +13,6 @@ import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.IOService;
-import ru.otus.testing.service.UserAnswerService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,8 +26,6 @@ class TestServiceImplBook {
     private AuthorDao authorDao;
     @MockBean
     private GenreDao genreDao;
-    @MockBean
-    private UserAnswerService userAnswerService;
     @MockBean
     private BookDao bookDao;
     @MockBean

@@ -10,7 +10,6 @@ import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.IOService;
-import ru.otus.testing.service.UserAnswerService;
 
 import java.util.List;
 
@@ -25,15 +24,11 @@ public class BookServiceImpl implements BookService {
 
     private final IOService ioService;
 
-    private final UserAnswerService userAnswerService;
-
-    public BookServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao, IOService ioService,
-                           UserAnswerService userAnswerService) {
+    public BookServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao, IOService ioService) {
         this.bookDao = bookDao;
         this.authorDao = authorDao;
         this.genreDao = genreDao;
         this.ioService = ioService;
-        this.userAnswerService = userAnswerService;
     }
 
     @Transactional
