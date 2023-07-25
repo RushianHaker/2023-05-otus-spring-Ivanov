@@ -48,7 +48,7 @@ public class ApplicationCommandLine {
     }
 
     @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
-    public String readAll() {
+    public String readAllBook() {
         bookService.readAll();
         return "That was all books list";
     }
