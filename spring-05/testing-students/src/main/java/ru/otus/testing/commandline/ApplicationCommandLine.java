@@ -40,7 +40,10 @@ public class ApplicationCommandLine {
 
     @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
     public String readById() {
-        bookService.readById();
+        ioService.outputString("Enter books id, that info you want to see: ");
+        var bookId = userAnswerService.checkUserAnswer("- Enter book id: ");
+
+        bookService.readById(bookId);
         return "That was all info about this book";
     }
 
@@ -70,7 +73,9 @@ public class ApplicationCommandLine {
 
     @ShellMethod(value = "delete-book", key = {"delete-book", "-d-book"})
     public String delete() {
-        bookService.delete();
+        var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want delete: ");
+
+        bookService.delete(bookId);
         return "Book was deleted";
     }
 }

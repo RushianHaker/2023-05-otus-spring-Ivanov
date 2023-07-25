@@ -54,10 +54,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book readById() {
-        ioService.outputString("Enter books id, that info you want to see: ");
-        var bookId = userAnswerService.checkUserAnswer("- Enter book id: ");
-
+    public Book readById(long bookId) {
         var bookInfo = bookDao.getById(bookId);
         ioService.outputString(
                 "Book-" + bookInfo.getId() + ")" +
@@ -107,8 +104,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void delete() {
-        var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want delete: ");
+    public void delete(long bookId) {
         bookDao.deleteById(bookId);
     }
 }
