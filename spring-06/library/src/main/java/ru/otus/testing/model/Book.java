@@ -1,30 +1,57 @@
 package ru.otus.testing.model;
 
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
+@Entity
+@Table(name = "books")
 public class Book {
-    private final String name;
-    private final Long year;
-    private final Author author;
-    private final Genre genre;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    public Book(String name, Long year, Author author, Genre genre) {
+    @Column(name = "book_name", nullable = false)
+    private String name;
+
+    @Column(name = "book_year", nullable = false)
+    private Long year;
+
+    @OneToMany(targetEntity = Author.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private List<Author> author;
+
+    @OneToMany(targetEntity = Genre.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "genre_id")
+    private List<Genre> genre;
+
+    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private List<Comment> comment;
+
+    public Book(String name, Long year, List<Author> author, List<Genre> genre, List<Comment> comment) {
         this.name = name;
         this.year = year;
         this.author = author;
         this.genre = genre;
+        this.comment = comment;
     }
 
-    public Book(long id, String name, Long year, Author author, Genre genre) {
+    public Book(long id, String name, Long year, List<Author> author, List<Genre> genre, List<Comment> comment) {
         this.id = id;
         this.name = name;
         this.year = year;
         this.author = author;
         this.genre = genre;
+        this.comment = comment;
+    }
+
+    public Book() {
+
     }
 }

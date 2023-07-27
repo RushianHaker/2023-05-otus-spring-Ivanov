@@ -9,6 +9,13 @@ spring:
       mode: always
       data-locations: data.sql
       schema-locations: schema.sql
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
   h2:
     console:
       path: /h2-console

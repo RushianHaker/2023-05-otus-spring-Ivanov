@@ -1,13 +1,20 @@
 package ru.otus.testing.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
+@Table(name = "genres")
 public class Genre {
-    private final String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @Column(name = "genres_name", nullable = false)
+    private String name;
 
     public Genre(String name) {
         this.name = name;
@@ -16,5 +23,9 @@ public class Genre {
     public Genre(long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Genre() {
+
     }
 }
