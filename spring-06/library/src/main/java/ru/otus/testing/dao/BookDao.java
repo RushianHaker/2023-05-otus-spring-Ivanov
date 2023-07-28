@@ -3,15 +3,16 @@ package ru.otus.testing.dao;
 import ru.otus.testing.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookDao {
-    Book create(Book book);
+    Book save(Book book);
 
-    Book getById(long id);
+    Optional<Book> findById(long id);
 
-    List<Book> getAll();
+    List<Book> findAll();
 
-    void update(String name, Long year, long authorId, long genreId, long id);
+    void updateById(long id, Book book);
 
     void deleteById(long id);
 }

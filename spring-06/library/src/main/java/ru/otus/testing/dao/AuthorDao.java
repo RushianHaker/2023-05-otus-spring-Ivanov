@@ -2,18 +2,16 @@ package ru.otus.testing.dao;
 
 import ru.otus.testing.model.Author;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface AuthorDao {
-    Author create(Author author);
+    Author save(Author author);
 
-    Author getById(long id);
+    Optional<Author> findById(long id);
 
-    Author getByName(String name);
+    Optional<Author> findByName(String name);
 
-    List<Author> getAll();
-
-    void update(Author author, long id);
+    void updateById(long id, Author author);
 
     void deleteById(long id);
 }

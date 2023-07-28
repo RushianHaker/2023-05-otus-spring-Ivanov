@@ -31,6 +31,7 @@ public class BookServiceImpl implements BookService {
         this.ioService = ioService;
     }
 
+    //поправить методы
     @Transactional
     @Override
     public Book create(String bookName, long bookYear, String authorName, long authorYear, String genreName) {

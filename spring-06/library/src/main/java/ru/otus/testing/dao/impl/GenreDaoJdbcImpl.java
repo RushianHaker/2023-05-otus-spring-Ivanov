@@ -1,72 +1,54 @@
 package ru.otus.testing.dao.impl;
 
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.GenreDao;
-import ru.otus.testing.dao.impl.mapper.GenreMapper;
 import ru.otus.testing.model.Genre;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class GenreDaoJdbcImpl implements GenreDao {
-    private final GenreMapper mapper;
+    @PersistenceContext
+    private final EntityManager em;
 
-    private final NamedParameterJdbcOperations namedParameterJdbcOperations;
-
-
-    public GenreDaoJdbcImpl(GenreMapper mapper, NamedParameterJdbcOperations namedParameterJdbcOperations) {
-        this.mapper = mapper;
-        this.namedParameterJdbcOperations = namedParameterJdbcOperations;
+    public GenreDaoJdbcImpl(EntityManager em) {
+        this.em = em;
     }
 
     @Override
-    public Genre create(Genre genre) {
-        var params = new MapSqlParameterSource();
-        params.addValue("genres_name", genre.getName());
-
-        var kh = new GeneratedKeyHolder();
-
-        namedParameterJdbcOperations.update("insert into genres (genres_name) values (:genres_name)", params,
-                kh, new String[]{"id"});
-
-        genre.setId(kh.getKey().longValue());
-        return genre;
+    public Genre save(Genre genre) {
+        if (genre.getId() <= 0) {
+            em.persist(genre);
+            return genre;
+        } else {
+            return em.merge(genre);
+        }
     }
 
     @Override
-    public Genre getById(long id) {
-        Map<String, Long> params = Collections.singletonMap("id", id);
-        return namedParameterJdbcOperations.queryForObject(
-                "select id, genres_name from genres where id = :id", params, mapper);
+    public Optional<Genre> findById(long id) {
+        return Optional.ofNullable(em.find(Genre.class, id));
     }
 
     @Override
-    public Genre getByName(String name) {
-        Map<String, String> params = Collections.singletonMap("name", name);
-        var genreList = namedParameterJdbcOperations.query(
-                "select id, genres_name from genres where genres_name = :name", params, mapper);
-        return genreList.isEmpty() ? null : genreList.get(0);
+    public Optional<Genre> findByName(String name) {
+        return Optional.ofNullable(em.find(Genre.class, name));
     }
 
     @Override
-    public List<Genre> getAll() {
-        return namedParameterJdbcOperations.query("select id, genres_name from genres", mapper);
-    }
-
-    @Override
-    public void update(Genre genre, long id) {
-        namedParameterJdbcOperations.update("update genres set genres_name = :genres_name where id = :search_id",
-                Map.of("genres_name", genre.getName(), "search_id", id));
+    public void updateById(long id, Genre genre) {
+        Query query = em.createQuery("update Genre s set s.name = :name where s.id = :id");
+        query.setParameter("name", genre.getName()).setParameter("id", id);
+        query.executeUpdate();
     }
 
     @Override
     public void deleteById(long id) {
-        Map<String, Long> params = Collections.singletonMap("id", id);
-        namedParameterJdbcOperations.update("delete from genres where id = :id", params);
+        Query query = em.createQuery("delete from Genre s where s.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 }

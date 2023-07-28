@@ -2,18 +2,16 @@ package ru.otus.testing.dao;
 
 import ru.otus.testing.model.Genre;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface GenreDao {
-    Genre create(Genre genre);
+    Genre save(Genre genre);
 
-    Genre getById(long id);
+    Optional<Genre> findById(long id);
 
-    Genre getByName(String name);
+    Optional<Genre> findByName(String name);
 
-    List<Genre> getAll();
-
-    void update(Genre genre, long id);
+    void updateById(long id, Genre genre);
 
     void deleteById(long id);
 }
