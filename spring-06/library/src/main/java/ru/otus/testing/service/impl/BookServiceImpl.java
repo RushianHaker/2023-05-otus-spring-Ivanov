@@ -34,19 +34,11 @@ public class BookServiceImpl implements BookService {
     //поправить методы
     @Transactional
     @Override
-    public Book create(String bookName, long bookYear, String authorName, long authorYear, String genreName) {
-        var author = authorDao.getByName(authorName);
-        var genre = genreDao.getByName(genreName);
+    public Book create(String bookName, long bookYear, List<String> authorName, long authorYear, String genreName) {
+        var author = authorDao.findByName(authorName).orElse(authorDao.save(new Author(authorName, authorYear)));
+        var genre = genreDao.findByName(genreName).orElse(genreDao.save(new Genre(genreName)));
 
-        if (author == null) {
-            author = authorDao.create(new Author(authorName, authorYear));
-        }
-
-        if (genre == null) {
-            genre = genreDao.create(new Genre(genreName));
-        }
-
-        return bookDao.create(new Book(bookName, bookYear, author, genre));
+        return bookDao.save(new Book(bookName, bookYear, author, genre));
     }
 
     @Override
