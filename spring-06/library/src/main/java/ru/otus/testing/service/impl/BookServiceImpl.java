@@ -4,9 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.testing.dao.AuthorDao;
 import ru.otus.testing.dao.BookDao;
+import ru.otus.testing.dao.CommentDao;
 import ru.otus.testing.dao.GenreDao;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
+import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.IOService;
@@ -22,43 +24,75 @@ public class BookServiceImpl implements BookService {
 
     private final GenreDao genreDao;
 
+    private final CommentDao commentDao;
+
     private final IOService ioService;
 
-    public BookServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao, IOService ioService) {
+    public BookServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao, CommentDao commentDao,
+                           IOService ioService) {
         this.bookDao = bookDao;
         this.authorDao = authorDao;
         this.genreDao = genreDao;
+        this.commentDao = commentDao;
         this.ioService = ioService;
     }
 
-    //поправить методы
+    //todo может лучше сделать batchInsert ?
     @Transactional
     @Override
-    public Book create(String bookName, long bookYear, List<String> authorName, long authorYear, String genreName) {
-        var author = authorDao.findByName(authorName).orElse(authorDao.save(new Author(authorName, authorYear)));
-        var genre = genreDao.findByName(genreName).orElse(genreDao.save(new Genre(genreName)));
+    public Book create(String bookName, long bookYear, List<Author> authorsList, List<Genre> genresList,
+                       List<Comment> commentsList) {
 
-        return bookDao.save(new Book(bookName, bookYear, author, genre));
+        var authorsInfoFromDbList = authorDao.findByNameAndYear(authorsList);
+
+        if (authorsInfoFromDbList.isEmpty()) {
+            for (var author : authorsList) {
+                authorsInfoFromDbList.add(authorDao.save(author));
+            }
+        }
+
+        var genresInfoFromDbList = genreDao.findByNameAndYear(genresList);
+
+        if (genresInfoFromDbList.isEmpty()) {
+            for (var genre : genresList) {
+                genresInfoFromDbList.add(genreDao.save(genre));
+            }
+        }
+
+        var commentsInfoFromDbList = commentDao.findByNameAndYear(commentsList);
+
+        if (commentsInfoFromDbList.isEmpty()) {
+            for (var comment : commentsList) {
+                commentsInfoFromDbList.add(commentDao.save(comment));
+            }
+        }
+
+        return bookDao.save(new Book(bookName, bookYear, authorsInfoFromDbList, genresInfoFromDbList, commentsInfoFromDbList));
     }
 
     @Override
     public Book readById(long bookId) {
-        var bookInfo = bookDao.getById(bookId);
-        ioService.outputString(
-                "Book-" + bookInfo.getId() + ")" +
-                        " id: " + bookInfo.getId() +
-                        ", name: " + bookInfo.getName() +
-                        ", year: " + bookInfo.getYear() +
-                        ", author: " + bookInfo.getAuthor().getName() +
-                        ", author years: " + bookInfo.getAuthor().getYear() +
-                        ", genre: " + bookInfo.getGenre().getName());
+        var bookInfo = bookDao.findById(bookId);
 
-        return bookInfo;
+        if (bookInfo.isPresent()) {
+            var presentedBookInfo = bookInfo.get();
+            ioService.outputString(
+                    "Book-" + presentedBookInfo.getId() + ")" +
+                            " id: " + presentedBookInfo.getId() +
+                            ", name: " + presentedBookInfo.getName() +
+                            ", year: " + presentedBookInfo.getYear() +
+                            ", authors : " + presentedBookInfo.getAuthor() +
+                            ", genres: " + presentedBookInfo.getGenre() +
+                            ", comments: " + presentedBookInfo.getComment());
+
+            return presentedBookInfo;
+        }
+        return new Book();
     }
 
     @Override
     public List<Book> readAll() {
-        var booksList = bookDao.getAll();
+        var booksList = bookDao.findAll();
 
         ioService.outputString("Books info list (size: " + booksList.size() + "): ");
         for (var bookInfo : booksList) {
@@ -67,28 +101,43 @@ public class BookServiceImpl implements BookService {
                             " id: " + bookInfo.getId() +
                             ", name: " + bookInfo.getName() +
                             ", year: " + bookInfo.getYear() +
-                            ", author: " + bookInfo.getAuthor().getName() +
-                            ", author years: " + bookInfo.getAuthor().getYear() +
-                            ", genre: " + bookInfo.getGenre().getName());
+                            ", authors : " + bookInfo.getAuthor() +
+                            ", genres: " + bookInfo.getGenre() +
+                            ", comments: " + bookInfo.getComment());
         }
         return booksList;
     }
 
+    //todo может лучше сделать batchInsert ?
     @Transactional
     @Override
-    public void update(long bookId, String bookName, long bookYear, String authorName, long authorYear, String genreName) {
-        var author = authorDao.getByName(authorName);
-        var genre = genreDao.getByName(genreName);
+    public void update(long bookId, String bookName, long bookYear, List<Author> authorsList, List<Genre> genresList,
+                       List<Comment> commentsList) {
+        var authorsInfoFromDbList = authorDao.findByNameAndYear(authorsList);
 
-        if (author == null) {
-            author = authorDao.create(new Author(authorName, authorYear));
+        if (authorsInfoFromDbList.isEmpty()) {
+            for (var author : authorsList) {
+                authorsInfoFromDbList.add(authorDao.save(author));
+            }
         }
 
-        if (genre == null) {
-            genre = genreDao.create(new Genre(genreName));
+        var genresInfoFromDbList = genreDao.findByNameAndYear(genresList);
+
+        if (genresInfoFromDbList.isEmpty()) {
+            for (var genre : genresList) {
+                genresInfoFromDbList.add(genreDao.save(genre));
+            }
         }
 
-        bookDao.update(bookName, bookYear, author.getId(), genre.getId(), bookId);
+        var commentsInfoFromDbList = commentDao.findByNameAndYear(commentsList);
+
+        if (commentsInfoFromDbList.isEmpty()) {
+            for (var comment : commentsList) {
+                commentsInfoFromDbList.add(commentDao.save(comment));
+            }
+        }
+
+        bookDao.updateById(bookId, new Book(bookName, bookYear, authorsInfoFromDbList, genresInfoFromDbList, commentsInfoFromDbList));
     }
 
     @Override

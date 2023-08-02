@@ -3,10 +3,13 @@ package ru.otus.testing.dao.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.CommentDao;
 import ru.otus.testing.model.Comment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -35,8 +38,17 @@ public class CommentDaoJdbcImpl implements CommentDao {
     }
 
     @Override
-    public Optional<Comment> findByName(String name) {
-        return Optional.ofNullable(em.find(Comment.class, name));
+    public List<Comment> findByNameAndYear(List<Comment> comments) {
+        var list = new ArrayList<Comment>();
+
+        for (var comment : comments) {
+            TypedQuery<Comment> query = em.createQuery("select s from Comment s where s.commentText = :commentText ",
+                    Comment.class);
+            query.setParameter("commentText", comment.getCommentText());
+            list.addAll(query.getResultList());
+        }
+
+        return list;
     }
 
     @Override

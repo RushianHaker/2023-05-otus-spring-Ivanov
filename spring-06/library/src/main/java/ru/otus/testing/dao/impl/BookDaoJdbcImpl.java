@@ -34,7 +34,7 @@ public class BookDaoJdbcImpl implements BookDao {
         return Optional.ofNullable(em.find(Book.class, id));
     }
 
-
+    //todo поправить методы
     //todo починить N+1 проблему
     @Override
     public List<Book> findAll() {
@@ -52,6 +52,7 @@ public class BookDaoJdbcImpl implements BookDao {
         return query.getResultList();
     }
 
+    //todo поправить методы
     //todo починить N+1 проблему
     @Override
     public void updateById(long id, Book book) {

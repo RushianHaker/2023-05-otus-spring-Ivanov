@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+//todo поправить методы
 //todo решить N+1 проблемму
 @NamedEntityGraph(name = "otus-student-authors-entity-graph",
         attributeNodes = {@NamedAttributeNode("author")})

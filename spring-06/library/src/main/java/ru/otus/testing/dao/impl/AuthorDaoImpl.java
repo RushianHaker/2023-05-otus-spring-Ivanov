@@ -3,18 +3,21 @@ package ru.otus.testing.dao.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.AuthorDao;
 import ru.otus.testing.model.Author;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class AuthorDaoJdbcImpl implements AuthorDao {
+public class AuthorDaoImpl implements AuthorDao {
     @PersistenceContext
     private final EntityManager em;
 
-    public AuthorDaoJdbcImpl(EntityManager em) {
+    public AuthorDaoImpl(EntityManager em) {
         this.em = em;
     }
 
@@ -34,8 +37,18 @@ public class AuthorDaoJdbcImpl implements AuthorDao {
     }
 
     @Override
-    public Optional<Author> findByName(String name) {
-        return Optional.ofNullable(em.find(Author.class, name));
+    public List<Author> findByNameAndYear(List<Author> authors) {
+        var list = new ArrayList<Author>();
+
+        for (var author : authors) {
+            TypedQuery<Author> query = em.createQuery("select s from Author s where s.name = :name " +
+                    " and s.year = :year", Author.class);
+            query.setParameter("name", author.getName());
+            query.setParameter("year", author.getYear());
+            list.addAll(query.getResultList());
+        }
+
+        return list;
     }
 
     @Override

@@ -27,21 +27,20 @@ public class ApplicationCommandLine {
         ioService.outputString("Enter books info, please:");
 
         var bookName = ioService.readNextWithPrompt("- Enter book name: ");
-        var bookYear = userAnswerService.checkUserAnswer("- Enter book written year: ");
+        var bookYear = userAnswerService.checkUserAnswerToLong("- Enter book written year: ");
 
-        var authorName = ioService.readNextWithPrompt("- Enter author name: ");
-        var authorYear = userAnswerService.checkUserAnswer("- Enter author years: ");
+        var authorsList = userAnswerService.getListAuthorInfo();
+        var genresList = userAnswerService.getListGenreInfo();
+        var commentsList = userAnswerService.getListCommentInfo();
 
-        var genreName = ioService.readNextWithPrompt("- Enter books genre name: ");
-
-        bookService.create(bookName, bookYear, authorName, authorYear, genreName);
+        bookService.create(bookName, bookYear, authorsList, genresList, commentsList);
         return "Book was created";
     }
 
     @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
     public String readBookById() {
         ioService.outputString("Enter books id, that info you want to see: ");
-        var bookId = userAnswerService.checkUserAnswer("- Enter book id: ");
+        var bookId = userAnswerService.checkUserAnswerToLong("- Enter book id: ");
 
         bookService.readById(bookId);
         return "That was all info about this book";
@@ -57,23 +56,22 @@ public class ApplicationCommandLine {
     public String updateBook() {
         ioService.outputString("Enter books info, please: ");
 
-        var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want update: ");
+        var bookId = userAnswerService.checkUserAnswerToLong("- Enter book id, that you want update: ");
 
         var bookName = ioService.readNextWithPrompt("- Enter book name: ");
-        var bookYear = userAnswerService.checkUserAnswer("- Enter book written year: ");
+        var bookYear = userAnswerService.checkUserAnswerToLong("- Enter book written year: ");
 
-        var authorName = ioService.readNextWithPrompt("- Enter author name: ");
-        var authorYear = userAnswerService.checkUserAnswer("- Enter author years: ");
+        var authorsList = userAnswerService.getListAuthorInfo();
+        var genresList = userAnswerService.getListGenreInfo();
+        var commentsList = userAnswerService.getListCommentInfo();
 
-        var genreName = ioService.readNextWithPrompt("- Enter books genre name: ");
-
-        bookService.update(bookId, bookName, bookYear, authorName, authorYear, genreName);
+        bookService.update(bookId, bookName, bookYear, authorsList, genresList, commentsList);
         return "Info about book was updated";
     }
 
     @ShellMethod(value = "delete-book", key = {"delete-book", "-d-book"})
     public String deleteBook() {
-        var bookId = userAnswerService.checkUserAnswer("- Enter book id, that you want delete: ");
+        var bookId = userAnswerService.checkUserAnswerToLong("- Enter book id, that you want delete: ");
 
         bookService.delete(bookId);
         return "Book was deleted";

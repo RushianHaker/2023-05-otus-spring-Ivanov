@@ -3,10 +3,13 @@ package ru.otus.testing.dao.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.GenreDao;
 import ru.otus.testing.model.Genre;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,8 +37,16 @@ public class GenreDaoJdbcImpl implements GenreDao {
     }
 
     @Override
-    public Optional<Genre> findByName(String name) {
-        return Optional.ofNullable(em.find(Genre.class, name));
+    public List<Genre> findByNameAndYear(List<Genre> genres) {
+        var list = new ArrayList<Genre>();
+
+        for (var genre : genres) {
+            TypedQuery<Genre> query = em.createQuery("select s from Genre s where s.name = :name ", Genre.class);
+            query.setParameter("name", genre.getName());
+            list.addAll(query.getResultList());
+        }
+
+        return list;
     }
 
     @Override

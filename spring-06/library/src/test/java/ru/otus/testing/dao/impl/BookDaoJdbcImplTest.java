@@ -11,10 +11,10 @@ import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Genre;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
+//todo поправить методы
 @Import({BookDaoJdbcImpl.class, BookMapper.class})
 @JdbcTest
 class BookDaoJdbcImplTest {
