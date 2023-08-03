@@ -12,13 +12,13 @@ import java.util.List;
 @Entity
 //todo поправить методы
 //todo решить N+1 проблемму
+@Table(name = "books")
 @NamedEntityGraph(name = "otus-student-authors-entity-graph",
         attributeNodes = {@NamedAttributeNode("author")})
 @NamedEntityGraph(name = "otus-student-genre-entity-graph",
         attributeNodes = {@NamedAttributeNode("genre")})
 @NamedEntityGraph(name = "otus-student-comment-entity-graph",
         attributeNodes = {@NamedAttributeNode("comment")})
-@Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
