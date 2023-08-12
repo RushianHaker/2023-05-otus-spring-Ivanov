@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class GenreDaoJdbcImpl implements GenreDao {
+public class GenreDaoImpl implements GenreDao {
     @PersistenceContext
     private final EntityManager em;
 
-    public GenreDaoJdbcImpl(EntityManager em) {
+    public GenreDaoImpl(EntityManager em) {
         this.em = em;
     }
 
@@ -37,12 +37,13 @@ public class GenreDaoJdbcImpl implements GenreDao {
     }
 
     @Override
-    public List<Genre> findByNameAndYear(List<Genre> genres) {
+    public List<Genre> findByNameAndId(List<Genre> genres) {
         var list = new ArrayList<Genre>();
 
         for (var genre : genres) {
-            TypedQuery<Genre> query = em.createQuery("select s from Genre s where s.name = :name ", Genre.class);
+            TypedQuery<Genre> query = em.createQuery("select s from Genre s where s.name = :name and s.id = :id ", Genre.class);
             query.setParameter("name", genre.getName());
+            query.setParameter("id", genre.getId());
             list.addAll(query.getResultList());
         }
 

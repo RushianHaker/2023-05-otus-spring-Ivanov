@@ -10,7 +10,7 @@ public interface GenreDao {
 
     Optional<Genre> findById(long id);
 
-    List<Genre> findByNameAndYear(List<Genre> genres);
+    List<Genre> findByNameAndId(List<Genre> genres);
 
     void updateById(long id, Genre genre);
 

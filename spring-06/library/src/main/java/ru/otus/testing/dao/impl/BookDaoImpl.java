@@ -11,11 +11,11 @@ import java.util.Optional;
 import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 
 @Repository
-public class BookDaoJdbcImpl implements BookDao {
+public class BookDaoImpl implements BookDao {
     @PersistenceContext
     private final EntityManager em;
 
-    public BookDaoJdbcImpl(EntityManager em) {
+    public BookDaoImpl(EntityManager em) {
         this.em = em;
     }
 

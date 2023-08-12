@@ -51,7 +51,7 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        var genresInfoFromDbList = genreDao.findByNameAndYear(genresList);
+        var genresInfoFromDbList = genreDao.findByNameAndId(genresList);
 
         if (genresInfoFromDbList.isEmpty()) {
             for (var genre : genresList) {
@@ -59,7 +59,7 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        var commentsInfoFromDbList = commentDao.findByNameAndYear(commentsList);
+        var commentsInfoFromDbList = commentDao.findByNameAndId(commentsList);
 
         if (commentsInfoFromDbList.isEmpty()) {
             for (var comment : commentsList) {
@@ -121,7 +121,7 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        var genresInfoFromDbList = genreDao.findByNameAndYear(genresList);
+        var genresInfoFromDbList = genreDao.findByNameAndId(genresList);
 
         if (genresInfoFromDbList.isEmpty()) {
             for (var genre : genresList) {
@@ -129,7 +129,7 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        var commentsInfoFromDbList = commentDao.findByNameAndYear(commentsList);
+        var commentsInfoFromDbList = commentDao.findByNameAndId(commentsList);
 
         if (commentsInfoFromDbList.isEmpty()) {
             for (var comment : commentsList) {

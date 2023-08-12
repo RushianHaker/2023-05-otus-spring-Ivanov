@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CommentDaoJdbcImpl implements CommentDao {
+public class CommentDaoImpl implements CommentDao {
 
     @PersistenceContext
     private final EntityManager em;
 
-    public CommentDaoJdbcImpl(EntityManager em) {
+    public CommentDaoImpl(EntityManager em) {
         this.em = em;
     }
 
@@ -38,13 +38,14 @@ public class CommentDaoJdbcImpl implements CommentDao {
     }
 
     @Override
-    public List<Comment> findByNameAndYear(List<Comment> comments) {
+    public List<Comment> findByNameAndId(List<Comment> comments) {
         var list = new ArrayList<Comment>();
 
         for (var comment : comments) {
-            TypedQuery<Comment> query = em.createQuery("select s from Comment s where s.commentText = :commentText ",
+            TypedQuery<Comment> query = em.createQuery("select s from Comment s where s.commentText = :commentText and s.id = :id",
                     Comment.class);
             query.setParameter("commentText", comment.getCommentText());
+            query.setParameter("id", comment.getId());
             list.addAll(query.getResultList());
         }
 
