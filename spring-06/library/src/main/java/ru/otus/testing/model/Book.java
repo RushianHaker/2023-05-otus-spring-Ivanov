@@ -22,16 +22,16 @@ public class Book {
     @Column(name = "book_year", nullable = false)
     private Long year;
 
-    @OneToMany(targetEntity = Author.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
     private List<Author> author;
 
-    @OneToMany(targetEntity = Genre.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
     private List<Genre> genre;
 
-    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
     private List<Comment> comment;
 
     public Book(String name, Long year, List<Author> author, List<Genre> genre, List<Comment> comment) {

@@ -11,6 +11,7 @@ import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,8 +43,8 @@ class BookDaoImplTest {
         assertEquals("Andrey", preasentBook.getAuthor().get(0).getName());
         assertEquals(46, preasentBook.getAuthor().get(0).getYear());
 
-        assertEquals(46, preasentBook.getComment().get(0).getId());
-        assertEquals("cool book", preasentBook.getComment().get(0).getCommentText());
+        assertEquals(1, preasentBook.getComment().get(0).getId());
+        assertEquals("I can write better!", preasentBook.getComment().get(0).getCommentText());
     }
 
     @Test
@@ -69,15 +70,23 @@ class BookDaoImplTest {
     }
 
     @Test
-    void create() {
-        bookDao.save(new Book("war and peace", 4321L,
-                List.of(new Author("Tolstoy", 1111)), List.of(new Genre("history")),
-                List.of(new Comment("history"))));
+    void save() {
+        var author = new Author(3, "Tolstoy", 1111);
+        var authorsList = Collections.singletonList(author);
 
-        var book = bookDao.findById(2);
-        assertTrue(book.isPresent());
+        var genre = new Genre(3, "history");
+        var genresList = Collections.singletonList(genre);
 
-        var presentBook = book.get();
+        var comment = new Comment(3, "history");
+        var commentsList = Collections.singletonList(comment);
+
+        var book = new Book("war and peace", 4321L, authorsList, genresList, commentsList);
+
+        bookDao.save(book);
+        var bookById = bookDao.findById(2);
+        assertTrue(bookById.isPresent());
+
+        var presentBook = bookById.get();
         assertEquals(2, presentBook.getId());
         assertEquals("war and peace", presentBook.getName());
         assertEquals(4321, presentBook.getYear());
