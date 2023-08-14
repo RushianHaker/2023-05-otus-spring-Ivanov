@@ -2,7 +2,6 @@ package ru.otus.testing.dao.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.CommentDao;
@@ -38,7 +37,7 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public List<Comment> findByNameAndId(List<Comment> comments) {
+    public List<Comment> findByIdAndCommentText(List<Comment> comments) {
         var list = new ArrayList<Comment>();
 
         for (var comment : comments) {
@@ -54,15 +53,14 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public void updateById(long id, Comment comment) {
-        Query query = em.createQuery("update Comment s set s.commentText = :commentText where s.id = :id");
-        query.setParameter("commentText", comment.getCommentText()).setParameter("id", id);
-        query.executeUpdate();
+        var findComment = em.find(Comment.class, id);
+        findComment.setCommentText(comment.getCommentText());
+        em.merge(findComment);
     }
 
     @Override
     public void deleteById(long id) {
-        Query query = em.createQuery("delete from Comment s where s.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        var findComment = em.find(Comment.class, id);
+        em.remove(findComment);
     }
 }

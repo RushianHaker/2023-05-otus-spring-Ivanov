@@ -2,7 +2,6 @@ package ru.otus.testing.dao.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.GenreDao;
@@ -52,15 +51,14 @@ public class GenreDaoImpl implements GenreDao {
 
     @Override
     public void updateById(long id, Genre genre) {
-        Query query = em.createQuery("update Genre s set s.name = :name where s.id = :id");
-        query.setParameter("name", genre.getName()).setParameter("id", id);
-        query.executeUpdate();
+        var findGenre = em.find(Genre.class, id);
+        findGenre.setName(genre.getName());
+        em.merge(findGenre);
     }
 
     @Override
     public void deleteById(long id) {
-        Query query = em.createQuery("delete from Genre s where s.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        var findGenre = em.find(Genre.class, id);
+        em.remove(findGenre);
     }
 }

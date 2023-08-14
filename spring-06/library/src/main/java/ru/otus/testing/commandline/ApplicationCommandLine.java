@@ -33,7 +33,7 @@ public class ApplicationCommandLine {
         var genresList = userAnswerService.getListGenreInfo();
         var commentsList = userAnswerService.getListCommentInfo();
 
-        bookService.create(bookName, bookYear, authorsList, genresList, commentsList);
+        bookService.save(bookName, bookYear, authorsList, genresList, commentsList);
         return "Book was created";
     }
 
@@ -42,13 +42,13 @@ public class ApplicationCommandLine {
         ioService.outputString("Enter books id, that info you want to see: ");
         var bookId = userAnswerService.checkUserAnswerToLong("- Enter book id: ");
 
-        bookService.readById(bookId);
+        bookService.findById(bookId);
         return "That was all info about this book";
     }
 
     @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
     public String readAllBook() {
-        bookService.readAll();
+        bookService.findAll();
         return "That was all books list";
     }
 

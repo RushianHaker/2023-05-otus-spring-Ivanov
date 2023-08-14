@@ -2,20 +2,24 @@ package ru.otus.testing.dao.impl;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.BookDao;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
+import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 //todo поправить методы
 @Import({BookDaoImpl.class})
-@JdbcTest
+@DataJpaTest
 class BookDaoImplTest {
     @Autowired
     private BookDao bookDao;
@@ -64,47 +68,53 @@ class BookDaoImplTest {
         assertEquals("cool book", preasentBook.getComment().get(0).getCommentText());
     }
 
-    //todo поправить методы
     @Test
     void create() {
         bookDao.save(new Book("war and peace", 4321L,
-                new Author(2, "Tolstoy", 50L), new Genre(2, "history")));
+                List.of(new Author("Tolstoy", 1111)), List.of(new Genre("history")),
+                List.of(new Comment("history"))));
 
-        var book = bookDao.getById(2);
+        var book = bookDao.findById(2);
+        assertTrue(book.isPresent());
 
-        assertNotNull(book);
-        assertEquals(2, book.getId());
-        assertEquals("war and peace", book.getName());
-        assertEquals(4321, book.getYear());
+        var presentBook = book.get();
+        assertEquals(2, presentBook.getId());
+        assertEquals("war and peace", presentBook.getName());
+        assertEquals(4321, presentBook.getYear());
 
-        assertEquals(2, book.getGenre().getId());
-        assertEquals("history", book.getGenre().getName());
+        assertEquals(2, presentBook.getGenre().get(0).getId());
+        assertEquals("history", presentBook.getGenre().get(0).getName());
 
-        assertEquals(2, book.getAuthor().getId());
-        assertEquals("Tolstoy", book.getAuthor().getName());
-        assertEquals(50, book.getAuthor().getYear());
+        assertEquals(2, presentBook.getAuthor().get(0).getId());
+        assertEquals("Tolstoy", presentBook.getAuthor().get(0).getName());
+        assertEquals(1111, presentBook.getAuthor().get(0).getYear());
 
+        assertEquals("Tolstoy", presentBook.getComment().get(0).getCommentText());
     }
 
-    //todo поправить методы
     @Test
     void update() {
-        bookDao.updateById("hello test", 1234L, 1, 1, 1);
+        bookDao.updateById(1, new Book("Tolstoy Tolstoy Tolstoy", 1111L,
+                List.of(new Author("AAAAA", 1111)), List.of(new Genre("AAAAA")),
+                List.of(new Comment("AAAAA"))));
 
-        var book = bookDao.getById(1);
+        var book = bookDao.findById(1);
+        assertTrue(book.isPresent());
 
-        assertNotNull(book);
+        var presentBook = book.get();
+        assertEquals(2, presentBook.getId());
+        assertEquals("Tolstoy Tolstoy Tolstoy", presentBook.getName());
+        assertEquals(4321, presentBook.getYear());
 
-        assertEquals(1, book.getId());
-        assertEquals("hello test", book.getName());
-        assertEquals(1234, book.getYear());
+        assertEquals(1, presentBook.getGenre().get(0).getId());
+        assertEquals("AAAAA", presentBook.getGenre().get(0).getName());
 
-        assertEquals(1, book.getAuthor().getId());
-        assertEquals(46, book.getAuthor().getYear());
-        assertEquals("Andrey", book.getAuthor().getName());
+        assertEquals(1, presentBook.getAuthor().get(0).getId());
+        assertEquals("AAAAA", presentBook.getAuthor().get(0).getName());
+        assertEquals(1111, presentBook.getAuthor().get(0).getYear());
 
-        assertEquals(1, book.getGenre().getId());
-        assertEquals("comedy", book.getGenre().getName());
+        assertEquals(1, presentBook.getComment().get(0).getId());
+        assertEquals("AAAAA", presentBook.getComment().get(0).getCommentText());
     }
 
     @Test

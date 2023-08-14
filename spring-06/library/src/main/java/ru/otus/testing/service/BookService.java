@@ -9,12 +9,12 @@ import ru.otus.testing.model.Genre;
 import java.util.List;
 
 public interface BookService {
-    Book create(String bookName, long bookYear, List<Author> authorsList, List<Genre> genresList,
-                List<Comment> commentsList);
+    Book save(String bookName, long bookYear, List<Author> authorsList, List<Genre> genresList,
+              List<Comment> commentsList);
 
-    Book readById(long bookId);
+    Book findById(long bookId);
 
-    List<Book> readAll();
+    List<Book> findAll();
 
     void update(long bookId, String bookName, long bookYear, List<Author> authorsList, List<Genre> genresList,
                 List<Comment> commentsList);

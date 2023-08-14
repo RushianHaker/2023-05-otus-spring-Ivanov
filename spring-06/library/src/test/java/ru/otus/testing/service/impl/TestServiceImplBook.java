@@ -38,7 +38,6 @@ class TestServiceImplBook {
     @Autowired
     private BookService service;
 
-    //todo поправить методы
     @Test
     void getAll() {
         var book = new Book("war and peace", 4321L, List.of(new Author("Tolstoy", 50L)),
@@ -46,7 +45,7 @@ class TestServiceImplBook {
 
         when(bookDao.findAll()).thenReturn(List.of(book));
 
-        service.readAll();
+        service.findAll();
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(ioService, times(2)).outputString(captor.capture());

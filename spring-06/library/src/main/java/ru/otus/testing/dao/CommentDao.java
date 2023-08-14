@@ -10,7 +10,7 @@ public interface CommentDao {
 
     Optional<Comment> findById(long id);
 
-    List<Comment> findByNameAndId(List<Comment> comments);
+    List<Comment> findByIdAndCommentText(List<Comment> comments);
 
     void updateById(long id, Comment comment);
 

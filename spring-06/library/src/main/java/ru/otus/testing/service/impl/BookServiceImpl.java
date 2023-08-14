@@ -37,11 +37,10 @@ public class BookServiceImpl implements BookService {
         this.ioService = ioService;
     }
 
-    //todo может лучше сделать batchInsert ?
     @Transactional
     @Override
-    public Book create(String bookName, long bookYear, List<Author> authorsList, List<Genre> genresList,
-                       List<Comment> commentsList) {
+    public Book save(String bookName, long bookYear, List<Author> authorsList, List<Genre> genresList,
+                     List<Comment> commentsList) {
 
         var authorsInfoFromDbList = authorDao.findByNameAndYear(authorsList);
 
@@ -59,7 +58,7 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        var commentsInfoFromDbList = commentDao.findByNameAndId(commentsList);
+        var commentsInfoFromDbList = commentDao.findByIdAndCommentText(commentsList);
 
         if (commentsInfoFromDbList.isEmpty()) {
             for (var comment : commentsList) {
@@ -71,7 +70,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book readById(long bookId) {
+    public Book findById(long bookId) {
         var bookInfo = bookDao.findById(bookId);
 
         if (bookInfo.isPresent()) {
@@ -91,7 +90,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> readAll() {
+    public List<Book> findAll() {
         var booksList = bookDao.findAll();
 
         ioService.outputString("Books info list (size: " + booksList.size() + "): ");
@@ -108,7 +107,6 @@ public class BookServiceImpl implements BookService {
         return booksList;
     }
 
-    //todo может лучше сделать batchInsert ?
     @Transactional
     @Override
     public void update(long bookId, String bookName, long bookYear, List<Author> authorsList, List<Genre> genresList,
@@ -129,7 +127,7 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        var commentsInfoFromDbList = commentDao.findByNameAndId(commentsList);
+        var commentsInfoFromDbList = commentDao.findByIdAndCommentText(commentsList);
 
         if (commentsInfoFromDbList.isEmpty()) {
             for (var comment : commentsList) {

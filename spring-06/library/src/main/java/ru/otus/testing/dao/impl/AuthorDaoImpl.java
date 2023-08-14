@@ -2,7 +2,6 @@ package ru.otus.testing.dao.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.AuthorDao;
@@ -53,15 +52,14 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public void updateById(long id, Author author) {
-        Query query = em.createQuery("update Author s set s.name = :name where s.id = :id");
-        query.setParameter("name", author.getName()).setParameter("id", id);
-        query.executeUpdate();
+        var findAuthor = em.find(Author.class, id);
+        findAuthor.setName(author.getName());
+        em.merge(findAuthor);
     }
 
     @Override
     public void deleteById(long id) {
-        Query query = em.createQuery("delete from Author s where s.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        var findAuthor = em.find(Author.class, id);
+        em.remove(findAuthor);
     }
 }

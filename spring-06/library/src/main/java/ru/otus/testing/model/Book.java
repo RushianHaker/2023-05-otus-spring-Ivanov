@@ -10,15 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-//todo поправить методы
-//todo решить N+1 проблемму
 @Table(name = "books")
-@NamedEntityGraph(name = "otus-student-authors-entity-graph",
-        attributeNodes = {@NamedAttributeNode("author")})
-@NamedEntityGraph(name = "otus-student-genre-entity-graph",
-        attributeNodes = {@NamedAttributeNode("genre")})
-@NamedEntityGraph(name = "otus-student-comment-entity-graph",
-        attributeNodes = {@NamedAttributeNode("comment")})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,11 +22,11 @@ public class Book {
     @Column(name = "book_year", nullable = false)
     private Long year;
 
-    @OneToMany(targetEntity = Author.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Author.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private List<Author> author;
 
-    @OneToMany(targetEntity = Genre.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Genre.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private List<Genre> genre;
 
