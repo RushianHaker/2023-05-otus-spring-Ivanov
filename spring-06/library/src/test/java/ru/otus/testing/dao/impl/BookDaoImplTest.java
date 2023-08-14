@@ -91,14 +91,15 @@ class BookDaoImplTest {
         assertEquals("war and peace", presentBook.getName());
         assertEquals(4321, presentBook.getYear());
 
-        assertEquals(2, presentBook.getGenre().get(0).getId());
-        assertEquals("history", presentBook.getGenre().get(0).getName());
-
-        assertEquals(2, presentBook.getAuthor().get(0).getId());
+        assertEquals(3, presentBook.getAuthor().get(0).getId());
         assertEquals("Tolstoy", presentBook.getAuthor().get(0).getName());
         assertEquals(1111, presentBook.getAuthor().get(0).getYear());
 
-        assertEquals("Tolstoy", presentBook.getComment().get(0).getCommentText());
+        assertEquals(3, presentBook.getGenre().get(0).getId());
+        assertEquals("history", presentBook.getGenre().get(0).getName());
+
+        assertEquals(3, presentBook.getComment().get(0).getId());
+        assertEquals("history", presentBook.getComment().get(0).getCommentText());
     }
 
     @Test
