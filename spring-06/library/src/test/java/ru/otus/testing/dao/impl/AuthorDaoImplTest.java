@@ -60,11 +60,11 @@ class AuthorDaoImplTest {
     void updateById() {
         authorDao.updateById(1, new Author("hello test", 11111));
 
-        var author = authorDao.findById(2);
+        var author = authorDao.findById(1);
         assertTrue(author.isPresent());
 
         var presentAuthor = author.get();
-        assertEquals(2, presentAuthor.getId());
+        assertEquals(1, presentAuthor.getId());
         assertEquals("hello test", presentAuthor.getName());
         assertEquals(11111, presentAuthor.getYear());
     }

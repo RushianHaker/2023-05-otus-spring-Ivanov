@@ -54,6 +54,7 @@ public class AuthorDaoImpl implements AuthorDao {
     public void updateById(long id, Author author) {
         var findAuthor = em.find(Author.class, id);
         findAuthor.setName(author.getName());
+        findAuthor.setYear(author.getYear());
         em.merge(findAuthor);
     }
 
