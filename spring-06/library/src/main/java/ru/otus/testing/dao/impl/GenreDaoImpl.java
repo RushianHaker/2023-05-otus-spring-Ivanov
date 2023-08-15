@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.GenreDao;
 import ru.otus.testing.model.Genre;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Repository

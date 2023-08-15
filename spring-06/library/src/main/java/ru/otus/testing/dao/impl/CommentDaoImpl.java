@@ -41,8 +41,8 @@ public class CommentDaoImpl implements CommentDao {
         var list = new ArrayList<Comment>();
 
         for (var comment : comments) {
-            TypedQuery<Comment> query = em.createQuery("select s from Comment s where s.commentText = :commentText and s.id = :id",
-                    Comment.class);
+            TypedQuery<Comment> query = em.createQuery("select s from Comment s " +
+                    "where s.commentText = :commentText and s.id = :id", Comment.class);
             query.setParameter("commentText", comment.getCommentText());
             query.setParameter("id", comment.getId());
             list.addAll(query.getResultList());

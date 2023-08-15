@@ -100,7 +100,8 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public void update(long bookId, String bookName, long bookYear, Author author, Genre genre, List<Comment> commentsList) {
+    public void update(long bookId, String bookName, long bookYear, Author author, Genre genre,
+                       List<Comment> commentsList) {
         var authorInfoFromDb = authorDao.findByNameAndYear(author);
         if (authorInfoFromDb == null) {
             authorInfoFromDb = authorDao.save(author);
@@ -118,7 +119,8 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        bookDao.updateById(bookId, new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb, commentsInfoFromDbList));
+        bookDao.updateById(bookId, new Book(bookName, bookYear, authorInfoFromDb,
+                genreInfoFromDb, commentsInfoFromDbList));
     }
 
     @Override
