@@ -48,13 +48,13 @@ class CommentRepositoryTest {
     void save() {
         commentRepository.save(new Comment("hello test"));
 
-        var comment = commentRepository.findById(3L);
+        var comment = commentRepository.findById(2L);
 
         assertTrue(comment.isPresent());
 
         var presentComment = comment.get();
-        assertEquals(3, presentComment.getId());
-        assertEquals("hello test", presentComment.getCommentText());
+        assertEquals(2, presentComment.getId());
+        assertEquals("Cool!", presentComment.getCommentText());
     }
 
     @Test

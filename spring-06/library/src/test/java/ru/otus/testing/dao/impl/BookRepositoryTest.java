@@ -79,11 +79,11 @@ class BookRepositoryTest {
         var book = new Book("war and peace", 4321L, author, genre, commentsList);
 
         bookRepository.save(book);
-        var bookById = bookRepository.findById(3);
+        var bookById = bookRepository.findById(2);
         assertTrue(bookById.isPresent());
 
         var presentBook = bookById.get();
-        assertEquals(3, presentBook.getId());
+        assertEquals(2, presentBook.getId());
         assertEquals("war and peace", presentBook.getName());
         assertEquals(4321, presentBook.getYear());
 
