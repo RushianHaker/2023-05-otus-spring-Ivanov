@@ -5,10 +5,10 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.testing.dao.AuthorDao;
-import ru.otus.testing.dao.BookDao;
-import ru.otus.testing.dao.CommentDao;
-import ru.otus.testing.dao.GenreDao;
+import ru.otus.testing.dao.AuthorRepository;
+import ru.otus.testing.dao.BookRepository;
+import ru.otus.testing.dao.CommentRepository;
+import ru.otus.testing.dao.GenreRepository;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
@@ -25,13 +25,13 @@ import static org.mockito.Mockito.*;
 @SpringBootTest(classes = {BookServiceImpl.class})
 class TestServiceImplBook {
     @MockBean
-    private BookDao bookDao;
+    private BookRepository bookRepository;
     @MockBean
-    private AuthorDao authorDao;
+    private AuthorRepository authorRepository;
     @MockBean
-    private GenreDao genreDao;
+    private GenreRepository genreRepository;
     @MockBean
-    private CommentDao commentDao;
+    private CommentRepository commentRepository;
     @MockBean
     private IOService ioService;
 
@@ -43,7 +43,7 @@ class TestServiceImplBook {
         var book = new Book("war and peace", 4321L, new Author("Tolstoy", 50L),
                 new Genre("history"), List.of(new Comment("cool!")));
 
-        when(bookDao.findAll()).thenReturn(List.of(book));
+        when(bookRepository.findAll()).thenReturn(List.of(book));
 
         service.findAll();
 

@@ -2,10 +2,10 @@ package ru.otus.testing.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.testing.dao.AuthorRepository;
-import ru.otus.testing.dao.BookRepository;
-import ru.otus.testing.dao.CommentRepository;
-import ru.otus.testing.dao.GenreRepository;
+import ru.otus.testing.dao.AuthorDao;
+import ru.otus.testing.dao.BookDao;
+import ru.otus.testing.dao.CommentDao;
+import ru.otus.testing.dao.GenreDao;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
@@ -18,39 +18,51 @@ import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private final BookRepository bookRepository;
+    private final BookDao bookDao;
 
-    private final AuthorRepository authorRepository;
+    private final AuthorDao authorDao;
 
-    private final GenreRepository genreRepository;
+    private final GenreDao genreDao;
 
-    private final CommentRepository commentRepository;
+    private final CommentDao commentDao;
 
     private final IOService ioService;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository,
-                           GenreRepository genreRepository, CommentRepository commentRepository, IOService ioService) {
-        this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
-        this.genreRepository = genreRepository;
-        this.commentRepository = commentRepository;
+    public BookServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao, CommentDao commentDao,
+                           IOService ioService) {
+        this.bookDao = bookDao;
+        this.authorDao = authorDao;
+        this.genreDao = genreDao;
+        this.commentDao = commentDao;
         this.ioService = ioService;
     }
 
     @Transactional
     @Override
     public Book save(String bookName, long bookYear, Author author, Genre genre, List<Comment> commentsList) {
-        var authorInfoFromDb = findOrCreateAuthor(author);
-        var genreInfoFromDb = findOrCreateGenre(genre);
-        var commentsInfoFromDbList = findOrCreateComments(commentsList);
+        var authorInfoFromDb = authorDao.findByNameAndYear(author);
+        if (authorInfoFromDb == null) {
+            authorInfoFromDb = authorDao.save(author);
+        }
 
-        return bookRepository.save(new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb,
-                commentsInfoFromDbList));
+        var genreInfoFromDb = genreDao.findByName(genre);
+        if (genreInfoFromDb == null) {
+            genreInfoFromDb = genreDao.save(genre);
+        }
+
+        var commentsInfoFromDbList = commentDao.findByIdAndCommentText(commentsList);
+        if (commentsInfoFromDbList.isEmpty()) {
+            for (var comment : commentsList) {
+                commentsInfoFromDbList.add(commentDao.save(comment));
+            }
+        }
+
+        return bookDao.save(new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb, commentsInfoFromDbList));
     }
 
     @Override
     public Book findById(long bookId) {
-        var bookInfo = bookRepository.findById(bookId);
+        var bookInfo = bookDao.findById(bookId);
 
         if (bookInfo.isPresent()) {
             var presentedBookInfo = bookInfo.get();
@@ -70,7 +82,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> findAll() {
-        var booksList = bookRepository.findAll();
+        var booksList = bookDao.findAll();
 
         ioService.outputString("Books info list (size: " + booksList.size() + "): ");
         for (var bookInfo : booksList) {
@@ -90,73 +102,29 @@ public class BookServiceImpl implements BookService {
     @Override
     public void update(long bookId, String bookName, long bookYear, Author author, Genre genre,
                        List<Comment> commentsList) {
-        var findBook = bookRepository.findById(bookId);
-
-        if (findBook.isPresent()) {
-            var authorInfoFromDb = findOrCreateAuthor(author);
-            var genreInfoFromDb = findOrCreateGenre(genre);
-            var commentsInfoFromDbList = findOrCreateComments(commentsList);
-
-            var presentFindBook = findBook.get();
-            presentFindBook.setName(bookName);
-            presentFindBook.setYear(bookYear);
-            presentFindBook.setAuthor(authorInfoFromDb);
-            presentFindBook.setGenre(genreInfoFromDb);
-            presentFindBook.setComment(commentsInfoFromDbList);
-
-            bookRepository.save(presentFindBook);
+        var authorInfoFromDb = authorDao.findByNameAndYear(author);
+        if (authorInfoFromDb == null) {
+            authorInfoFromDb = authorDao.save(author);
         }
+
+        var genreInfoFromDb = genreDao.findByName(genre);
+        if (genreInfoFromDb == null) {
+            genreInfoFromDb = genreDao.save(genre);
+        }
+
+        var commentsInfoFromDbList = commentDao.findByIdAndCommentText(commentsList);
+        if (commentsInfoFromDbList.isEmpty()) {
+            for (var comment : commentsList) {
+                commentsInfoFromDbList.add(commentDao.save(comment));
+            }
+        }
+
+        bookDao.updateById(bookId, new Book(bookName, bookYear, authorInfoFromDb,
+                genreInfoFromDb, commentsInfoFromDbList));
     }
 
     @Override
     public void delete(long bookId) {
-        bookRepository.deleteById(bookId);
-    }
-
-
-    /**
-     * Проверяет наличие автора в БД и при его отсутствии - создает
-     *
-     * @param author - автор книги
-     * @return возвращает модель автора - либо из БД, либо созданную и сохраненную
-     */
-    private Author findOrCreateAuthor(Author author) {
-        var authorInfoFromDb = authorRepository.findByNameAndYear(author.getName(), author.getYear());
-        if (authorInfoFromDb == null) {
-            authorInfoFromDb = authorRepository.save(author);
-        }
-        return authorInfoFromDb;
-    }
-
-    /**
-     * Проверяет наличие жанра в БД и при его отсутствии - создает
-     *
-     * @param genre - жанр книги
-     * @return возвращает модель жанра - либо из БД, либо созданный и сохраненный
-     */
-    private Genre findOrCreateGenre(Genre genre) {
-        var genreInfoFromDb = genreRepository.findByName(genre.getName());
-        if (genreInfoFromDb == null) {
-            genreInfoFromDb = genreRepository.save(genre);
-        }
-        return genreInfoFromDb;
-    }
-
-    /**
-     * Проверяет наличие комментариев в БД и при их отсутствии - создает
-     *
-     * @param commentsList - комментарии у книги
-     * @return возвращает лист комментариев - либо из БД, либо созданный и сохраненный
-     */
-    private List<Comment> findOrCreateComments(List<Comment> commentsList) {
-        var commentsInfoFromDbList = commentRepository.findByCommentsTextList(commentsList.stream()
-                .map(Comment::getCommentText).toList());
-        if (commentsInfoFromDbList.isEmpty()) {
-            for (var comment : commentsList) {
-                commentsInfoFromDbList.add(commentRepository.save(comment));
-            }
-        }
-
-        return commentsInfoFromDbList;
+        bookDao.deleteById(bookId);
     }
 }
