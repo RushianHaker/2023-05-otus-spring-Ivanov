@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
-import ru.otus.testing.dao.BookDao;
+import ru.otus.testing.dao.BookRepository;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
@@ -18,15 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-@Import({BookDaoImpl.class})
 @DataJpaTest
-class BookDaoImplTest {
+class BookRepositoryTest {
     @Autowired
-    private BookDao bookDao;
+    private BookRepository bookRepository;
 
     @Test
     void findById() {
-        var book = bookDao.findById(1);
+        var book = bookRepository.findById(1);
 
         assertTrue(book.isPresent());
 
@@ -48,7 +47,7 @@ class BookDaoImplTest {
 
     @Test
     void findAll() {
-        var book = bookDao.findAll();
+        var book = bookRepository.findAll();
 
         assertEquals(1, book.size());
 
@@ -79,8 +78,8 @@ class BookDaoImplTest {
 
         var book = new Book("war and peace", 4321L, author, genre, commentsList);
 
-        bookDao.save(book);
-        var bookById = bookDao.findById(3);
+        bookRepository.save(book);
+        var bookById = bookRepository.findById(3);
         assertTrue(bookById.isPresent());
 
         var presentBook = bookById.get();
@@ -98,36 +97,14 @@ class BookDaoImplTest {
 
     @Test
     @Rollback
-    void update() {
-        bookDao.updateById(1, new Book("Tolstoy Tolstoy Tolstoy", 1111L,
-                new Author("AAAAA", 1111), new Genre("AAAAA"),
-                List.of(new Comment("AAAAA"))));
-
-        var book = bookDao.findById(1);
-        assertTrue(book.isPresent());
-
-        var presentBook = book.get();
-        assertEquals("Tolstoy Tolstoy Tolstoy", presentBook.getName());
-        assertEquals(1111, presentBook.getYear());
-
-        assertEquals("AAAAA", presentBook.getGenre().getName());
-
-        assertEquals("AAAAA", presentBook.getAuthor().getName());
-        assertEquals(1111, presentBook.getAuthor().getYear());
-
-        assertEquals("AAAAA", presentBook.getComment().get(0).getCommentText());
-    }
-
-    @Test
-    @Rollback
     void deleteById() {
-        var book = bookDao.findAll();
+        var book = bookRepository.findAll();
         assertEquals(1, book.size());
         assertEquals(1, book.get(0).getId());
         assertEquals("Test Book", book.get(0).getName());
 
-        bookDao.deleteById(1);
+        bookRepository.deleteById(1L);
 
-        assertEquals(0, bookDao.findAll().size());
+        assertEquals(0, bookRepository.findAll().size());
     }
 }

@@ -3,23 +3,21 @@ package ru.otus.testing.dao.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
-import ru.otus.testing.dao.GenreDao;
+import ru.otus.testing.dao.GenreRepository;
 import ru.otus.testing.model.Genre;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@Import({GenreDaoImpl.class})
 @DataJpaTest
-class GenreDaoImplTest {
+class GenreRepositoryTest {
     @Autowired
-    private GenreDao genreDao;
+    private GenreRepository genreRepository;
 
     @Test
     void findById() {
-        var genre = genreDao.findById(1);
+        var genre = genreRepository.findById(1L);
 
         assertTrue(genre.isPresent());
 
@@ -29,8 +27,8 @@ class GenreDaoImplTest {
     }
 
     @Test
-    void findByNameAndId() {
-        var genre = genreDao.findByName(new Genre("comedy"));
+    void findByName() {
+        var genre = genreRepository.findByName("comedy");
 
         assertNotNull(genre);
         assertEquals(1, genre.getId());
@@ -39,9 +37,9 @@ class GenreDaoImplTest {
 
     @Test
     void save() {
-        genreDao.save(new Genre("AAAAAA"));
+        genreRepository.save(new Genre("AAAAAA"));
 
-        var genre = genreDao.findById(3);
+        var genre = genreRepository.findById(3L);
 
         assertTrue(genre.isPresent());
 
@@ -51,22 +49,9 @@ class GenreDaoImplTest {
     }
 
     @Test
-    void update() {
-        genreDao.updateById(1, new Genre("hello test"));
-
-        var genre = genreDao.findById(1);
-
-        assertTrue(genre.isPresent());
-
-        var presentComment = genre.get();
-        assertEquals(1, presentComment.getId());
-        assertEquals("hello test", presentComment.getName());
-    }
-
-    @Test
     @Rollback
     void deleteById() {
-        var genre = genreDao.findById(1);
+        var genre = genreRepository.findById(1L);
 
         assertTrue(genre.isPresent());
 
@@ -74,8 +59,8 @@ class GenreDaoImplTest {
         assertEquals(1, presentComment.getId());
         assertEquals("comedy", presentComment.getName());
 
-        genreDao.deleteById(1);
+        genreRepository.deleteById(1L);
 
-        assertTrue(genreDao.findById(1).isEmpty());
+        assertTrue(genreRepository.findById(1L).isEmpty());
     }
 }

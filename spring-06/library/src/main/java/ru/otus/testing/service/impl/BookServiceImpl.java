@@ -2,10 +2,10 @@ package ru.otus.testing.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.testing.dao.AuthorDao;
-import ru.otus.testing.dao.BookDao;
-import ru.otus.testing.dao.CommentDao;
-import ru.otus.testing.dao.GenreDao;
+import ru.otus.testing.dao.AuthorRepository;
+import ru.otus.testing.dao.BookRepository;
+import ru.otus.testing.dao.CommentRepository;
+import ru.otus.testing.dao.GenreRepository;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
@@ -18,51 +18,52 @@ import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private final BookDao bookDao;
+    private final BookRepository bookRepository;
 
-    private final AuthorDao authorDao;
+    private final AuthorRepository authorRepository;
 
-    private final GenreDao genreDao;
+    private final GenreRepository genreRepository;
 
-    private final CommentDao commentDao;
+    private final CommentRepository commentRepository;
 
     private final IOService ioService;
 
-    public BookServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao, CommentDao commentDao,
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository, CommentRepository commentRepository,
                            IOService ioService) {
-        this.bookDao = bookDao;
-        this.authorDao = authorDao;
-        this.genreDao = genreDao;
-        this.commentDao = commentDao;
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
+        this.genreRepository = genreRepository;
+        this.commentRepository = commentRepository;
         this.ioService = ioService;
     }
 
     @Transactional
     @Override
     public Book save(String bookName, long bookYear, Author author, Genre genre, List<Comment> commentsList) {
-        var authorInfoFromDb = authorDao.findByNameAndYear(author);
+        var authorInfoFromDb = authorRepository.findByNameAndYear(author.getName(), author.getYear());
         if (authorInfoFromDb == null) {
-            authorInfoFromDb = authorDao.save(author);
+            authorInfoFromDb = authorRepository.save(author);
         }
 
-        var genreInfoFromDb = genreDao.findByName(genre);
+        var genreInfoFromDb = genreRepository.findByName(genre.getName());
         if (genreInfoFromDb == null) {
-            genreInfoFromDb = genreDao.save(genre);
+            genreInfoFromDb = genreRepository.save(genre);
         }
 
-        var commentsInfoFromDbList = commentDao.findByIdAndCommentText(commentsList);
+        var commentsInfoFromDbList = commentRepository.findByCommentText(commentsList.stream()
+                .map(Comment::getCommentText).toList());
         if (commentsInfoFromDbList.isEmpty()) {
             for (var comment : commentsList) {
-                commentsInfoFromDbList.add(commentDao.save(comment));
+                commentsInfoFromDbList.add(commentRepository.save(comment));
             }
         }
 
-        return bookDao.save(new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb, commentsInfoFromDbList));
+        return bookRepository.save(new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb, commentsInfoFromDbList));
     }
 
     @Override
     public Book findById(long bookId) {
-        var bookInfo = bookDao.findById(bookId);
+        var bookInfo = bookRepository.findById(bookId);
 
         if (bookInfo.isPresent()) {
             var presentedBookInfo = bookInfo.get();
@@ -82,7 +83,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> findAll() {
-        var booksList = bookDao.findAll();
+        var booksList = bookRepository.findAll();
 
         ioService.outputString("Books info list (size: " + booksList.size() + "): ");
         for (var bookInfo : booksList) {
@@ -102,29 +103,40 @@ public class BookServiceImpl implements BookService {
     @Override
     public void update(long bookId, String bookName, long bookYear, Author author, Genre genre,
                        List<Comment> commentsList) {
-        var authorInfoFromDb = authorDao.findByNameAndYear(author);
-        if (authorInfoFromDb == null) {
-            authorInfoFromDb = authorDao.save(author);
-        }
+        var findBook = bookRepository.findById(bookId);
 
-        var genreInfoFromDb = genreDao.findByName(genre);
-        if (genreInfoFromDb == null) {
-            genreInfoFromDb = genreDao.save(genre);
-        }
-
-        var commentsInfoFromDbList = commentDao.findByIdAndCommentText(commentsList);
-        if (commentsInfoFromDbList.isEmpty()) {
-            for (var comment : commentsList) {
-                commentsInfoFromDbList.add(commentDao.save(comment));
+        if (findBook.isPresent()) {
+            var authorInfoFromDb = authorRepository.findByNameAndYear(author.getName(), author.getYear());
+            if (authorInfoFromDb == null) {
+                authorInfoFromDb = authorRepository.save(author);
             }
-        }
 
-        bookDao.updateById(bookId, new Book(bookName, bookYear, authorInfoFromDb,
-                genreInfoFromDb, commentsInfoFromDbList));
+            var genreInfoFromDb = genreRepository.findByName(genre.getName());
+            if (genreInfoFromDb == null) {
+                genreInfoFromDb = genreRepository.save(genre);
+            }
+
+            var commentsInfoFromDbList = commentRepository.findByCommentText(commentsList.stream()
+                    .map(Comment::getCommentText).toList());
+            if (commentsInfoFromDbList.isEmpty()) {
+                for (var comment : commentsList) {
+                    commentsInfoFromDbList.add(commentRepository.save(comment));
+                }
+            }
+
+            var presentFindBook = findBook.get();
+            presentFindBook.setName(bookName);
+            presentFindBook.setYear(bookYear);
+            presentFindBook.setAuthor(authorInfoFromDb);
+            presentFindBook.setGenre(genreInfoFromDb);
+            presentFindBook.setComment(commentsInfoFromDbList);
+
+            bookRepository.save(presentFindBook);
+        }
     }
 
     @Override
     public void delete(long bookId) {
-        bookDao.deleteById(bookId);
+        bookRepository.deleteById(bookId);
     }
 }

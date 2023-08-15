@@ -5,20 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
-import ru.otus.testing.dao.AuthorDao;
+import ru.otus.testing.dao.AuthorRepository;
 import ru.otus.testing.model.Author;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Import({AuthorDaoImpl.class})
 @DataJpaTest
-class AuthorDaoImplTest {
+class AuthorRepositoryTest {
     @Autowired
-    private AuthorDao authorDao;
+    private AuthorRepository authorRepository;
 
     @Test
     void findById() {
-        var author = authorDao.findById(1);
+        var author = authorRepository.findById(1L);
 
         assertTrue(author.isPresent());
 
@@ -30,7 +29,7 @@ class AuthorDaoImplTest {
 
     @Test
     void findByNameAndYear() {
-        var author = authorDao.findByNameAndYear(new Author("Andrey", 46));
+        var author = authorRepository.findByNameAndYear("Andrey", 46);
 
         assertNotNull(author);
         assertEquals(1, author.getId());
@@ -40,9 +39,9 @@ class AuthorDaoImplTest {
 
     @Test
     void save() {
-        authorDao.save(new Author("AAAAAA", 50L));
+        authorRepository.save(new Author("AAAAAA", 50L));
 
-        var author = authorDao.findById(3);
+        var author = authorRepository.findById(3L);
         assertTrue(author.isPresent());
 
         var presentAuthor = author.get();
@@ -52,22 +51,9 @@ class AuthorDaoImplTest {
     }
 
     @Test
-    void updateById() {
-        authorDao.updateById(1, new Author("hello test", 11111));
-
-        var author = authorDao.findById(1);
-        assertTrue(author.isPresent());
-
-        var presentAuthor = author.get();
-        assertEquals(1, presentAuthor.getId());
-        assertEquals("hello test", presentAuthor.getName());
-        assertEquals(11111, presentAuthor.getYear());
-    }
-
-    @Test
     @Rollback
     void deleteById() {
-        var author = authorDao.findById(1);
+        var author = authorRepository.findById(1L);
         assertTrue(author.isPresent());
 
         var presentAuthor = author.get();
@@ -75,8 +61,8 @@ class AuthorDaoImplTest {
         assertEquals("Andrey", presentAuthor.getName());
         assertEquals(46, presentAuthor.getYear());
 
-        authorDao.deleteById(1);
+        authorRepository.deleteById(1L);
 
-        assertTrue(authorDao.findById(1).isEmpty());
+        assertTrue(authorRepository.findById(1L).isEmpty());
     }
 }
