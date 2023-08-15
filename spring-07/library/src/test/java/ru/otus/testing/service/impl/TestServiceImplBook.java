@@ -14,6 +14,7 @@ import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
+import ru.otus.testing.service.CheckDbFillingService;
 import ru.otus.testing.service.IOService;
 
 import java.util.List;
@@ -27,11 +28,7 @@ class TestServiceImplBook {
     @MockBean
     private BookRepository bookRepository;
     @MockBean
-    private AuthorRepository authorRepository;
-    @MockBean
-    private GenreRepository genreRepository;
-    @MockBean
-    private CommentRepository commentRepository;
+    private CheckDbFillingService checkDbFillingService;
     @MockBean
     private IOService ioService;
 

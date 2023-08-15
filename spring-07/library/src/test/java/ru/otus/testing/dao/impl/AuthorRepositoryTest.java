@@ -25,7 +25,6 @@ class AuthorRepositoryTest {
         assertEquals(1, presentAuthor.getId());
         assertEquals("Andrey", presentAuthor.getName());
         assertEquals(46, presentAuthor.getYear());
-
     }
 
     @Test
