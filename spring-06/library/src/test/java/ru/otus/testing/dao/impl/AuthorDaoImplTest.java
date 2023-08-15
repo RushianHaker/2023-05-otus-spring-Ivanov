@@ -8,10 +8,7 @@ import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.AuthorDao;
 import ru.otus.testing.model.Author;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Import({AuthorDaoImpl.class})
 @DataJpaTest
@@ -33,14 +30,12 @@ class AuthorDaoImplTest {
 
     @Test
     void findByNameAndYear() {
-        var author = authorDao.findByNameAndYear(List.of(new Author("Andrey", 46)));
+        var author = authorDao.findByNameAndYear(new Author("Andrey", 46));
 
-        assertEquals(1, author.size());
-
-        var presentAuthor = author.get(0);
-        assertEquals(1, presentAuthor.getId());
-        assertEquals("Andrey", presentAuthor.getName());
-        assertEquals(46, presentAuthor.getYear());
+        assertNotNull(author);
+        assertEquals(1, author.getId());
+        assertEquals("Andrey", author.getName());
+        assertEquals(46, author.getYear());
     }
 
     @Test

@@ -1,13 +1,20 @@
 package ru.otus.testing.dao.impl;
 
+import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.BookDao;
 import ru.otus.testing.model.Book;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
+
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -30,46 +37,49 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Optional<Book> findById(long id) {
-        return Optional.ofNullable(em.find(Book.class, id));
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(FETCH.getKey(), em.getEntityGraph("otus-book-author-genre-entity-graph"));
+        return Optional.ofNullable(em.find(Book.class, id, properties));
     }
 
-    //todo поправить - https://stackoverflow.com/questions/4334970/hibernate-throws-multiplebagfetchexception-cannot-simultaneously-fetch-multipl
     @Override
     public List<Book> findAll() {
-        var booksList = em.createQuery("select distinct s from Book s left join fetch s.author ", Book.class)
-                .getResultList();
-        var genreList = em.createQuery("select distinct s from Book s left join fetch s.genre", Book.class)
-                .getResultList().stream().map(Book::getGenre).toList();
-        var commentList = em.createQuery("select distinct s from Book s left join fetch s.comment ", Book.class)
-                .getResultList().stream().map(Book::getComment).toList();
-
-        booksList.forEach(book -> {
-            book.setGenre();
-            book.setComment();
-        });
-
-        return queryAuthorFetch;
+        EntityGraph<?> entityGraph = em.getEntityGraph("otus-book-author-genre-entity-graph");
+        TypedQuery<Book> query = em.createQuery("select distinct b from Book b", Book.class);
+        query.setHint(FETCH.getKey(), entityGraph);
+        return query.getResultList();
     }
 
-    //todo поправить, понять почему неп проходит
     @Override
     public void updateById(long id, Book book) {
-        var findBook = em.find(Book.class, id);
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(FETCH.getKey(), em.getEntityGraph("otus-book-author-genre-entity-graph"));
+        var findBook = Optional.ofNullable(em.find(Book.class, id, properties));
 
-        findBook.setId(id);
-        findBook.setName(book.getName());
-        findBook.setYear(book.getYear());
-        findBook.setAuthor(book.getAuthor());
-        findBook.setGenre(book.getGenre());
-        findBook.setComment(book.getComment());
+        if (findBook.isEmpty()) {
+            throw new IllegalArgumentException("Can't find book with id: " + id + "!");
+        }
 
-        //todo если поставить persist то все заработает, но почему ?
-        em.merge(findBook);
+        var presentFindBook = findBook.get();
+        presentFindBook.setName(book.getName());
+        presentFindBook.setYear(book.getYear());
+        presentFindBook.setAuthor(book.getAuthor());
+        presentFindBook.setGenre(book.getGenre());
+        presentFindBook.setComment(book.getComment());
+
+        em.merge(book);
     }
 
     @Override
     public void deleteById(long id) {
-        var findBook = em.find(Book.class, id);
-        em.remove(findBook);
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(FETCH.getKey(), em.getEntityGraph("otus-book-author-genre-entity-graph"));
+        var findBook = Optional.ofNullable(em.find(Book.class, id, properties));
+
+        if (findBook.isEmpty()) {
+            throw new IllegalArgumentException("Can't find book with id: " + id + "!");
+        }
+
+        em.remove(findBook.get());
     }
 }

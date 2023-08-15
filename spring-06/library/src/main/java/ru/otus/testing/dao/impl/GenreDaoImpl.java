@@ -36,17 +36,11 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public List<Genre> findByNameAndId(List<Genre> genres) {
-        var list = new ArrayList<Genre>();
-
-        for (var genre : genres) {
-            TypedQuery<Genre> query = em.createQuery("select s from Genre s where s.name = :name and s.id = :id ", Genre.class);
+    public Genre findByName(Genre genre) {
+            TypedQuery<Genre> query = em.createQuery("select distinct s from Genre s where s.name = :name ",
+                    Genre.class);
             query.setParameter("name", genre.getName());
-            query.setParameter("id", genre.getId());
-            list.addAll(query.getResultList());
-        }
-
-        return list;
+        return query.getResultList().isEmpty() ? null : query.getResultList().get(0);
     }
 
     @Override

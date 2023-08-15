@@ -10,7 +10,7 @@ public interface AuthorDao {
 
     Optional<Author> findById(long id);
 
-    List<Author> findByNameAndYear(List<Author> authors);
+    Author findByNameAndYear(Author author);
 
     void updateById(long id, Author author);
 

@@ -36,50 +36,22 @@ public class UserAnswerServiceImpl implements UserAnswerService {
     }
 
     /**
-     * Получение списка Авторов в цикле, который работает до тех пор, пока пользователь сам не остановит
+     * Получение Автора
      */
     @Override
-    public List<Author> getListAuthorInfo() {
-        var listModelsInfo = new ArrayList<Author>();
-
-        boolean stop = false;
-        String stopWord = "no";
-
-        while (!stop) {
-            var name = ioService.readNextWithPrompt("- Enter author name: ");
-            var year = checkUserAnswerToLong("- Enter author years: ");
-            listModelsInfo.add(new Author(name, year));
-
-            var userStopWord = ioService.readNextWithPrompt("- Do you want to enter yet authors? (yes/no): ");
-
-            if (stopWord.equals(userStopWord)) {
-                stop = true;
-            }
-        }
-        return listModelsInfo;
+    public Author getAuthorInfo() {
+        var name = ioService.readNextWithPrompt("- Enter author name: ");
+        var year = checkUserAnswerToLong("- Enter author years: ");
+        return new Author(name, year);
     }
 
     /**
-     * Получение списка Жанров в цикле, который работает до тех пор, пока пользователь сам не остановит
+     * Получение Жанра
      */
     @Override
-    public List<Genre> getListGenreInfo() {
-        var listModelsInfo = new ArrayList<Genre>();
-
-        boolean stop = false;
-        String stopWord = "no";
-
-        while (!stop) {
-            var name = ioService.readNextWithPrompt("- Enter books genre name: ");
-            listModelsInfo.add(new Genre(name));
-
-            var userStopWord = ioService.readNextWithPrompt("- Do you want to enter yet genres? (yes/no): ");
-
-            if (stopWord.equals(userStopWord)) {
-                stop = true;
-            }
-        }
-        return listModelsInfo;
+    public Genre getGenreInfo() {
+        var name = ioService.readNextWithPrompt("- Enter books genre name: ");
+        return new Genre(name);
     }
 
     /**

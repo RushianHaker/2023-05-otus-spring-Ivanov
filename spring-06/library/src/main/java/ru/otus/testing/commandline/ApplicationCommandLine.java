@@ -29,11 +29,11 @@ public class ApplicationCommandLine {
         var bookName = ioService.readNextWithPrompt("- Enter book name: ");
         var bookYear = userAnswerService.checkUserAnswerToLong("- Enter book written year: ");
 
-        var authorsList = userAnswerService.getListAuthorInfo();
-        var genresList = userAnswerService.getListGenreInfo();
+        var author = userAnswerService.getAuthorInfo();
+        var genre = userAnswerService.getGenreInfo();
         var commentsList = userAnswerService.getListCommentInfo();
 
-        bookService.save(bookName, bookYear, authorsList, genresList, commentsList);
+        bookService.save(bookName, bookYear, author, genre, commentsList);
         return "Book was created";
     }
 
@@ -61,11 +61,11 @@ public class ApplicationCommandLine {
         var bookName = ioService.readNextWithPrompt("- Enter book name: ");
         var bookYear = userAnswerService.checkUserAnswerToLong("- Enter book written year: ");
 
-        var authorsList = userAnswerService.getListAuthorInfo();
-        var genresList = userAnswerService.getListGenreInfo();
+        var author = userAnswerService.getAuthorInfo();
+        var genre = userAnswerService.getGenreInfo();
         var commentsList = userAnswerService.getListCommentInfo();
 
-        bookService.update(bookId, bookName, bookYear, authorsList, genresList, commentsList);
+        bookService.update(bookId, bookName, bookYear, author, genre, commentsList);
         return "Info about book was updated";
     }
 

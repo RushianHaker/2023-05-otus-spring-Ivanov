@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-//todo поправить методы
 @Import({BookDaoImpl.class})
 @DataJpaTest
 class BookDaoImplTest {
@@ -36,12 +35,12 @@ class BookDaoImplTest {
         assertEquals("Test Book", preasentBook.getName());
         assertEquals(1852, preasentBook.getYear());
 
-        assertEquals(1, preasentBook.getGenre().get(0).getId());
-        assertEquals("comedy", preasentBook.getGenre().get(0).getName());
+        assertEquals(1, preasentBook.getGenre().getId());
+        assertEquals("comedy", preasentBook.getGenre().getName());
 
-        assertEquals(1, preasentBook.getAuthor().get(0).getId());
-        assertEquals("Andrey", preasentBook.getAuthor().get(0).getName());
-        assertEquals(46, preasentBook.getAuthor().get(0).getYear());
+        assertEquals(1, preasentBook.getAuthor().getId());
+        assertEquals("Andrey", preasentBook.getAuthor().getName());
+        assertEquals(46, preasentBook.getAuthor().getYear());
 
         assertEquals(1, preasentBook.getComment().get(0).getId());
         assertEquals("I can write better!", preasentBook.getComment().get(0).getCommentText());
@@ -58,72 +57,64 @@ class BookDaoImplTest {
         assertEquals("Test Book", preasentBook.getName());
         assertEquals(1852, preasentBook.getYear());
 
-        assertEquals(1, preasentBook.getGenre().get(0).getId());
-        assertEquals("comedy", preasentBook.getGenre().get(0).getName());
+        assertEquals(1, preasentBook.getGenre().getId());
+        assertEquals("comedy", preasentBook.getGenre().getName());
 
-        assertEquals(1, preasentBook.getAuthor().get(0).getId());
-        assertEquals("Andrey", preasentBook.getAuthor().get(0).getName());
-        assertEquals(46, preasentBook.getAuthor().get(0).getYear());
+        assertEquals(1, preasentBook.getAuthor().getId());
+        assertEquals("Andrey", preasentBook.getAuthor().getName());
+        assertEquals(46, preasentBook.getAuthor().getYear());
 
-        assertEquals(46, preasentBook.getComment().get(0).getId());
-        assertEquals("cool book", preasentBook.getComment().get(0).getCommentText());
+        assertEquals(1, preasentBook.getComment().get(0).getId());
+        assertEquals("I can write better!", preasentBook.getComment().get(0).getCommentText());
     }
 
     @Test
     void save() {
-        var author = new Author(3, "Tolstoy", 1111);
-        var authorsList = Collections.singletonList(author);
+        var author = new Author("aaa", 1111);
 
-        var genre = new Genre(3, "history");
-        var genresList = Collections.singletonList(genre);
+        var genre = new Genre("bbb");
 
-        var comment = new Comment(3, "history");
+        var comment = new Comment("ccc");
         var commentsList = Collections.singletonList(comment);
 
-        var book = new Book("war and peace", 4321L, authorsList, genresList, commentsList);
+        var book = new Book("war and peace", 4321L, author, genre, commentsList);
 
         bookDao.save(book);
-        var bookById = bookDao.findById(2);
+        var bookById = bookDao.findById(3);
         assertTrue(bookById.isPresent());
 
         var presentBook = bookById.get();
-        assertEquals(2, presentBook.getId());
+        assertEquals(3, presentBook.getId());
         assertEquals("war and peace", presentBook.getName());
         assertEquals(4321, presentBook.getYear());
 
-        assertEquals(3, presentBook.getAuthor().get(0).getId());
-        assertEquals("Tolstoy", presentBook.getAuthor().get(0).getName());
-        assertEquals(1111, presentBook.getAuthor().get(0).getYear());
+        assertEquals("aaa", presentBook.getAuthor().getName());
+        assertEquals(1111, presentBook.getAuthor().getYear());
 
-        assertEquals(3, presentBook.getGenre().get(0).getId());
-        assertEquals("history", presentBook.getGenre().get(0).getName());
+        assertEquals("bbb", presentBook.getGenre().getName());
 
-        assertEquals(3, presentBook.getComment().get(0).getId());
-        assertEquals("history", presentBook.getComment().get(0).getCommentText());
+        assertEquals("ccc", presentBook.getComment().get(0).getCommentText());
     }
 
     @Test
+    @Rollback
     void update() {
         bookDao.updateById(1, new Book("Tolstoy Tolstoy Tolstoy", 1111L,
-                List.of(new Author("AAAAA", 1111)), List.of(new Genre("AAAAA")),
+                new Author("AAAAA", 1111), new Genre("AAAAA"),
                 List.of(new Comment("AAAAA"))));
 
         var book = bookDao.findById(1);
         assertTrue(book.isPresent());
 
         var presentBook = book.get();
-        assertEquals(2, presentBook.getId());
         assertEquals("Tolstoy Tolstoy Tolstoy", presentBook.getName());
-        assertEquals(4321, presentBook.getYear());
+        assertEquals(1111, presentBook.getYear());
 
-        assertEquals(1, presentBook.getGenre().get(0).getId());
-        assertEquals("AAAAA", presentBook.getGenre().get(0).getName());
+        assertEquals("AAAAA", presentBook.getGenre().getName());
 
-        assertEquals(1, presentBook.getAuthor().get(0).getId());
-        assertEquals("AAAAA", presentBook.getAuthor().get(0).getName());
-        assertEquals(1111, presentBook.getAuthor().get(0).getYear());
+        assertEquals("AAAAA", presentBook.getAuthor().getName());
+        assertEquals(1111, presentBook.getAuthor().getYear());
 
-        assertEquals(1, presentBook.getComment().get(0).getId());
         assertEquals("AAAAA", presentBook.getComment().get(0).getCommentText());
     }
 

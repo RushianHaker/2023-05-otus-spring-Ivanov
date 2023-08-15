@@ -40,8 +40,8 @@ class TestServiceImplBook {
 
     @Test
     void getAll() {
-        var book = new Book("war and peace", 4321L, List.of(new Author("Tolstoy", 50L)),
-                List.of(new Genre("history")), List.of(new Comment("cool!")));
+        var book = new Book("war and peace", 4321L, new Author("Tolstoy", 50L),
+                new Genre("history"), List.of(new Comment("cool!")));
 
         when(bookDao.findAll()).thenReturn(List.of(book));
 

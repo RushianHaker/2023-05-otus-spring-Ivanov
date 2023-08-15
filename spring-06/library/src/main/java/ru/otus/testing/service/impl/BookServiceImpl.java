@@ -39,34 +39,25 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book save(String bookName, long bookYear, List<Author> authorsList, List<Genre> genresList,
-                     List<Comment> commentsList) {
-
-        var authorsInfoFromDbList = authorDao.findByNameAndYear(authorsList);
-
-        if (authorsInfoFromDbList.isEmpty()) {
-            for (var author : authorsList) {
-                authorsInfoFromDbList.add(authorDao.save(author));
-            }
+    public Book save(String bookName, long bookYear, Author author, Genre genre, List<Comment> commentsList) {
+        var authorInfoFromDb = authorDao.findByNameAndYear(author);
+        if (authorInfoFromDb == null) {
+            authorInfoFromDb = authorDao.save(author);
         }
 
-        var genresInfoFromDbList = genreDao.findByNameAndId(genresList);
-
-        if (genresInfoFromDbList.isEmpty()) {
-            for (var genre : genresList) {
-                genresInfoFromDbList.add(genreDao.save(genre));
-            }
+        var genreInfoFromDb = genreDao.findByName(genre);
+        if (genreInfoFromDb == null) {
+            genreInfoFromDb = genreDao.save(genre);
         }
 
         var commentsInfoFromDbList = commentDao.findByIdAndCommentText(commentsList);
-
         if (commentsInfoFromDbList.isEmpty()) {
             for (var comment : commentsList) {
                 commentsInfoFromDbList.add(commentDao.save(comment));
             }
         }
 
-        return bookDao.save(new Book(bookName, bookYear, authorsInfoFromDbList, genresInfoFromDbList, commentsInfoFromDbList));
+        return bookDao.save(new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb, commentsInfoFromDbList));
     }
 
     @Override
@@ -109,33 +100,25 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public void update(long bookId, String bookName, long bookYear, List<Author> authorsList, List<Genre> genresList,
-                       List<Comment> commentsList) {
-        var authorsInfoFromDbList = authorDao.findByNameAndYear(authorsList);
-
-        if (authorsInfoFromDbList.isEmpty()) {
-            for (var author : authorsList) {
-                authorsInfoFromDbList.add(authorDao.save(author));
-            }
+    public void update(long bookId, String bookName, long bookYear, Author author, Genre genre, List<Comment> commentsList) {
+        var authorInfoFromDb = authorDao.findByNameAndYear(author);
+        if (authorInfoFromDb == null) {
+            authorInfoFromDb = authorDao.save(author);
         }
 
-        var genresInfoFromDbList = genreDao.findByNameAndId(genresList);
-
-        if (genresInfoFromDbList.isEmpty()) {
-            for (var genre : genresList) {
-                genresInfoFromDbList.add(genreDao.save(genre));
-            }
+        var genreInfoFromDb = genreDao.findByName(genre);
+        if (genreInfoFromDb == null) {
+            genreInfoFromDb = genreDao.save(genre);
         }
 
         var commentsInfoFromDbList = commentDao.findByIdAndCommentText(commentsList);
-
         if (commentsInfoFromDbList.isEmpty()) {
             for (var comment : commentsList) {
                 commentsInfoFromDbList.add(commentDao.save(comment));
             }
         }
 
-        bookDao.updateById(bookId, new Book(bookName, bookYear, authorsInfoFromDbList, genresInfoFromDbList, commentsInfoFromDbList));
+        bookDao.updateById(bookId, new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb, commentsInfoFromDbList));
     }
 
     @Override

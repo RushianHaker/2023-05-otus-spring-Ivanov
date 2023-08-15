@@ -8,10 +8,7 @@ import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.GenreDao;
 import ru.otus.testing.model.Genre;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @Import({GenreDaoImpl.class})
@@ -33,13 +30,11 @@ class GenreDaoImplTest {
 
     @Test
     void findByNameAndId() {
-        var genre = genreDao.findByNameAndId(List.of(new Genre(1, "comedy")));
+        var genre = genreDao.findByName(new Genre("comedy"));
 
-        assertEquals(1, genre.size());
-
-        var presentGenre = genre.get(0);
-        assertEquals(1, presentGenre.getId());
-        assertEquals("comedy", presentGenre.getName());
+        assertNotNull(genre);
+        assertEquals(1, genre.getId());
+        assertEquals("comedy", genre.getName());
     }
 
     @Test

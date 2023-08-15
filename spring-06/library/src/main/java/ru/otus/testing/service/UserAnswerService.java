@@ -10,9 +10,9 @@ import java.util.List;
 public interface UserAnswerService {
     long checkUserAnswerToLong(String msg);
 
-    List<Author> getListAuthorInfo();
+    Author getAuthorInfo();
 
-    List<Genre> getListGenreInfo();
+    Genre getGenreInfo();
 
     List<Comment> getListCommentInfo();
 }

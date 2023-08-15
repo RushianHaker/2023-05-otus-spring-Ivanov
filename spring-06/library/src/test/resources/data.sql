@@ -1,15 +1,15 @@
-insert into books (book_name, book_year)
-values ('Test Book', 1852);
+insert into genres (genres_name)
+values ('comedy');
+insert into genres (genres_name)
+values ('history');
 
-insert into genres (genres_name, book_id)
-values ('comedy', 1);
-insert into genres (genres_name, book_id)
-values ('history', 1);
+insert into authors (authors_name, author_year)
+values ('Andrey', 46);
+insert into authors (authors_name, author_year)
+values ('Tolstoy', 50);
 
-insert into authors (authors_name, author_year, book_id)
-values ('Andrey', 46, 1);
-insert into authors (authors_name, author_year, book_id)
-values ('Tolstoy', 50, 1);
+insert into books (book_name, book_year, author_id, genre_id)
+values ('Test Book', 1852, 1, 1);
 
 insert into comments (comment_text, book_id)
 values ('I can write better!', 1);
