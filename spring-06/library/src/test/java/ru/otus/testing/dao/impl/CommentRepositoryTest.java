@@ -30,8 +30,8 @@ class CommentRepositoryTest {
     }
 
     @Test
-    void findByIdAndCommentText() {
-        var comment = commentRepository.findByCommentText(List.of("I can write better!", "Cool!"));
+    void findByCommentsTextList() {
+        var comment = commentRepository.findByCommentsTextList(List.of("I can write better!", "Cool!"));
 
         assertEquals(2, comment.size());
 

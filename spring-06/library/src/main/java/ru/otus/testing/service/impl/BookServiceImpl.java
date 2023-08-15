@@ -28,8 +28,8 @@ public class BookServiceImpl implements BookService {
 
     private final IOService ioService;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository, CommentRepository commentRepository,
-                           IOService ioService) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository,
+                           GenreRepository genreRepository, CommentRepository commentRepository, IOService ioService) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
@@ -40,25 +40,12 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public Book save(String bookName, long bookYear, Author author, Genre genre, List<Comment> commentsList) {
-        var authorInfoFromDb = authorRepository.findByNameAndYear(author.getName(), author.getYear());
-        if (authorInfoFromDb == null) {
-            authorInfoFromDb = authorRepository.save(author);
-        }
+        var authorInfoFromDb = findOrCreateAuthor(author);
+        var genreInfoFromDb = findOrCreateGenre(genre);
+        var commentsInfoFromDbList = findOrCreateComments(commentsList);
 
-        var genreInfoFromDb = genreRepository.findByName(genre.getName());
-        if (genreInfoFromDb == null) {
-            genreInfoFromDb = genreRepository.save(genre);
-        }
-
-        var commentsInfoFromDbList = commentRepository.findByCommentText(commentsList.stream()
-                .map(Comment::getCommentText).toList());
-        if (commentsInfoFromDbList.isEmpty()) {
-            for (var comment : commentsList) {
-                commentsInfoFromDbList.add(commentRepository.save(comment));
-            }
-        }
-
-        return bookRepository.save(new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb, commentsInfoFromDbList));
+        return bookRepository.save(new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb,
+                commentsInfoFromDbList));
     }
 
     @Override
@@ -106,23 +93,9 @@ public class BookServiceImpl implements BookService {
         var findBook = bookRepository.findById(bookId);
 
         if (findBook.isPresent()) {
-            var authorInfoFromDb = authorRepository.findByNameAndYear(author.getName(), author.getYear());
-            if (authorInfoFromDb == null) {
-                authorInfoFromDb = authorRepository.save(author);
-            }
-
-            var genreInfoFromDb = genreRepository.findByName(genre.getName());
-            if (genreInfoFromDb == null) {
-                genreInfoFromDb = genreRepository.save(genre);
-            }
-
-            var commentsInfoFromDbList = commentRepository.findByCommentText(commentsList.stream()
-                    .map(Comment::getCommentText).toList());
-            if (commentsInfoFromDbList.isEmpty()) {
-                for (var comment : commentsList) {
-                    commentsInfoFromDbList.add(commentRepository.save(comment));
-                }
-            }
+            var authorInfoFromDb = findOrCreateAuthor(author);
+            var genreInfoFromDb = findOrCreateGenre(genre);
+            var commentsInfoFromDbList = findOrCreateComments(commentsList);
 
             var presentFindBook = findBook.get();
             presentFindBook.setName(bookName);
@@ -138,5 +111,52 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(long bookId) {
         bookRepository.deleteById(bookId);
+    }
+
+
+    /**
+     * Проверяет наличие автора в БД и при его отсутствии - создает
+     *
+     * @param author - автор книги
+     * @return возвращает модель автора - либо из БД, либо созданную и сохраненную
+     */
+    private Author findOrCreateAuthor(Author author) {
+        var authorInfoFromDb = authorRepository.findByNameAndYear(author.getName(), author.getYear());
+        if (authorInfoFromDb == null) {
+            authorInfoFromDb = authorRepository.save(author);
+        }
+        return authorInfoFromDb;
+    }
+
+    /**
+     * Проверяет наличие жанра в БД и при его отсутствии - создает
+     *
+     * @param genre - жанр книги
+     * @return возвращает модель жанра - либо из БД, либо созданный и сохраненный
+     */
+    private Genre findOrCreateGenre(Genre genre) {
+        var genreInfoFromDb = genreRepository.findByName(genre.getName());
+        if (genreInfoFromDb == null) {
+            genreInfoFromDb = genreRepository.save(genre);
+        }
+        return genreInfoFromDb;
+    }
+
+    /**
+     * Проверяет наличие комментариев в БД и при их отсутствии - создает
+     *
+     * @param commentsList - комментарии у книги
+     * @return возвращает лист комментариев - либо из БД, либо созданный и сохраненный
+     */
+    private List<Comment> findOrCreateComments(List<Comment> commentsList) {
+        var commentsInfoFromDbList = commentRepository.findByCommentsTextList(commentsList.stream()
+                .map(Comment::getCommentText).toList());
+        if (commentsInfoFromDbList.isEmpty()) {
+            for (var comment : commentsList) {
+                commentsInfoFromDbList.add(commentRepository.save(comment));
+            }
+        }
+
+        return commentsInfoFromDbList;
     }
 }

@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(value = "select s from Comment s where s.commentText in ( :comments )")
-    List<Comment> findByCommentText(@Param("comments") List<String> comments);
+    List<Comment> findByCommentsTextList(@Param("comments") List<String> comments);
 }
