@@ -9,7 +9,6 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -43,9 +42,8 @@ public class Book {
 
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 20)
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
-    private List<Comment> comment = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "books", fetch = FetchType.LAZY)
+    private List<Comment> comment;
 
 
     public Book(String name, Long year, Author author, Genre genre, List<Comment> comment) {
@@ -54,6 +52,13 @@ public class Book {
         this.author = author;
         this.genre = genre;
         this.comment = comment;
+    }
+
+    public Book(String name, Long year, Author author, Genre genre) {
+        this.name = name;
+        this.year = year;
+        this.author = author;
+        this.genre = genre;
     }
 
     public Book() {
