@@ -34,11 +34,11 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author findByNameAndYear(Author author) {
+    public Author findByNameAndYear(String name, long year) {
         TypedQuery<Author> query = em.createQuery("select s from Author s where s.name = :name " +
                 " and s.year = :year", Author.class);
-        query.setParameter("name", author.getName());
-        query.setParameter("year", author.getYear());
+        query.setParameter("name", name);
+        query.setParameter("year", year);
         return query.getResultList().isEmpty() ? null : query.getResultList().get(0);
     }
 

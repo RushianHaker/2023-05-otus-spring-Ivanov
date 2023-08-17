@@ -9,7 +9,7 @@ public interface GenreDao {
 
     Optional<Genre> findById(long id);
 
-    Genre findByName(Genre genre);
+    Genre findByName(String name);
 
     void updateById(Genre genre);
 

@@ -30,7 +30,7 @@ class GenreDaoImplTest {
 
     @Test
     void findByNameAndId() {
-        var genre = genreDao.findByName(new Genre("comedy"));
+        var genre = genreDao.findByName("comedy");
 
         assertNotNull(genre);
         assertEquals(1, genre.getId());

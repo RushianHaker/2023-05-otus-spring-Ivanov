@@ -40,12 +40,12 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public Book save(String bookName, long bookYear, Author author, Genre genre, List<Comment> commentsList) {
-        var authorInfoFromDb = authorDao.findByNameAndYear(author);
+        var authorInfoFromDb = authorDao.findByNameAndYear(author.getName(), author.getYear());
         if (authorInfoFromDb == null) {
             authorInfoFromDb = authorDao.save(author);
         }
 
-        var genreInfoFromDb = genreDao.findByName(genre);
+        var genreInfoFromDb = genreDao.findByName(genre.getName());
         if (genreInfoFromDb == null) {
             genreInfoFromDb = genreDao.save(genre);
         }
@@ -102,12 +102,12 @@ public class BookServiceImpl implements BookService {
     @Override
     public void update(long bookId, String bookName, long bookYear, Author author, Genre genre,
                        List<Comment> commentsList) {
-        var authorInfoFromDb = authorDao.findByNameAndYear(author);
+        var authorInfoFromDb = authorDao.findByNameAndYear(author.getName(), author.getYear());
         if (authorInfoFromDb == null) {
             authorInfoFromDb = authorDao.save(author);
         }
 
-        var genreInfoFromDb = genreDao.findByName(genre);
+        var genreInfoFromDb = genreDao.findByName(genre.getName());
         if (genreInfoFromDb == null) {
             genreInfoFromDb = genreDao.save(genre);
         }

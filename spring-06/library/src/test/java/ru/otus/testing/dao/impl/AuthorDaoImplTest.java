@@ -30,7 +30,7 @@ class AuthorDaoImplTest {
 
     @Test
     void findByNameAndYear() {
-        var author = authorDao.findByNameAndYear(new Author("Andrey", 46));
+        var author = authorDao.findByNameAndYear("Andrey", 46);
 
         assertNotNull(author);
         assertEquals(1, author.getId());

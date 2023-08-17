@@ -9,7 +9,7 @@ public interface AuthorDao {
 
     Optional<Author> findById(long id);
 
-    Author findByNameAndYear(Author author);
+    Author findByNameAndYear(String name, long year);
 
     void updateById(Author author);
 
