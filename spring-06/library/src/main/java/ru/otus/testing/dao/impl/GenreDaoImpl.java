@@ -36,21 +36,25 @@ public class GenreDaoImpl implements GenreDao {
     @Override
     public Genre findByName(Genre genre) {
         TypedQuery<Genre> query = em.createQuery("select s from Genre s where s.name = :name ",
-                    Genre.class);
-            query.setParameter("name", genre.getName());
+                Genre.class);
+        query.setParameter("name", genre.getName());
         return query.getResultList().isEmpty() ? null : query.getResultList().get(0);
     }
 
     @Override
     public void updateById(long id, Genre genre) {
-        var findGenre = em.find(Genre.class, id);
-        findGenre.setName(genre.getName());
-        em.merge(findGenre);
+        var findGenre = findById(id);
+        if (findGenre.isPresent()) {
+            var presentGenre = findGenre.get();
+
+            presentGenre.setName(genre.getName());
+            em.merge(presentGenre);
+        }
     }
 
     @Override
     public void deleteById(long id) {
-        var findGenre = em.find(Genre.class, id);
-        em.remove(findGenre);
+        var findGenre = findById(id);
+        findGenre.ifPresent(em::remove);
     }
 }

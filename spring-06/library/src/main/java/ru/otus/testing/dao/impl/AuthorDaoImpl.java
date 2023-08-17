@@ -44,15 +44,19 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public void updateById(long id, Author author) {
-        var findAuthor = em.find(Author.class, id);
-        findAuthor.setName(author.getName());
-        findAuthor.setYear(author.getYear());
-        em.merge(findAuthor);
+        var findAuthor = findById(id);
+        if (findAuthor.isPresent()) {
+            var presentAuthor = findAuthor.get();
+
+            presentAuthor.setName(author.getName());
+            presentAuthor.setYear(author.getYear());
+            em.merge(presentAuthor);
+        }
     }
 
     @Override
     public void deleteById(long id) {
-        var findAuthor = em.find(Author.class, id);
-        em.remove(findAuthor);
+        var findAuthor = findById(id);
+        findAuthor.ifPresent(em::remove);
     }
 }

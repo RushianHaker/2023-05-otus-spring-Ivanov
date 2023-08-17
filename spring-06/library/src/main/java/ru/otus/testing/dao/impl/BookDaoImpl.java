@@ -52,34 +52,23 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public void updateById(long id, Book book) {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(FETCH.getKey(), em.getEntityGraph("otus-book-author-genre-entity-graph"));
-        var findBook = Optional.ofNullable(em.find(Book.class, id, properties));
+        var findBook = findById(id);
 
-        if (findBook.isEmpty()) {
-            throw new IllegalArgumentException("Can't find book with id: " + id + "!");
+        if (findBook.isPresent()) {
+            var presentBook = findBook.get();
+            presentBook.setName(book.getName());
+            presentBook.setYear(book.getYear());
+            presentBook.setAuthor(book.getAuthor());
+            presentBook.setGenre(book.getGenre());
+            presentBook.setComment(book.getComment());
+
+            em.merge(book);
         }
-
-        var presentFindBook = findBook.get();
-        presentFindBook.setName(book.getName());
-        presentFindBook.setYear(book.getYear());
-        presentFindBook.setAuthor(book.getAuthor());
-        presentFindBook.setGenre(book.getGenre());
-        presentFindBook.setComment(book.getComment());
-
-        em.merge(book);
     }
 
     @Override
     public void deleteById(long id) {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(FETCH.getKey(), em.getEntityGraph("otus-book-author-genre-entity-graph"));
-        var findBook = Optional.ofNullable(em.find(Book.class, id, properties));
-
-        if (findBook.isEmpty()) {
-            throw new IllegalArgumentException("Can't find book with id: " + id + "!");
-        }
-
-        em.remove(findBook.get());
+        var findBook = findById(id);
+        findBook.ifPresent(em::remove);
     }
 }
