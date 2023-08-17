@@ -7,7 +7,7 @@ import ru.otus.testing.service.IOService;
 import ru.otus.testing.service.UserAnswerService;
 
 @ShellComponent
-public class ApplicationCommandLine {
+public class BookCommandLine {
 
     private final BookService bookService;
 
@@ -15,7 +15,7 @@ public class ApplicationCommandLine {
 
     private final UserAnswerService userAnswerService;
 
-    public ApplicationCommandLine(BookService bookService, IOService ioService, UserAnswerService userAnswerService) {
+    public BookCommandLine(BookService bookService, IOService ioService, UserAnswerService userAnswerService) {
         this.bookService = bookService;
         this.ioService = ioService;
         this.userAnswerService = userAnswerService;
