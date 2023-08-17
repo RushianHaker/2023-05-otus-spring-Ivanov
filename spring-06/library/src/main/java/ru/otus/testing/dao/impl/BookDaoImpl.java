@@ -62,7 +62,7 @@ public class BookDaoImpl implements BookDao {
             presentBook.setGenre(book.getGenre());
             presentBook.setComment(book.getComment());
 
-            em.merge(book);
+            em.merge(presentBook);
         }
     }
 
