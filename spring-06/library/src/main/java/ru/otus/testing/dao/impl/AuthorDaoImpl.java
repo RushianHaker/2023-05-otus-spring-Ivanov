@@ -35,7 +35,7 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Author findByNameAndYear(Author author) {
-        TypedQuery<Author> query = em.createQuery("select distinct s from Author s where s.name = :name " +
+        TypedQuery<Author> query = em.createQuery("select s from Author s where s.name = :name " +
                 " and s.year = :year", Author.class);
         query.setParameter("name", author.getName());
         query.setParameter("year", author.getYear());

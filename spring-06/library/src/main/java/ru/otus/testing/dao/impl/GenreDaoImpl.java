@@ -35,7 +35,7 @@ public class GenreDaoImpl implements GenreDao {
 
     @Override
     public Genre findByName(Genre genre) {
-            TypedQuery<Genre> query = em.createQuery("select distinct s from Genre s where s.name = :name ",
+        TypedQuery<Genre> query = em.createQuery("select s from Genre s where s.name = :name ",
                     Genre.class);
             query.setParameter("name", genre.getName());
         return query.getResultList().isEmpty() ? null : query.getResultList().get(0);
