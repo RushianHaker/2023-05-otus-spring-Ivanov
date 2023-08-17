@@ -51,8 +51,8 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void updateById(long id, Book book) {
-        var findBook = findById(id);
+    public void updateById(Book book) {
+        var findBook = findById(book.getId());
 
         if (findBook.isPresent()) {
             var presentBook = findBook.get();

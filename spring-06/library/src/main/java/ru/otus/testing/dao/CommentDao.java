@@ -12,7 +12,7 @@ public interface CommentDao {
 
     List<Comment> findByIdAndCommentText(List<Comment> comments);
 
-    void updateById(long id, Comment comment);
+    void updateById(Comment comment);
 
     void deleteById(long id);
 }

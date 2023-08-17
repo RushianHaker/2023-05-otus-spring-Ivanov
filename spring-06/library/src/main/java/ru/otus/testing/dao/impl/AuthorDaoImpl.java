@@ -43,8 +43,8 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public void updateById(long id, Author author) {
-        var findAuthor = findById(id);
+    public void updateById(Author author) {
+        var findAuthor = findById(author.getId());
         if (findAuthor.isPresent()) {
             var presentAuthor = findAuthor.get();
 

@@ -119,7 +119,7 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        bookDao.updateById(bookId, new Book(bookName, bookYear, authorInfoFromDb,
+        bookDao.updateById(new Book(bookId, bookName, bookYear, authorInfoFromDb,
                 genreInfoFromDb, commentsInfoFromDbList));
     }
 

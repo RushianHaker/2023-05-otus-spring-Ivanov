@@ -11,7 +11,7 @@ public interface AuthorDao {
 
     Author findByNameAndYear(Author author);
 
-    void updateById(long id, Author author);
+    void updateById(Author author);
 
     void deleteById(long id);
 }

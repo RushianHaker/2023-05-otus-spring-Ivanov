@@ -53,7 +53,7 @@ class AuthorDaoImplTest {
 
     @Test
     void updateById() {
-        authorDao.updateById(1, new Author("hello test", 11111));
+        authorDao.updateById(new Author(1, "hello test", 11111));
 
         var author = authorDao.findById(1);
         assertTrue(author.isPresent());

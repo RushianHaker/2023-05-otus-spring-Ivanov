@@ -57,7 +57,7 @@ class CommentDaoImplTest {
 
     @Test
     void updateById() {
-        commentDao.updateById(1, new Comment("hello test"));
+        commentDao.updateById(new Comment(1, "hello test"));
 
         var comment = commentDao.findById(1);
 

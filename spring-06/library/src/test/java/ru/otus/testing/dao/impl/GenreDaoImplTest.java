@@ -52,7 +52,7 @@ class GenreDaoImplTest {
 
     @Test
     void update() {
-        genreDao.updateById(1, new Genre("hello test"));
+        genreDao.updateById(new Genre(1, "hello test"));
 
         var genre = genreDao.findById(1);
 

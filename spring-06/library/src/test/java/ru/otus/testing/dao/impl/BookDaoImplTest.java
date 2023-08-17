@@ -99,7 +99,7 @@ class BookDaoImplTest {
     @Test
     @Rollback
     void update() {
-        bookDao.updateById(1, new Book("Tolstoy Tolstoy Tolstoy", 1111L,
+        bookDao.updateById(new Book(1, "Tolstoy Tolstoy Tolstoy", 1111L,
                 new Author("AAAAA", 1111), new Genre("AAAAA"),
                 List.of(new Comment("AAAAA"))));
 
