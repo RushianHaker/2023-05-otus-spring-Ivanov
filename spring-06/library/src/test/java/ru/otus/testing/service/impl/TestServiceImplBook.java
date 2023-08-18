@@ -37,12 +37,12 @@ class TestServiceImplBook {
     @Test
     void getAll() {
         var book = new Book("war and peace", 4321L, new Author("Tolstoy", 50L),
-                new Genre("history"), List.of(new Comment("cool!")));
+                new Genre("history"), List.of(new Comment("cool!", new Book())));
 
         when(bookDao.save(book)).thenReturn(book);
 
         service.save("war and peace", 4321L, new Author("Tolstoy", 50L),
-                new Genre("history"), List.of(new Comment("cool!")));
+                new Genre("history"), List.of(new Comment("cool!", new Book())));
 
         ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
         verify(bookDao, times(1)).save(captor.capture());
