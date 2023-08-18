@@ -42,7 +42,7 @@ public class Book {
 
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 20)
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "books", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
     private List<Comment> comment;
 
 
@@ -52,6 +52,14 @@ public class Book {
         this.author = author;
         this.genre = genre;
         this.comment = comment;
+    }
+
+    public Book(long id, String name, Long year, Author author, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
+        this.author = author;
+        this.genre = genre;
     }
 
     public Book(String name, Long year, Author author, Genre genre) {

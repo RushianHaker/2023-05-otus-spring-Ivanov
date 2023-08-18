@@ -21,12 +21,13 @@ public class Comment {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    public Comment(String commentText) {
-        this.commentText = commentText;
-    }
-
     public Comment(long id, String commentText, Book book) {
         this.id = id;
+        this.commentText = commentText;
+        this.book = book;
+    }
+
+    public Comment(String commentText, Book book) {
         this.commentText = commentText;
         this.book = book;
     }

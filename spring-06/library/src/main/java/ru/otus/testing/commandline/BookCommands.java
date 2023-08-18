@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.testing.model.Author;
+import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
@@ -58,7 +59,8 @@ public class BookCommands {
         var author = new Author(authorName, authorYear);
         var genre = new Genre(genreName);
 
-        var commentsList = Arrays.stream(comments).map(Comment::new).toList();
+        var commentsList = Arrays.stream(comments).map(comment -> new Comment(comment,
+                new Book(bookName, bookYear, author, genre))).toList();
 
         bookService.save(bookName, bookYear, author, genre, commentsList);
         return "Book was created";
@@ -70,7 +72,8 @@ public class BookCommands {
         var author = new Author(authorName, authorYear);
         var genre = new Genre(genreName);
 
-        var commentsList = Arrays.stream(comments).map(Comment::new).toList();
+        var commentsList = Arrays.stream(comments).map(comment -> new Comment(comment,
+                new Book(bookId, bookName, bookYear, author, genre))).toList();
 
         bookService.update(bookId, bookName, bookYear, author, genre, commentsList);
         return "Info about book was updated";
