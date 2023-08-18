@@ -34,6 +34,7 @@ import java.util.List;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true)
     private long id;
 
     @Column(name = "book_name", nullable = false)
@@ -54,9 +55,8 @@ public class Book {
 
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 20)
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
-    private List<Comment> comment = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
+    private List<Comment> comment;
 
 
     public Book(String name, Long year, Author author, Genre genre, List<Comment> comment) {
@@ -65,6 +65,21 @@ public class Book {
         this.author = author;
         this.genre = genre;
         this.comment = comment;
+    }
+
+    public Book(long id, String name, Long year, Author author, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
+        this.author = author;
+        this.genre = genre;
+    }
+
+    public Book(String name, Long year, Author author, Genre genre) {
+        this.name = name;
+        this.year = year;
+        this.author = author;
+        this.genre = genre;
     }
 
     public Book() {

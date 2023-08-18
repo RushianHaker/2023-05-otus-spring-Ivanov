@@ -1,11 +1,6 @@
 package ru.otus.testing.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,13 +16,19 @@ public class Comment {
     @Column(name = "comment_text", nullable = false)
     private String commentText;
 
-    public Comment(String commentText) {
-        this.commentText = commentText;
-    }
+    @ManyToOne(targetEntity = Book.class, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private Book book;
 
-    public Comment(long id, String commentText) {
+    public Comment(long id, String commentText, Book book) {
         this.id = id;
         this.commentText = commentText;
+        this.book = book;
+    }
+
+    public Comment(String commentText, Book book) {
+        this.commentText = commentText;
+        this.book = book;
     }
 
     public Comment() {
