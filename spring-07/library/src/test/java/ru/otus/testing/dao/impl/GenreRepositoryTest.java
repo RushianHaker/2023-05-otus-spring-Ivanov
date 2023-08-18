@@ -3,6 +3,7 @@ package ru.otus.testing.dao.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.GenreRepository;
 import ru.otus.testing.model.Genre;
@@ -14,6 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class GenreRepositoryTest {
     @Autowired
     private GenreRepository genreRepository;
+
+    @Autowired
+    private TestEntityManager em;
 
     @Test
     void findById() {
@@ -37,30 +41,23 @@ class GenreRepositoryTest {
 
     @Test
     void save() {
-        genreRepository.save(new Genre("AAAAAA"));
+        var saveGenre = genreRepository.save(new Genre("AAAAAA"));
+        var genre = em.find(Genre.class, 3);
 
-        var genre = genreRepository.findById(3L);
-
-        assertTrue(genre.isPresent());
-
-        var presentComment = genre.get();
-        assertEquals(3, presentComment.getId());
-        assertEquals("AAAAAA", presentComment.getName());
+        assertEquals(saveGenre.getId(), genre.getId());
+        assertEquals(saveGenre.getName(), genre.getName());
     }
 
     @Test
     @Rollback
     void deleteById() {
-        var genre = genreRepository.findById(1L);
+        var genre = em.find(Genre.class, 1);
 
-        assertTrue(genre.isPresent());
-
-        var presentComment = genre.get();
-        assertEquals(1, presentComment.getId());
-        assertEquals("comedy", presentComment.getName());
+        assertEquals(1, genre.getId());
+        assertEquals("comedy", genre.getName());
 
         genreRepository.deleteById(1L);
 
-        assertTrue(genreRepository.findById(1L).isEmpty());
+        assertNull(em.find(Genre.class, 1));
     }
 }
