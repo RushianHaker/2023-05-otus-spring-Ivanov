@@ -7,11 +7,9 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.BookDao;
 import ru.otus.testing.model.Book;
+import ru.otus.testing.model.Comment;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 
@@ -60,7 +58,9 @@ public class BookDaoImpl implements BookDao {
             presentBook.setYear(book.getYear());
             presentBook.setAuthor(book.getAuthor());
             presentBook.setGenre(book.getGenre());
-            presentBook.setComment(book.getComment());
+
+            List<Comment> commentList = new ArrayList<>(book.getComment());
+            presentBook.setComment(commentList);
 
             em.merge(presentBook);
         }
