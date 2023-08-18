@@ -3,6 +3,7 @@ package ru.otus.testing.dao.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.AuthorDao;
@@ -16,67 +17,65 @@ class AuthorDaoImplTest {
     @Autowired
     private AuthorDao authorDao;
 
+    @Autowired
+    private TestEntityManager em;
+
     @Test
     void findById() {
+        var dbAuthor = em.find(Author.class, 1);
         var author = authorDao.findById(1);
 
         assertTrue(author.isPresent());
 
         var presentAuthor = author.get();
-        assertEquals(1, presentAuthor.getId());
-        assertEquals("Andrey", presentAuthor.getName());
-        assertEquals(46, presentAuthor.getYear());
+        assertEquals(dbAuthor.getId(), presentAuthor.getId());
+        assertEquals(dbAuthor.getName(), presentAuthor.getName());
+        assertEquals(dbAuthor.getYear(), presentAuthor.getYear());
     }
 
     @Test
     void findByNameAndYear() {
-        var author = authorDao.findByNameAndYear(new Author("Andrey", 46));
+        var dbAuthor = em.find(Author.class, 1);
+        var author = authorDao.findByNameAndYear("Andrey", 46);
 
         assertNotNull(author);
-        assertEquals(1, author.getId());
-        assertEquals("Andrey", author.getName());
-        assertEquals(46, author.getYear());
+        assertEquals(dbAuthor.getId(), author.getId());
+        assertEquals(dbAuthor.getName(), author.getName());
+        assertEquals(dbAuthor.getYear(), author.getYear());
     }
 
     @Test
     void save() {
-        authorDao.save(new Author("AAAAAA", 50L));
+        var saveAuthor = authorDao.save(new Author("AAAAAA", 50L));
+        var dbAuthor = em.find(Author.class, 3);
 
-        var author = authorDao.findById(3);
-        assertTrue(author.isPresent());
-
-        var presentAuthor = author.get();
-        assertEquals(3, presentAuthor.getId());
-        assertEquals("AAAAAA", presentAuthor.getName());
-        assertEquals(50L, presentAuthor.getYear());
+        assertEquals(dbAuthor.getId(), saveAuthor.getId());
+        assertEquals(dbAuthor.getName(), saveAuthor.getName());
+        assertEquals(dbAuthor.getYear(), saveAuthor.getYear());
     }
 
     @Test
     void updateById() {
-        authorDao.updateById(1, new Author("hello test", 11111));
+        authorDao.updateById(new Author(1, "hello test", 11111));
 
-        var author = authorDao.findById(1);
-        assertTrue(author.isPresent());
+        var dbAuthor = em.find(Author.class, 1);
 
-        var presentAuthor = author.get();
-        assertEquals(1, presentAuthor.getId());
-        assertEquals("hello test", presentAuthor.getName());
-        assertEquals(11111, presentAuthor.getYear());
+        assertEquals(1, dbAuthor.getId());
+        assertEquals("hello test", dbAuthor.getName());
+        assertEquals(11111, dbAuthor.getYear());
     }
 
     @Test
     @Rollback
     void deleteById() {
-        var author = authorDao.findById(1);
-        assertTrue(author.isPresent());
+        var dbAuthor = em.find(Author.class, 1);
 
-        var presentAuthor = author.get();
-        assertEquals(1, presentAuthor.getId());
-        assertEquals("Andrey", presentAuthor.getName());
-        assertEquals(46, presentAuthor.getYear());
+        assertEquals(1, dbAuthor.getId());
+        assertEquals("Andrey", dbAuthor.getName());
+        assertEquals(46, dbAuthor.getYear());
 
         authorDao.deleteById(1);
 
-        assertTrue(authorDao.findById(1).isEmpty());
+        assertNull(em.find(Author.class, 1));
     }
 }

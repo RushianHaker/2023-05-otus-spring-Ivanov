@@ -11,7 +11,6 @@ import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
-import ru.otus.testing.service.IOService;
 
 import java.util.List;
 
@@ -26,26 +25,22 @@ public class BookServiceImpl implements BookService {
 
     private final CommentDao commentDao;
 
-    private final IOService ioService;
-
-    public BookServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao, CommentDao commentDao,
-                           IOService ioService) {
+    public BookServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao, CommentDao commentDao) {
         this.bookDao = bookDao;
         this.authorDao = authorDao;
         this.genreDao = genreDao;
         this.commentDao = commentDao;
-        this.ioService = ioService;
     }
 
     @Transactional
     @Override
     public Book save(String bookName, long bookYear, Author author, Genre genre, List<Comment> commentsList) {
-        var authorInfoFromDb = authorDao.findByNameAndYear(author);
+        var authorInfoFromDb = authorDao.findByNameAndYear(author.getName(), author.getYear());
         if (authorInfoFromDb == null) {
             authorInfoFromDb = authorDao.save(author);
         }
 
-        var genreInfoFromDb = genreDao.findByName(genre);
+        var genreInfoFromDb = genreDao.findByName(genre.getName());
         if (genreInfoFromDb == null) {
             genreInfoFromDb = genreDao.save(genre);
         }
@@ -63,51 +58,24 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book findById(long bookId) {
         var bookInfo = bookDao.findById(bookId);
-
-        if (bookInfo.isPresent()) {
-            var presentedBookInfo = bookInfo.get();
-            ioService.outputString(
-                    "Book-" + presentedBookInfo.getId() + ")" +
-                            " id: " + presentedBookInfo.getId() +
-                            ", name: " + presentedBookInfo.getName() +
-                            ", year: " + presentedBookInfo.getYear() +
-                            ", authors : " + presentedBookInfo.getAuthor() +
-                            ", genres: " + presentedBookInfo.getGenre() +
-                            ", comments: " + presentedBookInfo.getComment());
-
-            return presentedBookInfo;
-        }
-        return new Book();
+        return bookInfo.orElseGet(Book::new);
     }
 
     @Override
     public List<Book> findAll() {
-        var booksList = bookDao.findAll();
-
-        ioService.outputString("Books info list (size: " + booksList.size() + "): ");
-        for (var bookInfo : booksList) {
-            ioService.outputString(
-                    "Book-" + bookInfo.getId() + ")" +
-                            " id: " + bookInfo.getId() +
-                            ", name: " + bookInfo.getName() +
-                            ", year: " + bookInfo.getYear() +
-                            ", authors : " + bookInfo.getAuthor() +
-                            ", genres: " + bookInfo.getGenre() +
-                            ", comments: " + bookInfo.getComment());
-        }
-        return booksList;
+        return bookDao.findAll();
     }
 
     @Transactional
     @Override
     public void update(long bookId, String bookName, long bookYear, Author author, Genre genre,
                        List<Comment> commentsList) {
-        var authorInfoFromDb = authorDao.findByNameAndYear(author);
+        var authorInfoFromDb = authorDao.findByNameAndYear(author.getName(), author.getYear());
         if (authorInfoFromDb == null) {
             authorInfoFromDb = authorDao.save(author);
         }
 
-        var genreInfoFromDb = genreDao.findByName(genre);
+        var genreInfoFromDb = genreDao.findByName(genre.getName());
         if (genreInfoFromDb == null) {
             genreInfoFromDb = genreDao.save(genre);
         }
@@ -119,7 +87,7 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        bookDao.updateById(bookId, new Book(bookName, bookYear, authorInfoFromDb,
+        bookDao.updateById(new Book(bookId, bookName, bookYear, authorInfoFromDb,
                 genreInfoFromDb, commentsInfoFromDbList));
     }
 

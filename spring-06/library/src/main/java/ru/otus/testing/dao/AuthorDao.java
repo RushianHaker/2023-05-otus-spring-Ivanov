@@ -9,9 +9,9 @@ public interface AuthorDao {
 
     Optional<Author> findById(long id);
 
-    Author findByNameAndYear(Author author);
+    Author findByNameAndYear(String name, long year);
 
-    void updateById(long id, Author author);
+    void updateById(Author author);
 
     void deleteById(long id);
 }

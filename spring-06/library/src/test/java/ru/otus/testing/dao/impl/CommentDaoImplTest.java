@@ -3,15 +3,16 @@ package ru.otus.testing.dao.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.CommentDao;
+import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @Import({CommentDaoImpl.class})
@@ -19,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CommentDaoImplTest {
     @Autowired
     private CommentDao commentDao;
+
+    @Autowired
+    private TestEntityManager em;
 
     @Test
     void findById() {
@@ -33,7 +37,7 @@ class CommentDaoImplTest {
 
     @Test
     void findByIdAndCommentText() {
-        var comment = commentDao.findByIdAndCommentText(List.of(new Comment(2, "Cool!")));
+        var comment = commentDao.findByIdAndCommentText(List.of(new Comment(2, "Cool!", new Book())));
 
         assertEquals(1, comment.size());
 
@@ -44,43 +48,34 @@ class CommentDaoImplTest {
 
     @Test
     void save() {
-        commentDao.save(new Comment("hello test"));
+        commentDao.save(new Comment("hello test", new Book()));
 
-        var comment = commentDao.findById(3);
+        var comment = em.find(Comment.class, 3);
 
-        assertTrue(comment.isPresent());
-
-        var presentComment = comment.get();
-        assertEquals(3, presentComment.getId());
-        assertEquals("hello test", presentComment.getCommentText());
+        assertEquals(3, comment.getId());
+        assertEquals("hello test", comment.getCommentText());
     }
 
     @Test
     void updateById() {
-        commentDao.updateById(1, new Comment("hello test"));
+        commentDao.updateById(new Comment(1, "hello test", new Book()));
 
-        var comment = commentDao.findById(1);
+        var comment = em.find(Comment.class, 1);
 
-        assertTrue(comment.isPresent());
-
-        var presentComment = comment.get();
-        assertEquals(1, presentComment.getId());
-        assertEquals("hello test", presentComment.getCommentText());
+        assertEquals(1, comment.getId());
+        assertEquals("hello test", comment.getCommentText());
     }
 
     @Test
     @Rollback
     void deleteById() {
-        var comment = commentDao.findById(1);
+        var comment = em.find(Comment.class, 1);
 
-        assertTrue(comment.isPresent());
-
-        var presentComment = comment.get();
-        assertEquals(1, presentComment.getId());
-        assertEquals("I can write better!", presentComment.getCommentText());
+        assertEquals(1, comment.getId());
+        assertEquals("I can write better!", comment.getCommentText());
 
         commentDao.deleteById(1);
 
-        assertTrue(commentDao.findById(1).isEmpty());
+        assertNull(em.find(Comment.class, 1));
     }
 }

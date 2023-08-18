@@ -34,25 +34,29 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author findByNameAndYear(Author author) {
-        TypedQuery<Author> query = em.createQuery("select distinct s from Author s where s.name = :name " +
+    public Author findByNameAndYear(String name, long year) {
+        TypedQuery<Author> query = em.createQuery("select s from Author s where s.name = :name " +
                 " and s.year = :year", Author.class);
-        query.setParameter("name", author.getName());
-        query.setParameter("year", author.getYear());
+        query.setParameter("name", name);
+        query.setParameter("year", year);
         return query.getResultList().isEmpty() ? null : query.getResultList().get(0);
     }
 
     @Override
-    public void updateById(long id, Author author) {
-        var findAuthor = em.find(Author.class, id);
-        findAuthor.setName(author.getName());
-        findAuthor.setYear(author.getYear());
-        em.merge(findAuthor);
+    public void updateById(Author author) {
+        var findAuthor = findById(author.getId());
+        if (findAuthor.isPresent()) {
+            var presentAuthor = findAuthor.get();
+
+            presentAuthor.setName(author.getName());
+            presentAuthor.setYear(author.getYear());
+            em.merge(presentAuthor);
+        }
     }
 
     @Override
     public void deleteById(long id) {
-        var findAuthor = em.find(Author.class, id);
-        em.remove(findAuthor);
+        var findAuthor = findById(id);
+        findAuthor.ifPresent(em::remove);
     }
 }

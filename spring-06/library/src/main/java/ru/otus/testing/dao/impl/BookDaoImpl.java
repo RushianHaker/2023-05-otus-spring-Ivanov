@@ -7,11 +7,9 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.BookDao;
 import ru.otus.testing.model.Book;
+import ru.otus.testing.model.Comment;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 
@@ -45,41 +43,32 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> findAll() {
         EntityGraph<?> entityGraph = em.getEntityGraph("otus-book-author-genre-entity-graph");
-        TypedQuery<Book> query = em.createQuery("select distinct b from Book b", Book.class);
+        TypedQuery<Book> query = em.createQuery("select distinct b from Book b join fetch b.comment", Book.class);
         query.setHint(FETCH.getKey(), entityGraph);
         return query.getResultList();
     }
 
     @Override
-    public void updateById(long id, Book book) {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(FETCH.getKey(), em.getEntityGraph("otus-book-author-genre-entity-graph"));
-        var findBook = Optional.ofNullable(em.find(Book.class, id, properties));
+    public void updateById(Book book) {
+        var findBook = findById(book.getId());
 
-        if (findBook.isEmpty()) {
-            throw new IllegalArgumentException("Can't find book with id: " + id + "!");
+        if (findBook.isPresent()) {
+            var presentBook = findBook.get();
+            presentBook.setName(book.getName());
+            presentBook.setYear(book.getYear());
+            presentBook.setAuthor(book.getAuthor());
+            presentBook.setGenre(book.getGenre());
+
+            List<Comment> commentList = new ArrayList<>(book.getComment());
+            presentBook.setComment(commentList);
+
+            em.merge(presentBook);
         }
-
-        var presentFindBook = findBook.get();
-        presentFindBook.setName(book.getName());
-        presentFindBook.setYear(book.getYear());
-        presentFindBook.setAuthor(book.getAuthor());
-        presentFindBook.setGenre(book.getGenre());
-        presentFindBook.setComment(book.getComment());
-
-        em.merge(book);
     }
 
     @Override
     public void deleteById(long id) {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(FETCH.getKey(), em.getEntityGraph("otus-book-author-genre-entity-graph"));
-        var findBook = Optional.ofNullable(em.find(Book.class, id, properties));
-
-        if (findBook.isEmpty()) {
-            throw new IllegalArgumentException("Can't find book with id: " + id + "!");
-        }
-
-        em.remove(findBook.get());
+        var findBook = findById(id);
+        findBook.ifPresent(em::remove);
     }
 }
