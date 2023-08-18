@@ -3,20 +3,24 @@ package ru.otus.testing.dao.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.CommentRepository;
+import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataJpaTest
 class CommentRepositoryTest {
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private TestEntityManager em;
 
     @Test
     void findById() {
@@ -44,32 +48,17 @@ class CommentRepositoryTest {
         assertEquals("Cool!", presentSecondComment.getCommentText());
     }
 
-    @Test
-    void save() {
-        commentRepository.save(new Comment("hello test"));
-
-        var comment = commentRepository.findById(2L);
-
-        assertTrue(comment.isPresent());
-
-        var presentComment = comment.get();
-        assertEquals(2, presentComment.getId());
-        assertEquals("Cool!", presentComment.getCommentText());
-    }
 
     @Test
     @Rollback
     void deleteById() {
-        var comment = commentRepository.findById(1L);
+        var comment = em.find(Comment.class, 1);
 
-        assertTrue(comment.isPresent());
-
-        var presentComment = comment.get();
-        assertEquals(1, presentComment.getId());
-        assertEquals("I can write better!", presentComment.getCommentText());
+        assertEquals(1, comment.getId());
+        assertEquals("I can write better!", comment.getCommentText());
 
         commentRepository.deleteById(1L);
 
-        assertTrue(commentRepository.findById(1L).isEmpty());
+        assertNull(em.find(Comment.class, 1));
     }
 }

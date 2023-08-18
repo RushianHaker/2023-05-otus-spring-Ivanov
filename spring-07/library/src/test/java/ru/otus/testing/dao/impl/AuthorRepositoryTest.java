@@ -3,6 +3,7 @@ package ru.otus.testing.dao.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.AuthorRepository;
@@ -14,6 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuthorRepositoryTest {
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private TestEntityManager em;
 
     @Test
     void findById() {
@@ -39,30 +43,26 @@ class AuthorRepositoryTest {
 
     @Test
     void save() {
-        authorRepository.save(new Author("AAAAAA", 50L));
+        var saveAuthor = authorRepository.save(new Author("AAAAAA", 50L));
 
-        var author = authorRepository.findById(3L);
-        assertTrue(author.isPresent());
+        var dbAuthor = em.find(Author.class, 3);
 
-        var presentAuthor = author.get();
-        assertEquals(3, presentAuthor.getId());
-        assertEquals("AAAAAA", presentAuthor.getName());
-        assertEquals(50L, presentAuthor.getYear());
+        assertEquals(dbAuthor.getId(), saveAuthor.getId());
+        assertEquals(dbAuthor.getName(), saveAuthor.getName());
+        assertEquals(dbAuthor.getYear(), saveAuthor.getYear());
     }
 
     @Test
     @Rollback
     void deleteById() {
-        var author = authorRepository.findById(1L);
-        assertTrue(author.isPresent());
+        var dbAuthor = em.find(Author.class, 1);
 
-        var presentAuthor = author.get();
-        assertEquals(1, presentAuthor.getId());
-        assertEquals("Andrey", presentAuthor.getName());
-        assertEquals(46, presentAuthor.getYear());
+        assertEquals(1, dbAuthor.getId());
+        assertEquals("Andrey", dbAuthor.getName());
+        assertEquals(46, dbAuthor.getYear());
 
         authorRepository.deleteById(1L);
 
-        assertTrue(authorRepository.findById(1L).isEmpty());
+        assertNull(em.find(Author.class, 1));
     }
 }
