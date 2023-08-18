@@ -9,8 +9,8 @@ import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.CheckDbFillingService;
-import ru.otus.testing.service.IOService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,13 +20,20 @@ public class BookServiceImpl implements BookService {
 
     private final CheckDbFillingService checkDbFillingService;
 
-    private final IOService ioService;
-
-    public BookServiceImpl(BookRepository bookRepository, CheckDbFillingService checkDbFillingService,
-                           IOService ioService) {
+    public BookServiceImpl(BookRepository bookRepository, CheckDbFillingService checkDbFillingService) {
         this.bookRepository = bookRepository;
         this.checkDbFillingService = checkDbFillingService;
-        this.ioService = ioService;
+    }
+
+    @Override
+    public Book findById(long bookId) {
+        var bookInfo = bookRepository.findById(bookId);
+        return bookInfo.orElseGet(Book::new);
+    }
+
+    @Override
+    public List<Book> findAll() {
+        return bookRepository.findAll();
     }
 
     @Transactional
@@ -38,44 +45,6 @@ public class BookServiceImpl implements BookService {
 
         return bookRepository.save(new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb,
                 commentsInfoFromDbList));
-    }
-
-    @Override
-    public Book findById(long bookId) {
-        var bookInfo = bookRepository.findById(bookId);
-
-        if (bookInfo.isPresent()) {
-            var presentedBookInfo = bookInfo.get();
-            ioService.outputString(
-                    "Book-" + presentedBookInfo.getId() + ")" +
-                            " id: " + presentedBookInfo.getId() +
-                            ", name: " + presentedBookInfo.getName() +
-                            ", year: " + presentedBookInfo.getYear() +
-                            ", authors : " + presentedBookInfo.getAuthor() +
-                            ", genres: " + presentedBookInfo.getGenre() +
-                            ", comments: " + presentedBookInfo.getComment());
-
-            return presentedBookInfo;
-        }
-        return new Book();
-    }
-
-    @Override
-    public List<Book> findAll() {
-        var booksList = bookRepository.findAll();
-
-        ioService.outputString("Books info list (size: " + booksList.size() + "): ");
-        for (var bookInfo : booksList) {
-            ioService.outputString(
-                    "Book-" + bookInfo.getId() + ")" +
-                            " id: " + bookInfo.getId() +
-                            ", name: " + bookInfo.getName() +
-                            ", year: " + bookInfo.getYear() +
-                            ", authors : " + bookInfo.getAuthor() +
-                            ", genres: " + bookInfo.getGenre() +
-                            ", comments: " + bookInfo.getComment());
-        }
-        return booksList;
     }
 
     @Transactional
@@ -94,7 +63,9 @@ public class BookServiceImpl implements BookService {
             presentFindBook.setYear(bookYear);
             presentFindBook.setAuthor(authorInfoFromDb);
             presentFindBook.setGenre(genreInfoFromDb);
-            presentFindBook.setComment(commentsInfoFromDbList);
+
+            List<Comment> commentList = new ArrayList<>(commentsInfoFromDbList);
+            presentFindBook.setComment(commentList);
 
             bookRepository.save(presentFindBook);
         }
