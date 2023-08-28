@@ -51,16 +51,6 @@ class GenreDaoImplTest {
     }
 
     @Test
-    void update() {
-        genreDao.updateById(new Genre(1, "hello test"));
-
-        var genre = em.find(Genre.class, 1);
-
-        assertEquals(1, genre.getId());
-        assertEquals("hello test", genre.getName());
-    }
-
-    @Test
     @Rollback
     void deleteById() {
         var genre = em.find(Genre.class, 1);

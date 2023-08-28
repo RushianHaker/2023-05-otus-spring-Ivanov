@@ -57,16 +57,6 @@ class CommentDaoImplTest {
     }
 
     @Test
-    void updateById() {
-        commentDao.updateById(new Comment(1, "hello test", new Book()));
-
-        var comment = em.find(Comment.class, 1);
-
-        assertEquals(1, comment.getId());
-        assertEquals("hello test", comment.getCommentText());
-    }
-
-    @Test
     @Rollback
     void deleteById() {
         var comment = em.find(Comment.class, 1);

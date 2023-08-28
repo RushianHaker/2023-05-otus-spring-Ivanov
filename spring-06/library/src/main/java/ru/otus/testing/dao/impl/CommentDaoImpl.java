@@ -52,17 +52,6 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public void updateById(Comment comment) {
-        var findComment = findById(comment.getId());
-        if (findComment.isPresent()) {
-            var presentComment = findComment.get();
-
-            presentComment.setCommentText(comment.getCommentText());
-            em.merge(presentComment);
-        }
-    }
-
-    @Override
     public void deleteById(long id) {
         var findComment = findById(id);
         findComment.ifPresent(em::remove);

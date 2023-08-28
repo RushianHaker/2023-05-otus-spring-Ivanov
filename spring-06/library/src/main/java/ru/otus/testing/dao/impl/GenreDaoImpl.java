@@ -42,17 +42,6 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public void updateById(Genre genre) {
-        var findGenre = findById(genre.getId());
-        if (findGenre.isPresent()) {
-            var presentGenre = findGenre.get();
-
-            presentGenre.setName(genre.getName());
-            em.merge(presentGenre);
-        }
-    }
-
-    @Override
     public void deleteById(long id) {
         var findGenre = findById(id);
         findGenre.ifPresent(em::remove);

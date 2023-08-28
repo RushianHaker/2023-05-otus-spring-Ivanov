@@ -55,17 +55,6 @@ class AuthorDaoImplTest {
     }
 
     @Test
-    void updateById() {
-        authorDao.updateById(new Author(1, "hello test", 11111));
-
-        var dbAuthor = em.find(Author.class, 1);
-
-        assertEquals(1, dbAuthor.getId());
-        assertEquals("hello test", dbAuthor.getName());
-        assertEquals(11111, dbAuthor.getYear());
-    }
-
-    @Test
     @Rollback
     void deleteById() {
         var dbAuthor = em.find(Author.class, 1);
