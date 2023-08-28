@@ -8,6 +8,7 @@ import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
+import ru.otus.testing.service.PrintBookService;
 
 import java.util.Arrays;
 
@@ -16,41 +17,23 @@ public class BookCommands {
 
     private final BookService bookService;
 
-    public BookCommands(BookService bookService) {
+    private final PrintBookService printBookService;
+
+    public BookCommands(BookService bookService, PrintBookService printBookService) {
         this.bookService = bookService;
+        this.printBookService = printBookService;
     }
 
     @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
     public String readBookById(long bookId) {
         var presentedBookInfo = bookService.findById(bookId);
-
-        return "Book info: " +
-                " id: " + presentedBookInfo.getId() +
-                ", name: " + presentedBookInfo.getName() +
-                ", year: " + presentedBookInfo.getYear() +
-                ", author : " + presentedBookInfo.getAuthor() +
-                ", genre: " + presentedBookInfo.getGenre() +
-                ", comments: " + presentedBookInfo.getComments().stream().map(Comment::getCommentText).toList();
+        return printBookService.printBookToConsole(presentedBookInfo);
     }
 
     @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
     public String readAllBook() {
         var booksList = bookService.findAll();
-
-        var stringBuilder = new StringBuilder("Books info list (size: " + booksList.size() + "): ");
-
-        for (var bookInfo : booksList) {
-            stringBuilder
-                    .append("Book-").append(bookInfo.getId()).append(")")
-                    .append(" id: ").append(bookInfo.getId())
-                    .append(", name: ").append(bookInfo.getName())
-                    .append(", year: ").append(bookInfo.getYear())
-                    .append(", author : ").append(bookInfo.getAuthor().getName())
-                    .append(", genre: ").append(bookInfo.getGenre().getName())
-                    .append(", comments: ").append(bookInfo.getComments().stream().map(Comment::getCommentText).toList());
-        }
-
-        return stringBuilder.toString();
+        return printBookService.printListBooksToConsole(booksList);
     }
 
     @ShellMethod(value = "create-book", key = {"create-book", "-c-book"})
@@ -84,4 +67,5 @@ public class BookCommands {
         bookService.delete(bookId);
         return "Book was deleted";
     }
+
 }
