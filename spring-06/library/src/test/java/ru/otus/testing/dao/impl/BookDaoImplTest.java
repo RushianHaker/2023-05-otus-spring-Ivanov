@@ -45,8 +45,8 @@ class BookDaoImplTest {
         assertEquals("Andrey", preasentBook.getAuthor().getName());
         assertEquals(46, preasentBook.getAuthor().getYear());
 
-        assertEquals(1, preasentBook.getComment().get(0).getId());
-        assertEquals("I can write better!", preasentBook.getComment().get(0).getCommentText());
+        assertEquals(1, preasentBook.getComments().get(0).getId());
+        assertEquals("I can write better!", preasentBook.getComments().get(0).getCommentText());
     }
 
     @Test
@@ -67,8 +67,8 @@ class BookDaoImplTest {
         assertEquals("Andrey", preasentBook.getAuthor().getName());
         assertEquals(46, preasentBook.getAuthor().getYear());
 
-        assertEquals(1, preasentBook.getComment().get(0).getId());
-        assertEquals("I can write better!", preasentBook.getComment().get(0).getCommentText());
+        assertEquals(1, preasentBook.getComments().get(0).getId());
+        assertEquals("I can write better!", preasentBook.getComments().get(0).getCommentText());
     }
 
     @Test
@@ -91,7 +91,7 @@ class BookDaoImplTest {
 
         assertEquals(saveBook.getGenre().getName(), bookById.getGenre().getName());
 
-        assertEquals(saveBook.getComment().get(0).getCommentText(), bookById.getComment().get(0).getCommentText());
+        assertEquals(saveBook.getComments().get(0).getCommentText(), bookById.getComments().get(0).getCommentText());
     }
 
     @Test
@@ -110,7 +110,7 @@ class BookDaoImplTest {
         assertEquals("AAAAA", book.getAuthor().getName());
         assertEquals(1111, book.getAuthor().getYear());
 
-        assertEquals("AAAAA", book.getComment().get(0).getCommentText());
+        assertEquals("AAAAA", book.getComments().get(0).getCommentText());
     }
 
     @Test

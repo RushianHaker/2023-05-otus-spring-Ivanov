@@ -43,7 +43,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> findAll() {
         EntityGraph<?> entityGraph = em.getEntityGraph("otus-book-author-genre-entity-graph");
-        TypedQuery<Book> query = em.createQuery("select distinct b from Book b join fetch b.comment", Book.class);
+        TypedQuery<Book> query = em.createQuery("select distinct b from Book b join fetch b.comments", Book.class);
         query.setHint(FETCH.getKey(), entityGraph);
         return query.getResultList();
     }
@@ -59,8 +59,8 @@ public class BookDaoImpl implements BookDao {
             presentBook.setAuthor(book.getAuthor());
             presentBook.setGenre(book.getGenre());
 
-            List<Comment> commentList = new ArrayList<>(book.getComment());
-            presentBook.setComment(commentList);
+            List<Comment> commentList = new ArrayList<>(book.getComments());
+            presentBook.setComments(commentList);
 
             em.merge(presentBook);
         }

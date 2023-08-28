@@ -30,7 +30,7 @@ public class BookCommands {
                 ", year: " + presentedBookInfo.getYear() +
                 ", author : " + presentedBookInfo.getAuthor() +
                 ", genre: " + presentedBookInfo.getGenre() +
-                ", comments: " + presentedBookInfo.getComment().stream().map(Comment::getCommentText).toList();
+                ", comments: " + presentedBookInfo.getComments().stream().map(Comment::getCommentText).toList();
     }
 
     @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
@@ -47,7 +47,7 @@ public class BookCommands {
                     .append(", year: ").append(bookInfo.getYear())
                     .append(", author : ").append(bookInfo.getAuthor().getName())
                     .append(", genre: ").append(bookInfo.getGenre().getName())
-                    .append(", comments: ").append(bookInfo.getComment().stream().map(Comment::getCommentText).toList());
+                    .append(", comments: ").append(bookInfo.getComments().stream().map(Comment::getCommentText).toList());
         }
 
         return stringBuilder.toString();
