@@ -59,9 +59,6 @@ public class BookDaoImpl implements BookDao {
             presentBook.setAuthor(book.getAuthor());
             presentBook.setGenre(book.getGenre());
 
-            List<Comment> commentList = new ArrayList<>(book.getComments());
-            presentBook.setComments(commentList);
-
             em.merge(presentBook);
         }
     }

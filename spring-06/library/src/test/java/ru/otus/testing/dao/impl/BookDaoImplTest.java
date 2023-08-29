@@ -98,8 +98,7 @@ class BookDaoImplTest {
     @Rollback
     void update() {
         bookDao.updateById(new Book(1, "Tolstoy Tolstoy Tolstoy", 1111L,
-                new Author("AAAAA", 1111), new Genre("AAAAA"),
-                List.of(new Comment("AAAAA", new Book()))));
+                new Author("AAAAA", 1111), new Genre("AAAAA")));
 
         var book = em.find(Book.class, 1);
         assertEquals("Tolstoy Tolstoy Tolstoy", book.getName());
@@ -109,8 +108,6 @@ class BookDaoImplTest {
 
         assertEquals("AAAAA", book.getAuthor().getName());
         assertEquals(1111, book.getAuthor().getYear());
-
-        assertEquals("AAAAA", book.getComments().get(0).getCommentText());
     }
 
     @Test
