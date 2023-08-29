@@ -4,23 +4,24 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.testing.model.Author;
-import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
+import ru.otus.testing.service.CommentService;
 import ru.otus.testing.service.PrintBookService;
-
-import java.util.Arrays;
 
 @ShellComponent
 public class BookCommands {
 
     private final BookService bookService;
 
+    private final CommentService commentService;
+
     private final PrintBookService printBookService;
 
-    public BookCommands(BookService bookService, PrintBookService printBookService) {
+    public BookCommands(BookService bookService, CommentService commentService, PrintBookService printBookService) {
         this.bookService = bookService;
+        this.commentService = commentService;
         this.printBookService = printBookService;
     }
 
@@ -38,27 +39,21 @@ public class BookCommands {
 
     @ShellMethod(value = "create-book", key = {"create-book", "-c-book"})
     public String createBook(@NotNull String bookName, long bookYear, @NotNull String authorName,
-                             long authorYear, @NotNull String genreName, @NotNull String[] comments) {
+                             long authorYear, @NotNull String genreName) {
         var author = new Author(authorName, authorYear);
         var genre = new Genre(genreName);
 
-        var commentsList = Arrays.stream(comments).map(comment -> new Comment(comment,
-                new Book(bookName, bookYear, author, genre))).toList();
-
-        bookService.save(bookName, bookYear, author, genre, commentsList);
+        bookService.save(bookName, bookYear, author, genre);
         return "Book was created";
     }
 
     @ShellMethod(value = "update-book", key = {"update-book", "-u-book"})
-    public String updateBook(@NotNull long bookId, @NotNull String bookName, long bookYear, @NotNull String authorName,
-                             long authorYear, @NotNull String genreName, @NotNull String[] comments) {
+    public String updateBook(long bookId, @NotNull String bookName, long bookYear, @NotNull String authorName,
+                             long authorYear, @NotNull String genreName) {
         var author = new Author(authorName, authorYear);
         var genre = new Genre(genreName);
 
-        var commentsList = Arrays.stream(comments).map(comment -> new Comment(comment,
-                new Book(bookId, bookName, bookYear, author, genre))).toList();
-
-        bookService.update(bookId, bookName, bookYear, author, genre, commentsList);
+        bookService.update(bookId, bookName, bookYear, author, genre);
         return "Info about book was updated";
     }
 
@@ -68,4 +63,11 @@ public class BookCommands {
         return "Book was deleted";
     }
 
+    @ShellMethod(value = "save-book-comment", key = {"save-book-comment", "-s-book-c"})
+    public String saveBooksComment(long bookId, @NotNull String commentText) {
+        var book = bookService.findById(bookId);
+        var comment = new Comment(commentText, book);
+        commentService.saveBooksComment(comment);
+        return "Comment of book was saved";
+    }
 }

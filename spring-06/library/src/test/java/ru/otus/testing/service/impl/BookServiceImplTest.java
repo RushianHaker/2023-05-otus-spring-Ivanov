@@ -15,8 +15,6 @@ import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -28,21 +26,17 @@ class BookServiceImplTest {
     private AuthorDao authorDao;
     @MockBean
     private GenreDao genreDao;
-    @MockBean
-    private CommentDao commentDao;
 
     @Autowired
     private BookService service;
 
     @Test
-    void getAll() {
-        var book = new Book("war and peace", 4321L, new Author("Tolstoy", 50L),
-                new Genre("history"), List.of(new Comment("cool!", new Book())));
+    void save() {
+        var book = new Book("war and peace", 4321L, new Author("Tolstoy", 50L), new Genre("history"));
 
         when(bookDao.save(book)).thenReturn(book);
 
-        service.save("war and peace", 4321L, new Author("Tolstoy", 50L),
-                new Genre("history"), List.of(new Comment("cool!", new Book())));
+        service.save("war and peace", 4321L, new Author("Tolstoy", 50L), new Genre("history"));
 
         ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
         verify(bookDao, times(1)).save(captor.capture());

@@ -36,17 +36,6 @@ class CommentDaoImplTest {
     }
 
     @Test
-    void findByIdAndCommentText() {
-        var comment = commentDao.findByIdAndCommentText(List.of(new Comment(2, "Cool!", new Book())));
-
-        assertEquals(1, comment.size());
-
-        var presentComment = comment.get(0);
-        assertEquals(2, presentComment.getId());
-        assertEquals("Cool!", presentComment.getCommentText());
-    }
-
-    @Test
     void save() {
         commentDao.save(new Comment("hello test", new Book()));
 
