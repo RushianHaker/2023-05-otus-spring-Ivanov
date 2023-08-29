@@ -37,21 +37,6 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public List<Comment> findByIdAndCommentText(List<Comment> comments) {
-        var list = new ArrayList<Comment>();
-
-        for (var comment : comments) {
-            TypedQuery<Comment> query = em.createQuery("select s from Comment s " +
-                    "where s.commentText = :commentText and s.id = :id", Comment.class);
-            query.setParameter("commentText", comment.getCommentText());
-            query.setParameter("id", comment.getId());
-            list.addAll(query.getResultList());
-        }
-
-        return list;
-    }
-
-    @Override
     public void deleteById(long id) {
         var findComment = findById(id);
         findComment.ifPresent(em::remove);

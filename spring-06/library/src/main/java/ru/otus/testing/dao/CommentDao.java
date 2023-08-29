@@ -10,7 +10,5 @@ public interface CommentDao {
 
     Optional<Comment> findById(long id);
 
-    List<Comment> findByIdAndCommentText(List<Comment> comments);
-
     void deleteById(long id);
 }
