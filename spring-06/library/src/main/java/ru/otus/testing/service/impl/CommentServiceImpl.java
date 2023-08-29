@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         var commentInfoFromDb = commentDao.save(comment);
-        comment.getBook().getComments().add(commentInfoFromDb);
+        book.getComments().add(commentInfoFromDb);
 
         bookDao.save(book);
     }
