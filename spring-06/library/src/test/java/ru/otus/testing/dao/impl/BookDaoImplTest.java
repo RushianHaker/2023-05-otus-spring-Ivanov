@@ -13,7 +13,6 @@ import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,7 +79,7 @@ class BookDaoImplTest {
         var book = new Book("war and peace", 4321L, author, genre, commentsList);
 
         var saveBook = bookDao.save(book);
-        var bookById = em.find(Book.class, 3);
+        var bookById = em.find(Book.class, 2);
 
         assertEquals(saveBook.getId(), bookById.getId());
         assertEquals(saveBook.getName(), bookById.getName());
