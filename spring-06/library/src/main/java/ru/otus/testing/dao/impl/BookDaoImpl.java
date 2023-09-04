@@ -45,7 +45,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> findAll() {
         EntityGraph<?> entityGraph = em.getEntityGraph("otus-book-author-genre-entity-graph");
-        TypedQuery<Book> query = em.createQuery("select distinct b from Book b", Book.class);
+        TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
         query.setHint(FETCH.getKey(), entityGraph);
         return query.getResultList();
     }
