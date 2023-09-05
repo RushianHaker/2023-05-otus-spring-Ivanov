@@ -1,6 +1,7 @@
 package ru.otus.testing.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.testing.dao.CommentDao;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.service.CommentService;
@@ -17,6 +18,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void saveBooksComment(Comment comment) {
         var book = comment.getBook();
         if (book.getComments() == null) {

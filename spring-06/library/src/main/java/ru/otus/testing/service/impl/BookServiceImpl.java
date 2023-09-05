@@ -29,18 +29,20 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Book findById(long bookId) {
         var bookInfo = bookDao.findById(bookId);
         return bookInfo.orElseThrow(() -> new BookServiceException("Book not found!"));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Book> findAll() {
         return bookDao.findAll();
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Book save(String bookName, long bookYear, Author author, Genre genre) {
         var authorInfoFromDb = authorDao.findByNameAndYear(author.getName(), author.getYear());
         if (authorInfoFromDb == null) {
@@ -55,8 +57,8 @@ public class BookServiceImpl implements BookService {
         return bookDao.save(new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb));
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void update(long bookId, String bookName, long bookYear, Author author, Genre genre) {
         var authorInfoFromDb = authorDao.findByNameAndYear(author.getName(), author.getYear());
         if (authorInfoFromDb == null) {
@@ -72,6 +74,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public void delete(long bookId) {
         bookDao.deleteById(bookId);
     }

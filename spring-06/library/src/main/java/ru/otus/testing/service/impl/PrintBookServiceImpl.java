@@ -27,6 +27,7 @@ public class PrintBookServiceImpl implements PrintBookService {
 
         for (var bookInfo : booksList) {
             stringBuilder
+                    .append("\n")
                     .append("Book-").append(bookInfo.getId()).append(")")
                     .append(" id: ").append(bookInfo.getId())
                     .append(", name: ").append(bookInfo.getName())
