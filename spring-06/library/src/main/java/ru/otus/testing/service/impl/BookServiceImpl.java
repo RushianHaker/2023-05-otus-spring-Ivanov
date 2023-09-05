@@ -4,16 +4,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.testing.dao.AuthorDao;
 import ru.otus.testing.dao.BookDao;
-import ru.otus.testing.dao.CommentDao;
 import ru.otus.testing.dao.GenreDao;
 import ru.otus.testing.exceptions.BookServiceException;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
-import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

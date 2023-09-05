@@ -2,13 +2,10 @@ package ru.otus.testing.dao.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.CommentDao;
 import ru.otus.testing.model.Comment;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Repository

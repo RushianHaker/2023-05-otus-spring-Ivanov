@@ -33,7 +33,8 @@ public class PrintBookServiceImpl implements PrintBookService {
                     .append(", year: ").append(bookInfo.getYear())
                     .append(", author : ").append(bookInfo.getAuthor().getName())
                     .append(", genre: ").append(bookInfo.getGenre().getName())
-                    .append(", comments: ").append(bookInfo.getComments().stream().map(Comment::getCommentText).toList());
+                    .append(", comments: ").append(bookInfo.getComments().stream()
+                            .map(Comment::getCommentText).toList());
         }
 
         return stringBuilder.toString();
