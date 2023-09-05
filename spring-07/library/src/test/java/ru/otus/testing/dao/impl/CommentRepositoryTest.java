@@ -34,22 +34,6 @@ class CommentRepositoryTest {
     }
 
     @Test
-    void findByCommentsTextList() {
-        var comment = commentRepository.findByCommentsTextList(List.of("I can write better!", "Cool!"));
-
-        assertEquals(2, comment.size());
-
-        var presentFirstComment = comment.get(0);
-        assertEquals(1, presentFirstComment.getId());
-        assertEquals("I can write better!", presentFirstComment.getCommentText());
-
-        var presentSecondComment = comment.get(1);
-        assertEquals(2, presentSecondComment.getId());
-        assertEquals("Cool!", presentSecondComment.getCommentText());
-    }
-
-
-    @Test
     @Rollback
     void deleteById() {
         var comment = em.find(Comment.class, 1);

@@ -29,8 +29,6 @@ import java.util.List;
 @Entity
 @Table(name = "books")
 @AllArgsConstructor
-@NamedEntityGraph(name = "otus-book-author-genre-entity-graph",
-        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,15 +54,15 @@ public class Book {
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 20)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
-    private List<Comment> comment;
+    private List<Comment> comments;
 
 
-    public Book(String name, Long year, Author author, Genre genre, List<Comment> comment) {
+    public Book(String name, Long year, Author author, Genre genre, List<Comment> comments) {
         this.name = name;
         this.year = year;
         this.author = author;
         this.genre = genre;
-        this.comment = comment;
+        this.comments = comments;
     }
 
     public Book(long id, String name, Long year, Author author, Genre genre) {
