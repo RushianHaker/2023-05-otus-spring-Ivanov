@@ -16,8 +16,8 @@ import java.util.List;
 @Entity
 @Table(name = "books")
 @AllArgsConstructor
-@NamedEntityGraph(name = "otus-book-author-genre-entity-graph",
-        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
+@NamedEntityGraph(name = "otus-book-author-genre-comments-entity-graph",
+        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre"), @NamedAttributeNode("comments")})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

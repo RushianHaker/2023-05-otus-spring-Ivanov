@@ -16,8 +16,8 @@ public class PrintBookServiceImpl implements PrintBookService {
                 " id: " + presentedBookInfo.getId() +
                 ", name: " + presentedBookInfo.getName() +
                 ", year: " + presentedBookInfo.getYear() +
-                ", author : " + presentedBookInfo.getAuthor() +
-                ", genre: " + presentedBookInfo.getGenre() +
+                ", author's name: " + presentedBookInfo.getAuthor().getName() +
+                ", genre: " + presentedBookInfo.getGenre().getName() +
                 ", comments: " + presentedBookInfo.getComments().stream().map(Comment::getCommentText).toList();
     }
 

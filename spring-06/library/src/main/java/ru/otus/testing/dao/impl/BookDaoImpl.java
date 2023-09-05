@@ -38,13 +38,13 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Optional<Book> findById(long id) {
         Map<String, Object> properties = new HashMap<>();
-        properties.put(FETCH.getKey(), em.getEntityGraph("otus-book-author-genre-entity-graph"));
+        properties.put(FETCH.getKey(), em.getEntityGraph("otus-book-author-genre-comments-entity-graph"));
         return Optional.ofNullable(em.find(Book.class, id, properties));
     }
 
     @Override
     public List<Book> findAll() {
-        EntityGraph<?> entityGraph = em.getEntityGraph("otus-book-author-genre-entity-graph");
+        EntityGraph<?> entityGraph = em.getEntityGraph("otus-book-author-genre-comments-entity-graph");
         TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
         query.setHint(FETCH.getKey(), entityGraph);
         return query.getResultList();
