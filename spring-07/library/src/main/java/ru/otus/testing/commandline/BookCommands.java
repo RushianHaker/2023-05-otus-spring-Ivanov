@@ -4,14 +4,11 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.testing.model.Author;
-import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.CommentService;
 import ru.otus.testing.service.PrintBookService;
-
-import java.util.Arrays;
 
 @ShellComponent
 public class BookCommands {
