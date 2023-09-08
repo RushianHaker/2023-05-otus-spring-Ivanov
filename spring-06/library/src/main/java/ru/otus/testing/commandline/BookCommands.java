@@ -8,7 +8,7 @@ import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.CommentService;
-import ru.otus.testing.service.PrintBookService;
+import ru.otus.testing.service.ConvertModelInfoToStringService;
 
 @ShellComponent
 public class BookCommands {
@@ -17,24 +17,24 @@ public class BookCommands {
 
     private final CommentService commentService;
 
-    private final PrintBookService printBookService;
+    private final ConvertModelInfoToStringService convertModelInfoToStringService;
 
-    public BookCommands(BookService bookService, CommentService commentService, PrintBookService printBookService) {
+    public BookCommands(BookService bookService, CommentService commentService, ConvertModelInfoToStringService convertModelInfoToStringService) {
         this.bookService = bookService;
         this.commentService = commentService;
-        this.printBookService = printBookService;
+        this.convertModelInfoToStringService = convertModelInfoToStringService;
     }
 
     @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
     public String readBookById(long bookId) {
         var presentedBookInfo = bookService.findById(bookId);
-        return printBookService.printBookToConsole(presentedBookInfo);
+        return convertModelInfoToStringService.convertBookInfoToString(presentedBookInfo);
     }
 
     @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
     public String readAllBook() {
         var booksList = bookService.findAll();
-        return printBookService.printListBooksToConsole(booksList);
+        return convertModelInfoToStringService.convertListBooksInfoToString(booksList);
     }
 
     @ShellMethod(value = "create-book", key = {"create-book", "-c-book"})

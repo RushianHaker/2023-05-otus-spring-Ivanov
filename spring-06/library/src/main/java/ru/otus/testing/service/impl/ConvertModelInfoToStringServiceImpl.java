@@ -3,15 +3,15 @@ package ru.otus.testing.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
-import ru.otus.testing.service.PrintBookService;
+import ru.otus.testing.service.ConvertModelInfoToStringService;
 
 import java.util.List;
 
 @Service
-public class PrintBookServiceImpl implements PrintBookService {
+public class ConvertModelInfoToStringServiceImpl implements ConvertModelInfoToStringService {
 
     @Override
-    public String printBookToConsole(Book presentedBookInfo) {
+    public String convertBookInfoToString(Book presentedBookInfo) {
         return "Book info: " +
                 " id: " + presentedBookInfo.getId() +
                 ", name: " + presentedBookInfo.getName() +
@@ -22,7 +22,7 @@ public class PrintBookServiceImpl implements PrintBookService {
     }
 
     @Override
-    public String printListBooksToConsole(List<Book> booksList) {
+    public String convertListBooksInfoToString(List<Book> booksList) {
         var stringBuilder = new StringBuilder("Books info list (size: " + booksList.size() + "): ");
 
         for (var bookInfo : booksList) {
