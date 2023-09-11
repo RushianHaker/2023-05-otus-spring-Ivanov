@@ -11,6 +11,7 @@ import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,6 +33,14 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     public Book findById(long bookId) {
         var bookInfo = bookDao.findById(bookId);
+
+        bookInfo.ifPresent(book -> {
+            if (book.getComments() == null) {
+                book.setComments(new ArrayList<>());
+            }
+            book.getComments().size();
+        });
+
         return bookInfo.orElseThrow(() -> new BookServiceException("Book not found!"));
     }
 

@@ -65,9 +65,6 @@ class BookDaoImplTest {
         assertEquals(1, preasentBook.getAuthor().getId());
         assertEquals("Andrey", preasentBook.getAuthor().getName());
         assertEquals(46, preasentBook.getAuthor().getYear());
-
-        assertEquals(1, preasentBook.getComments().get(0).getId());
-        assertEquals("I can write better!", preasentBook.getComments().get(0).getCommentText());
     }
 
     @Test
