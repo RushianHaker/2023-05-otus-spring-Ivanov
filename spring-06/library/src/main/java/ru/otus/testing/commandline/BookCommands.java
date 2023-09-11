@@ -19,7 +19,8 @@ public class BookCommands {
 
     private final ConvertModelInfoToStringService convertModelInfoToStringService;
 
-    public BookCommands(BookService bookService, CommentService commentService, ConvertModelInfoToStringService convertModelInfoToStringService) {
+    public BookCommands(BookService bookService, CommentService commentService,
+                        ConvertModelInfoToStringService convertModelInfoToStringService) {
         this.bookService = bookService;
         this.commentService = commentService;
         this.convertModelInfoToStringService = convertModelInfoToStringService;
