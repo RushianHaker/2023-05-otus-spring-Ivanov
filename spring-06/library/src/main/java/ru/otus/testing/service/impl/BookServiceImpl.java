@@ -5,9 +5,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.testing.dao.AuthorDao;
 import ru.otus.testing.dao.BookDao;
 import ru.otus.testing.dao.GenreDao;
+import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.exceptions.BookServiceException;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
+import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 
@@ -31,17 +33,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public Book findById(long bookId) {
-        var bookInfo = bookDao.findById(bookId);
+    public BookDTO findById(long bookId) {
+        var bookInfo = bookDao.findById(bookId).orElseThrow(() -> new BookServiceException("Book not found!"));
 
-        bookInfo.ifPresent(book -> {
-            if (book.getComments() == null) {
-                book.setComments(new ArrayList<>());
-            }
-            book.getComments().size();
-        });
+        List<Comment> comments = bookInfo.getComments() == null ? new ArrayList<>() : bookInfo.getComments().stream()
+                .filter(comment -> comment.getCommentText() != null && !comment.getCommentText().isEmpty())
+                .toList();
 
-        return bookInfo.orElseThrow(() -> new BookServiceException("Book not found!"));
+        return new BookDTO(bookInfo.getId(), bookInfo.getName(), bookInfo.getYear(), bookInfo.getAuthor(),
+                bookInfo.getGenre(), comments);
     }
 
     @Override

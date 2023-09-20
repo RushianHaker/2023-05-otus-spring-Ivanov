@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.testing.model.Author;
+import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
@@ -28,8 +29,8 @@ public class BookCommands {
 
     @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
     public String readBookById(long bookId) {
-        var presentedBookInfo = bookService.findById(bookId);
-        return convertModelInfoToStringService.convertBookInfoToString(presentedBookInfo);
+        var bookDTO = bookService.findById(bookId);
+        return convertModelInfoToStringService.convertBookInfoToString(bookDTO);
     }
 
     @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
@@ -66,9 +67,13 @@ public class BookCommands {
 
     @ShellMethod(value = "save-book-comment", key = {"save-book-comment", "-s-book-c"})
     public String saveBooksComment(long bookId, @NotNull String commentText) {
-        var book = bookService.findById(bookId);
+        var bookDTO = bookService.findById(bookId);
+        var book = new Book(bookDTO.getId(), bookDTO.getName(), bookDTO.getYear(), bookDTO.getAuthor(),
+                bookDTO.getGenre(), bookDTO.getComments());
+
         var comment = new Comment(commentText, book);
+
         commentService.saveBooksComment(comment);
-        return "Comment of book was saved";
+        return "Comment of bookDTO was saved";
     }
 }

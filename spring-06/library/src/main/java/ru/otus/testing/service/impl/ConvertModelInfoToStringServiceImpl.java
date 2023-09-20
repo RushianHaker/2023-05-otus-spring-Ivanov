@@ -1,6 +1,7 @@
 package ru.otus.testing.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.service.ConvertModelInfoToStringService;
@@ -11,7 +12,7 @@ import java.util.List;
 public class ConvertModelInfoToStringServiceImpl implements ConvertModelInfoToStringService {
 
     @Override
-    public String convertBookInfoToString(Book presentedBookInfo) {
+    public String convertBookInfoToString(BookDTO presentedBookInfo) {
         return "Book info: " +
                 " id: " + presentedBookInfo.getId() +
                 ", name: " + presentedBookInfo.getName() +
