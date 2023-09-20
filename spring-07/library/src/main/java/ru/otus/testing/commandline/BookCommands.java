@@ -4,11 +4,12 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.testing.model.Author;
+import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.CommentService;
-import ru.otus.testing.service.PrintBookService;
+import ru.otus.testing.service.ConvertModelInfoToStringService;
 
 @ShellComponent
 public class BookCommands {
@@ -17,24 +18,25 @@ public class BookCommands {
 
     private final CommentService commentService;
 
-    private final PrintBookService printBookService;
+    private final ConvertModelInfoToStringService convertModelInfoToStringService;
 
-    public BookCommands(BookService bookService, CommentService commentService, PrintBookService printBookService) {
+    public BookCommands(BookService bookService, CommentService commentService,
+                        ConvertModelInfoToStringService convertModelInfoToStringService) {
         this.bookService = bookService;
         this.commentService = commentService;
-        this.printBookService = printBookService;
+        this.convertModelInfoToStringService = convertModelInfoToStringService;
     }
 
     @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
     public String readBookById(long bookId) {
-        var presentedBookInfo = bookService.findById(bookId);
-        return printBookService.printBookToConsole(presentedBookInfo);
+        var bookDTO = bookService.findById(bookId);
+        return convertModelInfoToStringService.convertBookInfoToString(bookDTO);
     }
 
     @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
     public String readAllBook() {
         var booksList = bookService.findAll();
-        return printBookService.printListBooksToConsole(booksList);
+        return convertModelInfoToStringService.convertListBooksInfoToString(booksList);
     }
 
     @ShellMethod(value = "create-book", key = {"create-book", "-c-book"})
@@ -65,9 +67,10 @@ public class BookCommands {
 
     @ShellMethod(value = "save-book-comment", key = {"save-book-comment", "-s-book-c"})
     public String saveBooksComment(long bookId, @NotNull String commentText) {
-        var book = bookService.findById(bookId);
-        var comment = new Comment(commentText, book);
-        commentService.saveBooksComment(comment);
-        return "Comment of book was saved";
+        var bookDTO = bookService.findById(bookId);
+
+        commentService.saveBooksComment(new Comment(commentText, new Book(bookDTO.getId(), bookDTO.getName(),
+                bookDTO.getYear(), bookDTO.getAuthor(), bookDTO.getGenre(), bookDTO.getComments())));
+        return "Comment of bookDTO was saved";
     }
 }

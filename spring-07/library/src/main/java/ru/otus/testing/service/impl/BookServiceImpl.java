@@ -5,12 +5,15 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.testing.dao.AuthorRepository;
 import ru.otus.testing.dao.BookRepository;
 import ru.otus.testing.dao.GenreRepository;
+import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.exception.BookServiceException;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
+import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,8 +25,7 @@ public class BookServiceImpl implements BookService {
 
     private final GenreRepository genreRepository;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository,
-                           GenreRepository genreRepository) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, GenreRepository genreRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
@@ -31,9 +33,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public Book findById(long bookId) {
-        var bookInfo = bookRepository.findById(bookId);
-        return bookInfo.orElseThrow(() -> new BookServiceException("Book not found!"));
+    public BookDTO findById(long bookId) {
+        var bookInfo = bookRepository.findById(bookId).orElseThrow(() -> new BookServiceException("Book not found!"));
+
+        List<Comment> comments = bookInfo.getComments() == null ? new ArrayList<>() : bookInfo.getComments().stream()
+                .filter(comment -> comment.getCommentText() != null && !comment.getCommentText().isEmpty())
+                .toList();
+
+        return new BookDTO(bookInfo.getId(), bookInfo.getName(), bookInfo.getYear(), bookInfo.getAuthor(),
+                bookInfo.getGenre(), comments);
     }
 
     @Override
@@ -58,10 +66,10 @@ public class BookServiceImpl implements BookService {
         return bookRepository.save(new Book(bookName, bookYear, authorInfoFromDb, genreInfoFromDb));
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void update(long bookId, String bookName, long bookYear, Author author, Genre genre) {
-        var bookForUpdate = findById(bookId);
+        var bookDTO = findById(bookId);
 
         var authorInfoFromDb = authorRepository.findByNameAndYear(author.getName(), author.getYear());
         if (authorInfoFromDb == null) {
@@ -73,12 +81,8 @@ public class BookServiceImpl implements BookService {
             genreInfoFromDb = genreRepository.save(genre);
         }
 
-        bookForUpdate.setName(bookName);
-        bookForUpdate.setYear(bookYear);
-        bookForUpdate.setAuthor(authorInfoFromDb);
-        bookForUpdate.setGenre(genreInfoFromDb);
-
-        bookRepository.save(bookForUpdate);
+        bookRepository.save(new Book(bookDTO.getId(), bookName, bookYear, authorInfoFromDb,
+                genreInfoFromDb, bookDTO.getComments()));
     }
 
     @Override
