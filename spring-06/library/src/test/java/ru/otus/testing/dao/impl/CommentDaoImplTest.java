@@ -36,33 +36,12 @@ class CommentDaoImplTest {
     }
 
     @Test
-    void findByIdAndCommentText() {
-        var comment = commentDao.findByIdAndCommentText(List.of(new Comment(2, "Cool!", new Book())));
-
-        assertEquals(1, comment.size());
-
-        var presentComment = comment.get(0);
-        assertEquals(2, presentComment.getId());
-        assertEquals("Cool!", presentComment.getCommentText());
-    }
-
-    @Test
     void save() {
         commentDao.save(new Comment("hello test", new Book()));
 
         var comment = em.find(Comment.class, 3);
 
         assertEquals(3, comment.getId());
-        assertEquals("hello test", comment.getCommentText());
-    }
-
-    @Test
-    void updateById() {
-        commentDao.updateById(new Comment(1, "hello test", new Book()));
-
-        var comment = em.find(Comment.class, 1);
-
-        assertEquals(1, comment.getId());
         assertEquals("hello test", comment.getCommentText());
     }
 

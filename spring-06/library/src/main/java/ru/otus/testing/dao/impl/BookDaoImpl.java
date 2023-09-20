@@ -7,9 +7,11 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.testing.dao.BookDao;
 import ru.otus.testing.model.Book;
-import ru.otus.testing.model.Comment;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 
@@ -43,7 +45,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> findAll() {
         EntityGraph<?> entityGraph = em.getEntityGraph("otus-book-author-genre-entity-graph");
-        TypedQuery<Book> query = em.createQuery("select distinct b from Book b join fetch b.comment", Book.class);
+        TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
         query.setHint(FETCH.getKey(), entityGraph);
         return query.getResultList();
     }
@@ -58,9 +60,6 @@ public class BookDaoImpl implements BookDao {
             presentBook.setYear(book.getYear());
             presentBook.setAuthor(book.getAuthor());
             presentBook.setGenre(book.getGenre());
-
-            List<Comment> commentList = new ArrayList<>(book.getComment());
-            presentBook.setComment(commentList);
 
             em.merge(presentBook);
         }

@@ -8,74 +8,54 @@ import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
-
-import java.util.Arrays;
+import ru.otus.testing.service.CommentService;
+import ru.otus.testing.service.ConvertModelInfoToStringService;
 
 @ShellComponent
 public class BookCommands {
 
     private final BookService bookService;
 
-    public BookCommands(BookService bookService) {
+    private final CommentService commentService;
+
+    private final ConvertModelInfoToStringService convertModelInfoToStringService;
+
+    public BookCommands(BookService bookService, CommentService commentService,
+                        ConvertModelInfoToStringService convertModelInfoToStringService) {
         this.bookService = bookService;
+        this.commentService = commentService;
+        this.convertModelInfoToStringService = convertModelInfoToStringService;
     }
 
     @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
     public String readBookById(long bookId) {
-        var presentedBookInfo = bookService.findById(bookId);
-
-        return "Book info: " +
-                " id: " + presentedBookInfo.getId() +
-                ", name: " + presentedBookInfo.getName() +
-                ", year: " + presentedBookInfo.getYear() +
-                ", author : " + presentedBookInfo.getAuthor() +
-                ", genre: " + presentedBookInfo.getGenre() +
-                ", comments: " + presentedBookInfo.getComment().stream().map(Comment::getCommentText).toList();
+        var bookDTO = bookService.findById(bookId);
+        return convertModelInfoToStringService.convertBookInfoToString(bookDTO);
     }
 
     @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
     public String readAllBook() {
         var booksList = bookService.findAll();
-
-        var stringBuilder = new StringBuilder("Books info list (size: " + booksList.size() + "): ");
-
-        for (var bookInfo : booksList) {
-            stringBuilder
-                    .append("Book-").append(bookInfo.getId()).append(")")
-                    .append(" id: ").append(bookInfo.getId())
-                    .append(", name: ").append(bookInfo.getName())
-                    .append(", year: ").append(bookInfo.getYear())
-                    .append(", author : ").append(bookInfo.getAuthor().getName())
-                    .append(", genre: ").append(bookInfo.getGenre().getName())
-                    .append(", comments: ").append(bookInfo.getComment().stream().map(Comment::getCommentText).toList());
-        }
-
-        return stringBuilder.toString();
+        return convertModelInfoToStringService.convertListBooksInfoToString(booksList);
     }
 
     @ShellMethod(value = "create-book", key = {"create-book", "-c-book"})
     public String createBook(@NotNull String bookName, long bookYear, @NotNull String authorName,
-                             long authorYear, @NotNull String genreName, @NotNull String[] comments) {
+                             long authorYear, @NotNull String genreName) {
         var author = new Author(authorName, authorYear);
         var genre = new Genre(genreName);
 
-        var commentsList = Arrays.stream(comments).map(comment -> new Comment(comment,
-                new Book(bookName, bookYear, author, genre))).toList();
-
-        bookService.save(bookName, bookYear, author, genre, commentsList);
+        bookService.save(bookName, bookYear, author, genre);
         return "Book was created";
     }
 
     @ShellMethod(value = "update-book", key = {"update-book", "-u-book"})
-    public String updateBook(@NotNull long bookId, @NotNull String bookName, long bookYear, @NotNull String authorName,
-                             long authorYear, @NotNull String genreName, @NotNull String[] comments) {
+    public String updateBook(long bookId, @NotNull String bookName, long bookYear, @NotNull String authorName,
+                             long authorYear, @NotNull String genreName) {
         var author = new Author(authorName, authorYear);
         var genre = new Genre(genreName);
 
-        var commentsList = Arrays.stream(comments).map(comment -> new Comment(comment,
-                new Book(bookId, bookName, bookYear, author, genre))).toList();
-
-        bookService.update(bookId, bookName, bookYear, author, genre, commentsList);
+        bookService.update(bookId, bookName, bookYear, author, genre);
         return "Info about book was updated";
     }
 
@@ -83,5 +63,17 @@ public class BookCommands {
     public String deleteBook(long bookId) {
         bookService.delete(bookId);
         return "Book was deleted";
+    }
+
+    @ShellMethod(value = "save-book-comment", key = {"save-book-comment", "-s-book-c"})
+    public String saveBooksComment(long bookId, @NotNull String commentText) {
+        var bookDTO = bookService.findById(bookId);
+        var book = new Book(bookDTO.getId(), bookDTO.getName(), bookDTO.getYear(), bookDTO.getAuthor(),
+                bookDTO.getGenre(), bookDTO.getComments());
+
+        var comment = new Comment(commentText, book);
+
+        commentService.saveBooksComment(comment);
+        return "Comment of bookDTO was saved";
     }
 }

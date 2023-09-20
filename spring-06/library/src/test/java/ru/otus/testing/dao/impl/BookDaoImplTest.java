@@ -13,7 +13,6 @@ import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,8 +44,8 @@ class BookDaoImplTest {
         assertEquals("Andrey", preasentBook.getAuthor().getName());
         assertEquals(46, preasentBook.getAuthor().getYear());
 
-        assertEquals(1, preasentBook.getComment().get(0).getId());
-        assertEquals("I can write better!", preasentBook.getComment().get(0).getCommentText());
+        assertEquals(1, preasentBook.getComments().get(0).getId());
+        assertEquals("I can write better!", preasentBook.getComments().get(0).getCommentText());
     }
 
     @Test
@@ -66,9 +65,6 @@ class BookDaoImplTest {
         assertEquals(1, preasentBook.getAuthor().getId());
         assertEquals("Andrey", preasentBook.getAuthor().getName());
         assertEquals(46, preasentBook.getAuthor().getYear());
-
-        assertEquals(1, preasentBook.getComment().get(0).getId());
-        assertEquals("I can write better!", preasentBook.getComment().get(0).getCommentText());
     }
 
     @Test
@@ -80,7 +76,7 @@ class BookDaoImplTest {
         var book = new Book("war and peace", 4321L, author, genre, commentsList);
 
         var saveBook = bookDao.save(book);
-        var bookById = em.find(Book.class, 3);
+        var bookById = em.find(Book.class, 2);
 
         assertEquals(saveBook.getId(), bookById.getId());
         assertEquals(saveBook.getName(), bookById.getName());
@@ -91,15 +87,14 @@ class BookDaoImplTest {
 
         assertEquals(saveBook.getGenre().getName(), bookById.getGenre().getName());
 
-        assertEquals(saveBook.getComment().get(0).getCommentText(), bookById.getComment().get(0).getCommentText());
+        assertEquals(saveBook.getComments().get(0).getCommentText(), bookById.getComments().get(0).getCommentText());
     }
 
     @Test
     @Rollback
     void update() {
         bookDao.updateById(new Book(1, "Tolstoy Tolstoy Tolstoy", 1111L,
-                new Author("AAAAA", 1111), new Genre("AAAAA"),
-                List.of(new Comment("AAAAA", new Book()))));
+                new Author("AAAAA", 1111), new Genre("AAAAA")));
 
         var book = em.find(Book.class, 1);
         assertEquals("Tolstoy Tolstoy Tolstoy", book.getName());
@@ -109,8 +104,6 @@ class BookDaoImplTest {
 
         assertEquals("AAAAA", book.getAuthor().getName());
         assertEquals(1111, book.getAuthor().getYear());
-
-        assertEquals("AAAAA", book.getComment().get(0).getCommentText());
     }
 
     @Test

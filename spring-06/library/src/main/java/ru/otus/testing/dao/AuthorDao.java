@@ -11,7 +11,5 @@ public interface AuthorDao {
 
     Author findByNameAndYear(String name, long year);
 
-    void updateById(Author author);
-
     void deleteById(long id);
 }
