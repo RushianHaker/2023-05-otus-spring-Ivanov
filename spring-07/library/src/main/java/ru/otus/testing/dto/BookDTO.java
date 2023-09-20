@@ -15,10 +15,15 @@ import java.util.List;
 @AllArgsConstructor
 public class BookDTO {
     private long id;
+
     private String name;
+
     private Long year;
+
     private Author author;
+
     private Genre genre;
+
     private List<Comment> comments;
 
     public BookDTO(String name, Long year, Author author, Genre genre, List<Comment> comments) {
