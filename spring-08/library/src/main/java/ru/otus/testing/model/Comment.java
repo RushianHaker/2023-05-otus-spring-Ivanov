@@ -1,38 +1,27 @@
 package ru.otus.testing.model;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "comments")
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = "comments")
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
-    private long id;
-
-    @Column(name = "comment_text", nullable = false)
+    private String id;
     private String commentText;
-
-    @ManyToOne(targetEntity = Book.class, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @DBRef(db = "books")
     private Book book;
-
-    public Comment(long id, String commentText, Book book) {
-        this.id = id;
-        this.commentText = commentText;
-        this.book = book;
-    }
 
     public Comment(String commentText, Book book) {
         this.commentText = commentText;
         this.book = book;
-    }
-
-    public Comment() {
-
     }
 }

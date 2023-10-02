@@ -2,62 +2,64 @@ package ru.otus.testing.dao.impl;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.testing.dao.GenreRepository;
 import ru.otus.testing.model.Genre;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@DataJpaTest
+@DataMongoTest
 class GenreRepositoryTest {
     @Autowired
     private GenreRepository genreRepository;
 
     @Autowired
-    private TestEntityManager em;
+    private MongoOperations mongoOperations;
 
     @Test
     void findById() {
-        var genre = genreRepository.findById(1L);
-
+        var genre = genreRepository.findById("100");
         assertTrue(genre.isPresent());
 
         var presentGenre = genre.get();
-        assertEquals(1, presentGenre.getId());
-        assertEquals("comedy", presentGenre.getName());
+        assertEquals("100", presentGenre.getId());
+        assertEquals("History", presentGenre.getName());
     }
 
     @Test
     void findByName() {
-        var genre = genreRepository.findByName("comedy");
+        var genre = genreRepository.findByName("History");
 
         assertNotNull(genre);
-        assertEquals(1, genre.getId());
-        assertEquals("comedy", genre.getName());
+        assertEquals("100", genre.getId());
+        assertEquals("History", genre.getName());
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void save() {
-        var saveGenre = genreRepository.save(new Genre("AAAAAA"));
-        var genre = em.find(Genre.class, 3);
+        var saveGenre = genreRepository.save(new Genre("200", "AAAAAA"));
+        var genre = mongoOperations.findById("200", Genre.class);
 
+        assertNotNull(genre);
         assertEquals(saveGenre.getId(), genre.getId());
         assertEquals(saveGenre.getName(), genre.getName());
     }
 
     @Test
-    @Rollback
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void deleteById() {
-        var genre = em.find(Genre.class, 1);
+        var genre = mongoOperations.findById("300", Genre.class);
 
-        assertEquals(1, genre.getId());
-        assertEquals("comedy", genre.getName());
+        assertNotNull(genre);
+        assertEquals("300", genre.getId());
+        assertEquals("Holy", genre.getName());
 
-        genreRepository.deleteById(1L);
+        genreRepository.deleteById("300");
 
-        assertNull(em.find(Genre.class, 1));
+        assertNull(mongoOperations.findById("300", Genre.class));
     }
 }

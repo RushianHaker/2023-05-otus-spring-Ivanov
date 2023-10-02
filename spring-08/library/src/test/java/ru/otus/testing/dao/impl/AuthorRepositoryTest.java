@@ -2,50 +2,54 @@ package ru.otus.testing.dao.impl;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import ru.otus.testing.dao.AuthorRepository;
 import ru.otus.testing.model.Author;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
+
+@DataMongoTest
 class AuthorRepositoryTest {
     @Autowired
     private AuthorRepository authorRepository;
 
     @Autowired
-    private TestEntityManager em;
+    private MongoOperations mongoOperations;
 
     @Test
     void findById() {
-        var author = authorRepository.findById(1L);
+        var author = authorRepository.findById("100");
 
         assertTrue(author.isPresent());
 
         var presentAuthor = author.get();
-        assertEquals(1, presentAuthor.getId());
-        assertEquals("Andrey", presentAuthor.getName());
-        assertEquals(46, presentAuthor.getYear());
+        assertEquals("100", presentAuthor.getId());
+        assertEquals("Alex", presentAuthor.getName());
+        assertEquals(22L, presentAuthor.getYear());
     }
 
     @Test
     void findByNameAndYear() {
-        var author = authorRepository.findByNameAndYear("Andrey", 46);
+        var author = authorRepository.findByNameAndYear("Alex", 22L);
 
         assertNotNull(author);
-        assertEquals(1, author.getId());
-        assertEquals("Andrey", author.getName());
-        assertEquals(46, author.getYear());
+        assertEquals("100", author.getId());
+        assertEquals("Alex", author.getName());
+        assertEquals(22L, author.getYear());
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void save() {
-        var saveAuthor = authorRepository.save(new Author("AAAAAA", 50L));
+        var saveAuthor = authorRepository.save(new Author("200", "AAAAAA", 50L));
 
-        var dbAuthor = em.find(Author.class, 3);
+        var dbAuthor = mongoOperations.findById("200", Author.class);
+
+        assertNotNull(dbAuthor);
 
         assertEquals(dbAuthor.getId(), saveAuthor.getId());
         assertEquals(dbAuthor.getName(), saveAuthor.getName());
@@ -53,16 +57,13 @@ class AuthorRepositoryTest {
     }
 
     @Test
-    @Rollback
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void deleteById() {
-        var dbAuthor = em.find(Author.class, 1);
+        var dbAuthor = mongoOperations.findById("300", Author.class);
+        assertNotNull(dbAuthor);
+        assertEquals("300", dbAuthor.getId());
 
-        assertEquals(1, dbAuthor.getId());
-        assertEquals("Andrey", dbAuthor.getName());
-        assertEquals(46, dbAuthor.getYear());
-
-        authorRepository.deleteById(1L);
-
-        assertNull(em.find(Author.class, 1));
+        authorRepository.deleteById("300");
+        assertNull(mongoOperations.findById("300", Author.class));
     }
 }

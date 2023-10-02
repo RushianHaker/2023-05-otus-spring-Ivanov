@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.testing.dao.AuthorRepository;
 import ru.otus.testing.dao.BookRepository;
 import ru.otus.testing.dao.GenreRepository;
-import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.exception.BookServiceException;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
@@ -34,15 +33,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public BookDTO findById(long bookId) {
-        var bookInfo = bookRepository.findById(bookId).orElseThrow(() -> new BookServiceException("Book not found!"));
+    public Book findById(String bookId) {
+        var book = bookRepository.findById(bookId).orElseThrow(() -> new BookServiceException("Book not found!"));
 
-        List<Comment> comments = bookInfo.getComments() == null ? new ArrayList<>() : bookInfo.getComments().stream()
+        List<Comment> comments = book.getComments() == null ? new ArrayList<>() : book.getComments().stream()
                 .filter(comment -> comment.getCommentText() != null && !comment.getCommentText().isEmpty())
                 .toList();
 
-        return new BookDTO(bookInfo.getId(), bookInfo.getName(), bookInfo.getYear(), bookInfo.getAuthor(),
-                bookInfo.getGenre(), comments);
+        book.setComments(comments);
+        return book;
     }
 
     @Override
@@ -69,7 +68,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void update(long bookId, String bookName, long bookYear, Author author, Genre genre) {
+    public void update(String bookId, String bookName, long bookYear, Author author, Genre genre) {
         var bookDTO = findById(bookId);
 
         var authorInfoFromDb = authorRepository.findByNameAndYear(author.getName(), author.getYear());
@@ -88,7 +87,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void delete(long bookId) {
+    public void delete(String bookId) {
         bookRepository.deleteById(bookId);
     }
 }

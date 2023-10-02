@@ -28,9 +28,9 @@ public class BookCommands {
     }
 
     @ShellMethod(value = "readById-book", key = {"readById-book", "-rbi-book"})
-    public String readBookById(long bookId) {
-        var bookDTO = bookService.findById(bookId);
-        return convertModelInfoToStringService.convertBookInfoToString(bookDTO);
+    public String readBookById(String bookId) {
+        var book = bookService.findById(bookId);
+        return convertModelInfoToStringService.convertBookInfoToString(book);
     }
 
     @ShellMethod(value = "readAll-book", key = {"readAll-book", "-rall-book"})
@@ -50,7 +50,7 @@ public class BookCommands {
     }
 
     @ShellMethod(value = "update-book", key = {"update-book", "-u-book"})
-    public String updateBook(long bookId, @NotNull String bookName, long bookYear, @NotNull String authorName,
+    public String updateBook(String bookId, @NotNull String bookName, long bookYear, @NotNull String authorName,
                              long authorYear, @NotNull String genreName) {
         var author = new Author(authorName, authorYear);
         var genre = new Genre(genreName);
@@ -60,13 +60,13 @@ public class BookCommands {
     }
 
     @ShellMethod(value = "delete-book", key = {"delete-book", "-d-book"})
-    public String deleteBook(long bookId) {
+    public String deleteBook(String bookId) {
         bookService.delete(bookId);
         return "Book was deleted";
     }
 
     @ShellMethod(value = "save-book-comment", key = {"save-book-comment", "-s-book-c"})
-    public String saveBooksComment(long bookId, @NotNull String commentText) {
+    public String saveBooksComment(String bookId, @NotNull String commentText) {
         var bookDTO = bookService.findById(bookId);
 
         commentService.saveBooksComment(new Comment(commentText, new Book(bookDTO.getId(), bookDTO.getName(),
