@@ -67,10 +67,10 @@ public class BookCommands {
 
     @ShellMethod(value = "save-book-comment", key = {"save-book-comment", "-s-book-c"})
     public String saveBooksComment(String bookId, @NotNull String commentText) {
-        var bookDTO = bookService.findById(bookId);
+        var book = bookService.findById(bookId);
 
-        commentService.saveBooksComment(new Comment(commentText, new Book(bookDTO.getId(), bookDTO.getName(),
-                bookDTO.getYear(), bookDTO.getAuthor(), bookDTO.getGenre(), bookDTO.getComments())));
-        return "Comment of bookDTO was saved";
+        commentService.saveBooksComment(new Comment(commentText, new Book(book.getId(), book.getName(),
+                book.getYear(), book.getAuthor(), book.getGenre(), book.getComments())));
+        return "Comment of book was saved";
     }
 }
