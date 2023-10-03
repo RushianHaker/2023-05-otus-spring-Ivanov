@@ -8,12 +8,12 @@ import ru.otus.testing.model.Comment;
 import ru.otus.testing.service.CommentService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository repository;
+
     private final BookRepository bookRepository;
 
     public CommentServiceImpl(CommentRepository repository, BookRepository bookRepository) {

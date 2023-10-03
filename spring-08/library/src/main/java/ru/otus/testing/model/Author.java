@@ -15,7 +15,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Author {
     @Id
     private String id;
+
     private String name;
+
     private long year;
 
     public Author(String name, long year) {

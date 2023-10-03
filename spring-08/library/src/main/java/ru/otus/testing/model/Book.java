@@ -18,12 +18,17 @@ import java.util.List;
 public class Book {
     @Id
     private String id;
+
     private String name;
+
     private Long year;
+
     @DBRef
     private Author author;
+
     @DBRef
     private Genre genre;
+
     @DBRef
     private List<Comment> comments;
 
