@@ -14,6 +14,8 @@ import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 
+import java.util.Collections;
+
 @Profile("test")
 @ChangeLog
 public class DatabaseChangeLog {
@@ -34,7 +36,13 @@ public class DatabaseChangeLog {
         Book eugeneOnegin = bookRepository.save(new Book("100", "Max", 333L, alexanderPushkin, poem));
         Book andreyOnTree = bookRepository.save(new Book("300", "Andrey on tree", 555L, abab, holy));
 
-        commentRepository.save(new Comment("100", "I like that book !", eugeneOnegin));
-        commentRepository.save(new Comment("300", "I don't love this author !", andreyOnTree));
+        Comment first = commentRepository.save(new Comment("100", "I like that book !", eugeneOnegin));
+        Comment second = commentRepository.save(new Comment("300", "I don't love this author !", andreyOnTree));
+
+        eugeneOnegin.setComments(Collections.singletonList(first));
+        andreyOnTree.setComments(Collections.singletonList(second));
+
+        bookRepository.save(eugeneOnegin);
+        bookRepository.save(andreyOnTree);
     }
 }

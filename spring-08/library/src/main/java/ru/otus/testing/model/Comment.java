@@ -17,7 +17,7 @@ public class Comment {
     @Id
     private String id;
     private String commentText;
-    @DBRef(db = "books")
+    @DBRef
     private Book book;
 
     public Comment(String commentText, Book book) {

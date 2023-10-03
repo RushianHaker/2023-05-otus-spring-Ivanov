@@ -34,6 +34,8 @@ class CommentRepositoryTest {
         var presentComment = comment.get();
         assertEquals("100", presentComment.getId());
         assertEquals("I like that book !", presentComment.getCommentText());
+
+        assertEquals("100", presentComment.getBook().getId());
     }
 
     @Test
