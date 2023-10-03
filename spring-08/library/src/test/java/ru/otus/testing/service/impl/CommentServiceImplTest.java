@@ -5,6 +5,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.otus.testing.dao.BookRepository;
 import ru.otus.testing.dao.CommentRepository;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
@@ -21,6 +22,9 @@ import static org.mockito.Mockito.*;
 class CommentServiceImplTest {
     @MockBean
     private CommentRepository commentRepository;
+
+    @MockBean
+    private BookRepository bookRepository;
 
     @Autowired
     private CommentService commentService;
