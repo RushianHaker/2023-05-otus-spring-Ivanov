@@ -50,4 +50,8 @@ public class Book {
         this.author = author;
         this.genre = genre;
     }
+
+    public Book(String id) {
+        this.id = id;
+    }
 }

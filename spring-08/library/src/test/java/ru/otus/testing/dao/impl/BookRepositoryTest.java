@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.test.annotation.DirtiesContext;
+import ru.otus.testing.dao.AuthorRepository;
 import ru.otus.testing.dao.BookRepository;
+import ru.otus.testing.dao.CommentRepository;
+import ru.otus.testing.dao.GenreRepository;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
@@ -20,6 +23,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class BookRepositoryTest {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    private GenreRepository genreRepository;
 
     @Autowired
     private MongoOperations mongoOperations;
@@ -68,14 +80,14 @@ class BookRepositoryTest {
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void save() {
-        var author = new Author("aaa", 1111);
-        var genre = new Genre("bbb");
-        var comment = new Comment("ccc", new Book());
-        var commentsList = Collections.singletonList(comment);
-        var book = new Book("200", "war and peace", 4321L, author, genre, commentsList);
+        Author author = authorRepository.save(new Author("aaa", 1111));
+        Genre genre = genreRepository.save(new Genre("bbb"));
+        Comment comment = commentRepository.save(new Comment("ccc", new Book("1000")));
 
+        var book = new Book("1000", "war and peace", 4321L, author, genre, Collections.singletonList(comment));
         var saveBook = bookRepository.save(book);
-        var bookById = mongoOperations.findById("200", Book.class);
+
+        var bookById = mongoOperations.findById("1000", Book.class);
 
         assertNotNull(bookById);
         assertEquals(saveBook.getId(), bookById.getId());
