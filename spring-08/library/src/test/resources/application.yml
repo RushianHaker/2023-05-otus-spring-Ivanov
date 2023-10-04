@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: test
+  main:
+    allow-circular-references: true
+  data:
+    mongodb:
+      database: library
+      host: localhost
+      port: 0
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.testing.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
