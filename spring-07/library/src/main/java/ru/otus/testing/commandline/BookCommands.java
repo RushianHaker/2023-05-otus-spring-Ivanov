@@ -13,7 +13,8 @@ import ru.otus.testing.service.ConvertModelInfoToStringService;*/
 
 //@ShellComponent
 public class BookCommands {
-/*
+    //todo перевести эти методы в терминологию контроллера, агрументы, логи и тд.
+ /*
     private final BookService bookService;
 
     private final CommentService commentService;
