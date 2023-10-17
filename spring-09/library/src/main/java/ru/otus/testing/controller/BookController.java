@@ -16,7 +16,9 @@ import java.util.List;
 @Controller
 public class BookController {
     private final BookService bookService;
+
     private final GenreService genreService;
+
     private final AuthorService authorService;
 
     public BookController(BookService bookService, AuthorService authorService, GenreService genreService) {
