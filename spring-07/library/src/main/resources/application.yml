@@ -22,7 +22,3 @@ spring:
       enabled: true
       settings:
         web-allow-others: true
-  mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
