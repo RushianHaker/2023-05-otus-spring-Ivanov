@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Edit book</title>
+    <title>Delete book</title>
     <style type="text/css">
         body {
-            background-color: dodgerblue;
+            background-color: #ffffff;
             padding: 50px;
         }
 
@@ -15,7 +15,7 @@
         }
 
         input:read-only {
-            background: lightgray;
+            background: rgba(128, 126, 126, 0.32);
         }
 
         .row {
@@ -25,10 +25,9 @@
 </head>
 <body>
 
-<!-- Genre delete -->
-<form id="delete-form" th:action="@{/book(id=${book.id})}" th:method="delete" action="delbook.html">
+<form id="delete-form" th:action="@{/delbook(id=${book.id})}" th:method="delete" action="delbook.html">
     <input type="hidden" name="_method" value="delete" />
-    <h1>Book Info:</h1>
+    <h1>Delete Book Info:</h1>
 
     <div class="row">
         <label for="id-input">ID:</label>
@@ -36,13 +35,13 @@
     </div>
 
     <div class="row">
-        <label for="name-input">Title:</label>
-        <input id="name-input" name="name" type="text" readonly="readonly" th:value="${book.title}"/>
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="name" type="text" readonly="readonly" th:value="${book.name}"/>
     </div>
 
     <div class="row">
-        <label for="annotation-input">Annotation:</label>
-        <input id="annotation-input" name="comment" type="text" readonly="readonly" th:value="${book.annotation}"/>
+        <label for="year-input">Year:</label>
+        <input id="year-input" name="year" type="text" readonly="readonly" th:value="${book.year}"/>
     </div>
 
     <div class="row">

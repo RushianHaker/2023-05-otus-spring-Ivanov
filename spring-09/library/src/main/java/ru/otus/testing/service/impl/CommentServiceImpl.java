@@ -19,13 +19,13 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void saveBooksComment(Comment comment) {
+    public Comment saveBooksComment(Comment comment) {
         var book = comment.getBook();
         if (book.getComments() == null) {
             book.setComments(new ArrayList<>());
             comment.setBook(book);
         }
 
-        repository.save(comment);
+        return repository.save(comment);
     }
 }

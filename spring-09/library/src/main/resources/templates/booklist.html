@@ -5,40 +5,51 @@
     <title>List of all Books</title>
     <style type="text/css">
         body {
-            background-color: dodgerblue;
+            background-color: #ffffff;
             padding: 50px;
         }
 
         .books, .books td {
-            border: 1px solid lightgray;
+            border: 1px solid #000000;
             padding: 5px;
         }
     </style>
 </head>
+
 <body>
+
 <h1>Books:</h1>
+
 <button>
     <thead>
     <a th:href="@{/book/addbook}" href="addbook.html">Add</a>
     </thead>
 </button>
-<table class="Books">
+
+<table class="books">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Title</th>
-        <th>Annotation</th>
+        <th>Name</th>
+        <th>Year</th>
         <th>Author</th>
         <th>Genre</th>
     </tr>
     </thead>
+
     <tbody>
     <tr th:each="book : ${books}">
         <td th:text="${book.id}"></td>
-        <td th:text="${book.title}"></td>
-        <td th:text="${book.annotation}"></td>
+        <td th:text="${book.name}"></td>
+        <td th:text="${book.year}"></td>
         <td th:text="${book.author.name}"></td>
         <td th:text="${book.genre.name}"></td>
+        <td>
+            <a th:href="@{book/infobook(id=${book.id})}" href="infobook.html">More Info</a>
+        </td>
+        <td>
+            <a th:href="@{comment/addcomment(id=${book.id})}" href="addcomment.html">Add comment</a>
+        </td>
         <td>
             <a th:href="@{book/editbook(id=${book.id})}" href="editbook.html">Edit</a>
         </td>

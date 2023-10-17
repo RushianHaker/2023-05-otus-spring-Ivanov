@@ -67,6 +67,10 @@ public class Book {
         this.genre = genre;
     }
 
+    public Book(long id) {
+        this.id = id;
+    }
+
     public Book() {
 
     }
