@@ -1,12 +1,12 @@
 package ru.otus.testing.controller;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.testing.dto.BookDTO;
-import ru.otus.testing.exception.CommentControllerException;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.service.BookService;
@@ -24,11 +24,7 @@ public class CommentController {
     }
 
     @PostMapping({"/addcomment"})
-    public String addComment(Book bookDTO, String commentText, Model model) {
-        if (commentText == null || commentText.isEmpty()) {
-            throw new CommentControllerException("Parameter 'commentText' is null or empty!");
-        }
-
+    public String addComment(Book bookDTO, @NotNull String commentText, Model model) {
         Comment saved = commentService.saveBooksComment(new Comment(commentText, new Book(bookDTO.getId(),
                 bookDTO.getName(), bookDTO.getYear(), bookDTO.getAuthor(), bookDTO.getGenre(), bookDTO.getComments())));
         model.addAttribute(saved.getBook());

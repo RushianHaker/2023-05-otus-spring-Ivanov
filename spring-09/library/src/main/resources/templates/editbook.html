@@ -30,39 +30,40 @@
 
     <div class="row">
         <label for="id-input">ID:</label>
-        <input id="id-input" name="id" type="text" readonly="readonly" th:value="${book.id}"/>
+        <input id="id-input" name="bookId" type="text" readonly="readonly" th:value="${book.id}"/>
     </div>
 
     <div class="row">
         <label for="name-input">Name:</label>
-        <input id="name-input" name="name" type="text" th:value="${book.name}"/>
+        <input id="name-input" name="bookName" type="text" th:value="${book.name}"/>
     </div>
 
     <div class="row">
         <label for="year-input">Year:</label>
-        <input id="year-input" name="year" type="number" th:value="${book.year}"/>
+        <input id="year-input" name="bookYear" type="number" th:value="${book.year}"/>
     </div>
 
     <div class="row">
-        <div class="form-group blu-margin">
-            <label>Author:</label>
-            <select class="form-control" th:name="authorId" th:field="${book.author.id}" id="authorId">
-                <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
-            </select>
-        </div>
+        <label for="authname-input">Author name:</label>
+        <input id="authname-input" name="authorName" type="text" th:value="${book.author.name}"/>
     </div>
 
     <div class="row">
-        <div class="form-group blu-margin">
-            <label>Genre:</label>
-            <select class="form-control" th:name="genreId" th:field="${book.genre.id}" id="genreId">
-                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
-            </select>
-        </div>
+        <label for="authyear-input">Author year:</label>
+        <input id="authyear-input" name="authorYear" type="number" th:value="${book.author.year}"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-input">Genre:</label>
+        <input id="genre-input" name="genreName" type="text" th:value="${book.genre.name}"/>
     </div>
 
     <div class="row">
         <button type="submit">Save</button>
+    </div>
+
+    <div class="row">
+        <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
     </div>
 </form>
 

@@ -30,34 +30,35 @@
 
     <div class="row">
         <label for="name-input">Name:</label>
-        <input id="name-input" name="name" type="text"/>
+        <input id="name-input" name="bookName" type="text"/>
     </div>
 
     <div class="row">
         <label for="year-input">Year:</label>
-        <input id="year-input" name="year" type="number"/>
+        <input id="year-input" name="bookYear" type="number"/>
     </div>
 
     <div class="row">
-        <div class="form-group blu-margin">
-            <label>Author:</label>
-            <select class="form-control" th:name="author.id" id="authorId">
-                <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
-            </select>
-        </div>
+        <label for="authname-input">Author name:</label>
+        <input id="authname-input" name="authorName" type="text"/>
     </div>
 
     <div class="row">
-        <div class="form-group blu-margin">
-            <label>Genre:</label>
-            <select class="form-control" th:name="genre.id" id="genreId">
-                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
-            </select>
-        </div>
+        <label for="authyear-input">Author year:</label>
+        <input id="authyear-input" name="authorYear" type="number"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-input">Genre:</label>
+        <input id="genre-input" name="genreName" type="text"/>
     </div>
 
     <div class="row">
         <button type="submit">Save</button>
+    </div>
+
+    <div class="row">
+        <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
     </div>
 </form>
 

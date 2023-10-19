@@ -1,5 +1,6 @@
 package ru.otus.testing.controller;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -7,9 +8,7 @@ import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Genre;
-import ru.otus.testing.service.AuthorService;
 import ru.otus.testing.service.BookService;
-import ru.otus.testing.service.GenreService;
 
 import java.util.List;
 
@@ -17,14 +16,8 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
 
-    private final GenreService genreService;
-
-    private final AuthorService authorService;
-
-    public BookController(BookService bookService, AuthorService authorService, GenreService genreService) {
+    public BookController(BookService bookService) {
         this.bookService = bookService;
-        this.authorService = authorService;
-        this.genreService = genreService;
     }
 
     @GetMapping({"/book"})
@@ -35,21 +28,29 @@ public class BookController {
     }
 
     @PostMapping({"/addbook"})
-    public String addBook(Book book, Model model) {
-        Book saved = bookService.save(book.getName(), book.getYear(), book.getAuthor(), book.getGenre());
+    public String addBook(@NotNull String bookName, long bookYear, @NotNull String authorName, long authorYear,
+                          @NotNull String genreName, Model model) {
+        var author = new Author(authorName, authorYear);
+        var genre = new Genre(genreName);
+
+        Book saved = bookService.save(bookName, bookYear, author, genre);
         model.addAttribute(saved);
         return "redirect:/book";
     }
 
     @PatchMapping({"/editbook"})
-    public String editBook(Book book, Model model) {
-        bookService.update(book.getId(), book.getName(), book.getYear(), book.getAuthor(), book.getGenre());
-        model.addAttribute(bookService.findById(book.getId()));
+    public String editBook(long bookId, @NotNull String bookName, long bookYear, @NotNull String authorName,
+                           long authorYear, @NotNull String genreName, Model model) {
+        var author = new Author(authorName, authorYear);
+        var genre = new Genre(genreName);
+
+        bookService.update(bookId, bookName, bookYear, author, genre);
+        model.addAttribute(bookService.findById(bookId));
         return "redirect:/book";
     }
 
     @DeleteMapping({"/delbook"})
-    public String deleteBookWithCommentsById(@RequestParam("id") long id) {
+    public String deleteBookById(@RequestParam("id") long id) {
         bookService.delete(id);
         return "redirect:/book";
     }
@@ -63,21 +64,13 @@ public class BookController {
     }
 
     @GetMapping({"/book/addbook"})
-    public String addPageBook(Model model) {
-        List<Author> authors = authorService.findAll();
-        List<Genre> genres = genreService.findAll();
-        model.addAttribute("authors", authors);
-        model.addAttribute("genres", genres);
+    public String addPageBook() {
         return "addbook";
     }
 
     @GetMapping({"/book/editbook"})
     public String editPageBook(@RequestParam("id") long id, Model model) {
         BookDTO book = bookService.findById(id);
-        List<Author> authors = authorService.findAll();
-        List<Genre> genres = genreService.findAll();
-        model.addAttribute("authors", authors);
-        model.addAttribute("genres", genres);
         model.addAttribute("book", book);
         return "editbook";
     }
