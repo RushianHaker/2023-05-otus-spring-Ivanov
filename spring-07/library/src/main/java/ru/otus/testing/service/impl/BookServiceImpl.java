@@ -82,8 +82,7 @@ public class BookServiceImpl implements BookService {
             genreInfoFromDb = genreRepository.save(genre);
         }
 
-        bookRepository.save(new Book(bookDTO.getId(), bookName, bookYear, authorInfoFromDb,
-                genreInfoFromDb, bookDTO.getComments()));
+        bookRepository.save(new Book(bookDTO.getId(), bookName, bookYear, authorInfoFromDb, genreInfoFromDb));
     }
 
     @Override
