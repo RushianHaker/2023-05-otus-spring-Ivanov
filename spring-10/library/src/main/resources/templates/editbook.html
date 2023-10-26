@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit book</title>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        input:read-only {
+            background: rgba(128, 126, 126, 0.32);
+        }
+    </style>
+</head>
+<body>
+
+<form id="edit-form" th:action="@{/editbook}" th:method="patch" action="editbook.html">
+    <h1>Edit Book Info:</h1>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" name="bookId" type="text" readonly="readonly" th:value="${book.id}"/>
+    </div>
+
+    <div class="row">
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="bookName" type="text" th:value="${book.name}"/>
+    </div>
+
+    <div class="row">
+        <label for="year-input">Year:</label>
+        <input id="year-input" name="bookYear" type="number" th:value="${book.year}"/>
+    </div>
+
+    <div class="row">
+        <label for="authname-input">Author name:</label>
+        <input id="authname-input" name="authorName" type="text" th:value="${book.author.name}"/>
+    </div>
+
+    <div class="row">
+        <label for="authyear-input">Author year:</label>
+        <input id="authyear-input" name="authorYear" type="number" th:value="${book.author.year}"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-input">Genre:</label>
+        <input id="genre-input" name="genreName" type="text" th:value="${book.genre.name}"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+
+    <div class="row">
+        <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
+    </div>
+</form>
+
+</body>
+</html>
