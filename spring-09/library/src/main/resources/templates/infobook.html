@@ -60,9 +60,9 @@
 <div class="row">
     <div class="form-group blu-margin">
         <label>Comments:</label>
-        <select class="form-control" th:name="comment.id" id="commentId">
-            <option th:each="comment : ${book.comments}" th:value="${comment.id}" th:text="${comment.commentText}"></option>
-        </select>
+        <span class="form-control" th:name="comment.id" id="commentId">
+           <option th:each="comment : ${book.comments}" th:value="${comment.id}" th:text="'- ' + ${comment.commentText}"/>
+        </span>
     </div>
 </div>
 
