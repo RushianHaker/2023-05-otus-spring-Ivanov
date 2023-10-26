@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add book</title>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: #000000;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="edit-form" th:action="@{/addbook}" th:method="post" action="addbook.html">
+    <h1>Add Book Info:</h1>
+
+    <div class="row">
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="bookName" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="year-input">Year:</label>
+        <input id="year-input" name="bookYear" type="number"/>
+    </div>
+
+    <div class="row">
+        <label for="authname-input">Author name:</label>
+        <input id="authname-input" name="authorName" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="authyear-input">Author year:</label>
+        <input id="authyear-input" name="authorYear" type="number"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-input">Genre:</label>
+        <input id="genre-input" name="genreName" type="text"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+
+    <div class="row">
+        <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
+    </div>
+</form>
+
+</body>
+</html>
