@@ -42,16 +42,6 @@
     </tbody>
 
 </table>
-<script>
-    function del_book(bookId) {
-        console.log("exec del_book with param:" + bookId)
-        $.ajax({
-            url: '/api/book/' + bookId,
-            type: 'DELETE',
-        });
-        location.href = "/book";
-    };
-</script>
 
 <script th:inline="javascript">
     console.log("exec api/book ")
@@ -68,11 +58,7 @@
                         <td> <a href="book/infobook/${book.id}">Info</a> </td>
                         <td> <a href="comment/addcomment/${book.id}">Add Comment</a> </td>
                         <td> <a href="book/editbook/${book.id}">Edit</a> </td>
-                        <td>
-                            <button onclick="del_book(${book.id})">
-                            <label>Delete</label>
-                            </button>
-                       </td>
+                        <td> <a href="book/delbook/${book.id}">Delete</a> </td>
                     </tr>
                 `)
             });

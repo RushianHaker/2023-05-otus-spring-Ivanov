@@ -22,10 +22,11 @@
             margin-top: 10px;
         }
     </style>
+    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
 
-<form id="edit-form" th:action="@{/addcomment}" th:method="post" action="addcomment.html">
+<form id="add-form">
     <h1>Add Comment:</h1>
 
     <div class="row">
@@ -49,7 +50,7 @@
     </div>
 
     <div class="row">
-        <button type="submit">Save</button>
+        <button type="button" th:attr="onclick=|add_comment(build_comment_obj())|">Save</button>
     </div>
 
     <div class="row">
@@ -57,5 +58,28 @@
     </div>
 </form>
 
+<script th:inline="javascript">
+    function build_comment_obj() {
+        console.log("exec build_comment_obj");
+        var comment = new Object();
+        comment.commentText = document.getElementById("commentText-input").value;
+        comment.book = [[${bookDTO}]];
+        console.log("exec build_comment_obj result: " + JSON.stringify(comment));
+        return comment;
+    }
+</script>
+
+<script>
+    function add_comment(comment) {
+        console.log("exec add_comment with param:" + JSON.stringify(comment));
+        $.ajax({
+            url: '/api/comment',
+            type: 'POST',
+            contentType: "application/json",
+            dataType: "application/json",
+            data: JSON.stringify(comment)
+        });
+    };
+</script>
 </body>
 </html>

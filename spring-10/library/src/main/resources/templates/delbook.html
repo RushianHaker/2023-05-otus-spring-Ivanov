@@ -22,11 +22,12 @@
             margin-top: 10px;
         }
     </style>
+    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
 
-<form id="delete-form" th:action="@{/delbook(id=${book.id})}" th:method="delete" action="delbook.html">
-    <input type="hidden" name="_method" value="delete" />
+<form id="delete-form">
+    <input type="hidden" name="_method" value="delete"/>
     <h1>Delete Book Info:</h1>
 
     <div class="row">
@@ -55,13 +56,25 @@
     </div>
 
     <div class="row">
-        <button type="submit">Delete</button>
+        <button type="button" th:attr="onclick=|delete_book(${bookId})|">Save</button>
     </div>
 
     <div class="row">
         <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
     </div>
 </form>
+
+<script>
+    function delete_book(id) {
+        console.log("exec delete_book with param: id=" + JSON.stringify(id));
+        $.ajax({
+            url: '/api/book/' + id,
+            type: 'DELETE',
+            contentType: "application/json",
+            dataType: "application/json"
+        });
+    };
+</script>
 
 </body>
 </html>

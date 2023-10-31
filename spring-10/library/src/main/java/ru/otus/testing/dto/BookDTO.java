@@ -1,6 +1,7 @@
 package ru.otus.testing.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,7 @@ public class BookDTO {
 
     private Genre genre;
 
+    @JsonIgnore
     private List<Comment> comments;
 
     public BookDTO(long id, String name, Long year, Author author, Genre genre, List<Comment> comments) {

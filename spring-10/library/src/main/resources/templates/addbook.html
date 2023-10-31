@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
@@ -59,7 +59,7 @@
     </div>
 
     <div class="row">
-        <button> <a th:href="@{/book}" href="booklist.html">Back</a> </button>
+        <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
     </div>
 </form>
 
@@ -80,7 +80,7 @@
         book.author = author;
         book.genre = genre;
 
-        console.log("exec build_book_obj result: " + book);
+        console.log("exec build_book_obj result: " + JSON.stringify(book));
         return book;
     }
 </script>
@@ -93,9 +93,8 @@
             type: 'POST',
             contentType: "application/json",
             dataType: "application/json",
-            data: JSON.stringify(book),
+            data: JSON.stringify(book)
         });
-        location.href ="/book";
     };
 </script>
 </body>

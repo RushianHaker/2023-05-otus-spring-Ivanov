@@ -36,9 +36,10 @@ public class BookRestController {
     }
 
     @PatchMapping({"/{id}"})
-    public void editBook(@PathVariable long id, @NotNull String bookName, long bookYear, @NotNull String authorName,
-                         long authorYear, @NotNull String genreName) {
-        bookService.update(id, bookName, bookYear, new Author(authorName, authorYear), new Genre(genreName));
+    public void editBook(@PathVariable long id, @RequestBody @NotNull BookDTO book) {
+        bookService.update(id, book.getName(), book.getYear(),
+                new Author(book.getAuthor().getName(), book.getAuthor().getYear()),
+                new Genre(book.getGenre().getName()));
     }
 
     @DeleteMapping({"/{id}"})

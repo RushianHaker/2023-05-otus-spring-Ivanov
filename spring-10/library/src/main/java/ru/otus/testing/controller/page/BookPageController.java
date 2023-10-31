@@ -11,6 +11,7 @@ import ru.otus.testing.service.BookService;
 @Controller
 @RequestMapping("/book")
 public class BookPageController {
+
     private final BookService bookService;
 
     public BookPageController(BookService bookService) {
@@ -39,5 +40,12 @@ public class BookPageController {
         BookDTO book = bookService.findById(bookId);
         model.addAttribute("book", book);
         return "editbook";
+    }
+
+    @GetMapping({"/delbook/{bookId}"})
+    public String delPageBook(@PathVariable("bookId") long bookId, Model model) {
+        BookDTO book = bookService.findById(bookId);
+        model.addAttribute("book", book);
+        return "delbook";
     }
 }
