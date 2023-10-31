@@ -22,7 +22,7 @@
             margin-top: 10px;
         }
     </style>
-    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
 
@@ -89,10 +89,10 @@
     function add_book(book) {
         console.log("exec add_book with param:" + JSON.stringify(book));
         $.ajax({
-            url: '/api/book/',
+            url: '/api/book',
             type: 'POST',
             contentType: "application/json",
-            dataType: "json",
+            dataType: "application/json",
             data: JSON.stringify(book),
         });
         location.href ="/book";

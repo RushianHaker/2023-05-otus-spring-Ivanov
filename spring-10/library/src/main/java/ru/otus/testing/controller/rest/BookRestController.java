@@ -29,7 +29,7 @@ public class BookRestController {
     }
 
     @PostMapping()
-    public void addBook(@NotNull BookDTO book) {
+    public void addBook(@RequestBody @NotNull BookDTO book) {
         bookService.save(book.getName(), book.getYear(),
                 new Author(book.getAuthor().getName(), book.getAuthor().getYear()),
                 new Genre(book.getGenre().getName()));
