@@ -1,13 +1,13 @@
-package ru.otus.testing.controller;
+package ru.otus.testing.controller.page;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
-public class MenuController {
+public class MenuPageController {
   @GetMapping({ "/" })
-  public String getMenu() {
+  public String getMenuPage() {
     return "menu";
   }
 }

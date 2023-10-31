@@ -13,7 +13,7 @@ public interface BookService {
 
     BookDTO findById(long bookId);
 
-    List<Book> findAll();
+    List<BookDTO> findAll();
 
     void update(long bookId, String bookName, long bookYear, Author author, Genre genre);
 

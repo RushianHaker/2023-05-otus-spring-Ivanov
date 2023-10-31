@@ -14,6 +14,7 @@
             padding: 5px;
         }
     </style>
+    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
 </head>
 
 <body>
@@ -38,26 +39,45 @@
     </thead>
 
     <tbody>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.id}"></td>
-        <td th:text="${book.name}"></td>
-        <td th:text="${book.year}"></td>
-        <td th:text="${book.author.name}"></td>
-        <td th:text="${book.genre.name}"></td>
-        <td>
-            <a th:href="@{book/infobook(id=${book.id})}" href="infobook.html">More Info</a>
-        </td>
-        <td>
-            <a th:href="@{comment/addcomment(id=${book.id})}" href="addcomment.html">Add Comment</a>
-        </td>
-        <td>
-            <a th:href="@{book/editbook(id=${book.id})}" href="editbook.html">Edit</a>
-        </td>
-        <td>
-            <a th:href="@{book/delbook(id=${book.id})}" href="delbook.html">Delete</a>
-        </td>
-    </tr>
     </tbody>
+
 </table>
+<script>
+    function del_book(bookId) {
+        console.log("exec del_book with param:" + bookId)
+        $.ajax({
+            url: '/api/book/' + bookId,
+            type: 'DELETE',
+        });
+        location.href = "/book";
+    };
+</script>
+
+<script th:inline="javascript">
+    console.log("exec api/book ")
+    $(function () {
+        $.get('/api/book').done(function (books) {
+            books.forEach(function (book) {
+                $('tbody').append(`
+                    <tr>
+                        <td>${book.id}</td>
+                        <td>${book.name}</td>
+                        <td>${book.year}</td>
+                        <td>${book.author.name}</td>
+                        <td>${book.genre.name}</td>
+                        <td> <a href="book/infobook/${book.id}">Info</a> </td>
+                        <td> <a href="comment/addcomment/${book.id}">Add Comment</a> </td>
+                        <td> <a href="book/editbook/${book.id}">Edit</a> </td>
+                        <td>
+                            <button onclick="del_book(${book.id})">
+                            <label>Delete</label>
+                            </button>
+                       </td>
+                    </tr>
+                `)
+            });
+        })
+    });
+</script>
 </body>
 </html>

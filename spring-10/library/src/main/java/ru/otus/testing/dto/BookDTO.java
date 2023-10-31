@@ -1,18 +1,20 @@
 package ru.otus.testing.dto;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.otus.testing.model.Author;
+import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class BookDTO {
     private long id;
 
@@ -25,6 +27,15 @@ public class BookDTO {
     private Genre genre;
 
     private List<Comment> comments;
+
+    public BookDTO(long id, String name, Long year, Author author, Genre genre, List<Comment> comments) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
+        this.author = author;
+        this.genre = genre;
+        this.comments = comments;
+    }
 
     public BookDTO(String name, Long year, Author author, Genre genre, List<Comment> comments) {
         this.name = name;
@@ -49,7 +60,13 @@ public class BookDTO {
         this.genre = genre;
     }
 
-    public BookDTO() {
 
+    public static BookDTO toDto(Book book) {
+        return new BookDTO(book.getId(), book.getName(), book.getYear(), book.getAuthor(), book.getGenre());
+    }
+
+    public Book toDomainObject() {
+        return new Book(id, name, year, author, genre,
+                (comments != null && !comments.isEmpty()) ? new ArrayList<>(comments) : new ArrayList<>());
     }
 }

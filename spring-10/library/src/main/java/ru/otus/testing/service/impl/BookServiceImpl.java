@@ -15,6 +15,7 @@ import ru.otus.testing.service.BookService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -47,8 +48,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<BookDTO> findAll() {
+        return bookRepository.findAll().stream().map(BookDTO::toDto).collect(Collectors.toList());
     }
 
     @Override

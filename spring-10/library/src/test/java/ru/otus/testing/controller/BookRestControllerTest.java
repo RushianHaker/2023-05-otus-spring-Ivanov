@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
+import ru.otus.testing.controller.rest.BookRestController;
 import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
@@ -22,8 +23,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(BookController.class)
-public class BookControllerTest {
+@WebMvcTest(BookRestController.class)
+public class BookRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -97,8 +98,8 @@ public class BookControllerTest {
                 content().string(containsString("testAuthorBookDTO")));
     }
 
-    private List<Book> getBooksForTest() {
-        return List.of(new Book(1L, "testBook", 2222L,
+    private List<BookDTO>  getBooksForTest() {
+        return List.of(new BookDTO(1L, "testBook", 2222L,
                 new Author(1L, "testAuthor", 1111), new Genre(1L, "horror"),
                 List.of(new Comment(1L, "testComment", new Book(1L)))));
     }

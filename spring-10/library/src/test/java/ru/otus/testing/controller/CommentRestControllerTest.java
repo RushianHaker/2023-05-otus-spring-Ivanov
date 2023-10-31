@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
+import ru.otus.testing.controller.rest.CommentRestController;
 import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
@@ -16,7 +17,6 @@ import ru.otus.testing.model.Genre;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.CommentService;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -24,8 +24,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(CommentController.class)
-public class CommentControllerTest {
+@WebMvcTest(CommentRestController.class)
+public class CommentRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
