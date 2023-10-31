@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
-import ru.otus.testing.controller.rest.CommentRestController;
+import ru.otus.testing.controller.page.CommentPageController;
 import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(CommentRestController.class)
+@WebMvcTest(CommentPageController.class)
 public class CommentRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -41,10 +41,7 @@ public class CommentRestControllerTest {
     public void getAddBookPagetTest() throws Exception {
         Mockito.when(bookService.findById(1L)).thenReturn(getBookDTOsForTest());
 
-        LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
-        requestParams.add("id", "1");
-
-        mockMvc.perform(get("/comment/addcomment").params(requestParams)).andExpect(
+        mockMvc.perform(get("/comment/addcomment/1")).andExpect(
                 status().isOk()).andExpect(
                 content().contentType("text/html;charset=UTF-8")).andExpect(
                 content().string(containsString("testBookDTO"))).andExpect(

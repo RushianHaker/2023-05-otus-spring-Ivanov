@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.LinkedMultiValueMap;
-import ru.otus.testing.controller.rest.BookRestController;
+import ru.otus.testing.controller.page.BookPageController;
 import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
@@ -23,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(BookRestController.class)
+@WebMvcTest(BookPageController.class)
 public class BookRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -40,7 +39,7 @@ public class BookRestControllerTest {
 
         mockMvc.perform(get("/book")).andExpect(status().isOk()).andExpect(
                 content().contentType("text/html;charset=UTF-8")).andExpect(
-                content().string(containsString("testBook")));
+                content().string(containsString("<td> <a href=\"comment/addcomment/${book.id}\">Add Comment</a> </td>")));
     }
 
     @DisplayName("Получение страницы добавления")
@@ -49,7 +48,7 @@ public class BookRestControllerTest {
         mockMvc.perform(get("/book/addbook")).andExpect(
                 status().isOk()).andExpect(
                 content().contentType("text/html;charset=UTF-8")).andExpect(
-                content().string(containsString("<form id=\"edit-form\" method=\"post\" action=\"/addbook\">\n")));
+                content().string(containsString("<input id=\"genre-input\" name=\"genreName\" type=\"text\"/>")));
     }
 
     @DisplayName("Получение страницы редактирования")
@@ -57,10 +56,7 @@ public class BookRestControllerTest {
     public void getEditBookPageTest() throws Exception {
         Mockito.when(bookService.findById(TEST_BOOK_ID)).thenReturn(getBookDTOsForTest());
 
-        LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
-        requestParams.add("id", "1");
-
-        mockMvc.perform(get("/book/editbook").params(requestParams)).andExpect(
+        mockMvc.perform(get("/book/editbook/1")).andExpect(
                 status().isOk()).andExpect(
                 content().contentType("text/html;charset=UTF-8")).andExpect(
                 content().string(containsString("testBookDTO"))).andExpect(
@@ -73,10 +69,7 @@ public class BookRestControllerTest {
     public void getInfoBookPageTest() throws Exception {
         Mockito.when(bookService.findById(TEST_BOOK_ID)).thenReturn(getBookDTOsForTest());
 
-        LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
-        requestParams.add("id", "1");
-
-        mockMvc.perform(get("/book/infobook").params(requestParams)).andExpect(
+        mockMvc.perform(get("/book/infobook/1")).andExpect(
                 status().isOk()).andExpect(
                 content().contentType("text/html;charset=UTF-8")).andExpect(
                 content().string(containsString("testBookDTO"))).andExpect(
@@ -88,17 +81,14 @@ public class BookRestControllerTest {
     public void getDeleteBookPageTest() throws Exception {
         Mockito.when(bookService.findById(TEST_BOOK_ID)).thenReturn(getBookDTOsForTest());
 
-        LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
-        requestParams.add("id", "1");
-
-        mockMvc.perform(get("/book/delbook").params(requestParams)).andExpect(
+        mockMvc.perform(get("/book/delbook/1")).andExpect(
                 status().isOk()).andExpect(
                 content().contentType("text/html;charset=UTF-8")).andExpect(
                 content().string(containsString("testBookDTO"))).andExpect(
                 content().string(containsString("testAuthorBookDTO")));
     }
 
-    private List<BookDTO>  getBooksForTest() {
+    private List<BookDTO> getBooksForTest() {
         return List.of(new BookDTO(1L, "testBook", 2222L,
                 new Author(1L, "testAuthor", 1111), new Genre(1L, "horror"),
                 List.of(new Comment(1L, "testComment", new Book(1L)))));
