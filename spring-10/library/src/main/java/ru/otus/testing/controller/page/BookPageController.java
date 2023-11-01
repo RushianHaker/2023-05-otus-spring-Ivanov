@@ -6,16 +6,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.otus.testing.dto.BookDTO;
+import ru.otus.testing.service.AuthorService;
 import ru.otus.testing.service.BookService;
+import ru.otus.testing.service.GenreService;
 
 @Controller
 @RequestMapping("/book")
 public class BookPageController {
 
     private final BookService bookService;
+    private final AuthorService authorService;
+    private final GenreService genreService;
 
-    public BookPageController(BookService bookService) {
+    public BookPageController(BookService bookService, AuthorService authorService, GenreService genreService) {
         this.bookService = bookService;
+        this.authorService = authorService;
+        this.genreService = genreService;
     }
 
     @GetMapping({""})
@@ -31,7 +37,9 @@ public class BookPageController {
     }
 
     @GetMapping({"/addbook"})
-    public String addBookPage() {
+    public String addBookPage(Model model) {
+        model.addAttribute("authors", authorService.findAll());
+        model.addAttribute("genres", genreService.findAll());
         return "addbook";
     }
 

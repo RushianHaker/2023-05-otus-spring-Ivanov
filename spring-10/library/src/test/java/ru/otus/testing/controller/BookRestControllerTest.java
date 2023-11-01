@@ -13,7 +13,9 @@ import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
+import ru.otus.testing.service.AuthorService;
 import ru.otus.testing.service.BookService;
+import ru.otus.testing.service.GenreService;
 
 import java.util.List;
 
@@ -29,6 +31,11 @@ public class BookRestControllerTest {
 
     @MockBean
     private BookService bookService;
+    @MockBean
+    private AuthorService authorService;
+    @MockBean
+    private GenreService genreService;
+
 
     private final static long TEST_BOOK_ID = 1L;
 
@@ -48,7 +55,7 @@ public class BookRestControllerTest {
         mockMvc.perform(get("/book/addbook")).andExpect(
                 status().isOk()).andExpect(
                 content().contentType("text/html;charset=UTF-8")).andExpect(
-                content().string(containsString("<input id=\"genre-input\" name=\"genreName\" type=\"text\"/>")));
+                content().string(containsString("<input id=\"genre-input\" name=\"genre-input\" type=\"text\"/>")));
     }
 
     @DisplayName("Получение страницы редактирования")
