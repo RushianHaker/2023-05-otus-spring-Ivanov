@@ -56,7 +56,7 @@
     </div>
 
     <div class="row">
-        <button type="button" th:attr="onclick=|delete_book(${bookId})|">Save</button>
+        <button type="button" th:attr="onclick=|deleteBook(${bookId})|">Save</button>
     </div>
 
     <div class="row">
@@ -65,8 +65,8 @@
 </form>
 
 <script>
-    function delete_book(id) {
-        console.log("exec delete_book with param: id=" + JSON.stringify(id));
+    function deleteBook(id) {
+        console.log("exec deleteBook with param: id=" + JSON.stringify(id));
         $.ajax({
             url: '/api/book/' + id,
             type: 'DELETE',

@@ -60,7 +60,7 @@
     </div>
 
     <div class="row">
-        <button type="button" th:attr="onclick=|update_book(build_book_obj(), ${bookId})|">Save</button>
+        <button type="button" th:attr="onclick=|updateBook(buildBookObj(), ${bookId})|">Save</button>
     </div>
 
     <div class="row">
@@ -69,8 +69,8 @@
 </form>
 
 <script>
-    function build_book_obj() {
-        console.log("exec build_book_obj");
+    function buildBookObj() {
+        console.log("exec buildBookObj");
 
         var author = new Object();
         author.name = document.getElementById("authname-input").value;
@@ -85,15 +85,15 @@
         book.author = author;
         book.genre = genre;
 
-        console.log("exec build_book_obj result: " + JSON.stringify(book));
+        console.log("exec buildBookObj result: " + JSON.stringify(book));
         return book;
     }
 </script>
 
 <script>
-    function update_book(book, bookId) {
-        console.log("exec update_book");
-        console.log("exec update_book with param:" + JSON.stringify(book));
+    function updateBook(book, bookId) {
+        console.log("exec updateBook");
+        console.log("exec updateBook with param:" + JSON.stringify(book));
         $.ajax({
             url: '/api/book/' + bookId,
             type: 'PUT',

@@ -50,7 +50,7 @@
     </div>
 
     <div class="row">
-        <button type="button" th:attr="onclick=|add_comment(build_comment_obj())|">Save</button>
+        <button type="button" th:attr="onclick=|addComment(buildCommentObj())|">Save</button>
     </div>
 
     <div class="row">
@@ -59,19 +59,19 @@
 </form>
 
 <script th:inline="javascript">
-    function build_comment_obj() {
-        console.log("exec build_comment_obj");
+    function buildCommentObj() {
+        console.log("exec buildCommentObj");
         var comment = new Object();
         comment.commentText = document.getElementById("commentText-input").value;
         comment.book = [[${bookDTO}]];
-        console.log("exec build_comment_obj result: " + JSON.stringify(comment));
+        console.log("exec buildCommentObj result: " + JSON.stringify(comment));
         return comment;
     }
 </script>
 
 <script>
-    function add_comment(comment) {
-        console.log("exec add_comment with param:" + JSON.stringify(comment));
+    function addComment(comment) {
+        console.log("exec addComment with param:" + JSON.stringify(comment));
         $.ajax({
             url: '/api/comment',
             type: 'POST',
