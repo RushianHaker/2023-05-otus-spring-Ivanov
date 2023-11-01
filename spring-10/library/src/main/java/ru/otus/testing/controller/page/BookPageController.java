@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.service.AuthorService;
 import ru.otus.testing.service.BookService;
@@ -14,7 +13,9 @@ import ru.otus.testing.service.GenreService;
 public class BookPageController {
 
     private final BookService bookService;
+
     private final AuthorService authorService;
+
     private final GenreService genreService;
 
     public BookPageController(BookService bookService, AuthorService authorService, GenreService genreService) {

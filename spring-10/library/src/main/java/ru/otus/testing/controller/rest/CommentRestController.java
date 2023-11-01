@@ -3,7 +3,6 @@ package ru.otus.testing.controller.rest;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.otus.testing.dto.CommentDTO;
 import ru.otus.testing.model.Comment;
