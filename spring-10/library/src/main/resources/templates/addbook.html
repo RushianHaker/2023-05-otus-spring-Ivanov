@@ -22,7 +22,6 @@
             margin-top: 10px;
         }
     </style>
-    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
 
@@ -97,11 +96,10 @@
         <input id="genre-input" name="genre-input" type="text"/>
     </div>
 
+
     <div class="row">
         <button type="button" th:attr="onclick=|addBook(buildBookObj())|">Save</button>
     </div>
-
-
     <div class="row">
         <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
     </div>
@@ -146,13 +144,14 @@
 <script>
     function addBook(book) {
         console.log("exec addBook with param:" + JSON.stringify(book));
-        $.ajax({
-            url: '/api/book',
-            type: 'POST',
-            contentType: "application/json",
-            dataType: "application/json",
-            data: JSON.stringify(book)
-        });
+        fetch("/api/book", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(book)
+        }).then(() => location.href="/book");
     };
 </script>
 </body>

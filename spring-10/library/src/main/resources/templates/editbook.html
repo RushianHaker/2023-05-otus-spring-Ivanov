@@ -22,7 +22,6 @@
             background: rgba(128, 126, 126, 0.32);
         }
     </style>
-    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
 
@@ -59,10 +58,10 @@
         <input id="genre-input" name="genreName" type="text" th:value="${book.genre.name}"/>
     </div>
 
+
     <div class="row">
         <button type="button" th:attr="onclick=|updateBook(buildBookObj(), ${bookId})|">Save</button>
     </div>
-
     <div class="row">
         <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
     </div>
@@ -92,15 +91,15 @@
 
 <script>
     function updateBook(book, bookId) {
-        console.log("exec updateBook");
         console.log("exec updateBook with param:" + JSON.stringify(book));
-        $.ajax({
-            url: '/api/book/' + bookId,
-            type: 'PUT',
-            contentType: "application/json",
-            dataType: "application/json",
-            data: JSON.stringify(book)
-        });
+        fetch("/api/book/" + bookId, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(book)
+        }).then(() => location.href = "/book");
     };
 </script>
 

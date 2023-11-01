@@ -22,7 +22,6 @@
             margin-top: 10px;
         }
     </style>
-    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
 
@@ -55,10 +54,10 @@
         <input id="genre-input" name="genre" type="text" readonly="readonly" th:value="${book.genre.name}"/>
     </div>
 
+
     <div class="row">
         <button type="button" th:attr="onclick=|deleteBook(${bookId})|">Save</button>
     </div>
-
     <div class="row">
         <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
     </div>
@@ -67,12 +66,13 @@
 <script>
     function deleteBook(id) {
         console.log("exec deleteBook with param: id=" + JSON.stringify(id));
-        $.ajax({
-            url: '/api/book/' + id,
-            type: 'DELETE',
-            contentType: "application/json",
-            dataType: "application/json"
-        });
+        fetch("/api/book/" + id, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(() => location.href = "/book");
     };
 </script>
 

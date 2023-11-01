@@ -22,7 +22,6 @@
             margin-top: 10px;
         }
     </style>
-    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
 
@@ -49,10 +48,10 @@
         <input id="commentText-input" name="commentText" type="text"/>
     </div>
 
+
     <div class="row">
         <button type="button" th:attr="onclick=|addComment(buildCommentObj())|">Save</button>
     </div>
-
     <div class="row">
         <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
     </div>
@@ -72,13 +71,14 @@
 <script>
     function addComment(comment) {
         console.log("exec addComment with param:" + JSON.stringify(comment));
-        $.ajax({
-            url: '/api/comment',
-            type: 'POST',
-            contentType: "application/json",
-            dataType: "application/json",
-            data: JSON.stringify(comment)
-        });
+        fetch("/api/comment", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+        }).then(() => location.href = "/book");
     };
 </script>
 </body>
