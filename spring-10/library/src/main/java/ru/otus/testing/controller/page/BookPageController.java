@@ -11,7 +11,6 @@ import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.GenreService;
 
 @Controller
-@RequestMapping("/book")
 public class BookPageController {
 
     private final BookService bookService;
@@ -24,33 +23,33 @@ public class BookPageController {
         this.genreService = genreService;
     }
 
-    @GetMapping({""})
+    @GetMapping({"/book"})
     public String getAllBooks() {
         return "booklist";
     }
 
-    @GetMapping({"/infobook/{bookId}"})
+    @GetMapping({"/book/infobook/{bookId}"})
     public String infoBookPage(@PathVariable("bookId") long bookId, Model model) {
         BookDTO book = bookService.findById(bookId);
         model.addAttribute("book", book);
         return "infobook";
     }
 
-    @GetMapping({"/addbook"})
+    @GetMapping({"/book/addbook"})
     public String addBookPage(Model model) {
         model.addAttribute("authors", authorService.findAll());
         model.addAttribute("genres", genreService.findAll());
         return "addbook";
     }
 
-    @GetMapping({"/editbook/{bookId}"})
+    @GetMapping({"/book/editbook/{bookId}"})
     public String editBookPage(@PathVariable("bookId") long bookId, Model model) {
         BookDTO book = bookService.findById(bookId);
         model.addAttribute("book", book);
         return "editbook";
     }
 
-    @GetMapping({"/delbook/{bookId}"})
+    @GetMapping({"/book/delbook/{bookId}"})
     public String delPageBook(@PathVariable("bookId") long bookId, Model model) {
         BookDTO book = bookService.findById(bookId);
         model.addAttribute("book", book);

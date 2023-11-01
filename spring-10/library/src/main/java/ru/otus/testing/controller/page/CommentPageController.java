@@ -9,7 +9,6 @@ import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.service.BookService;
 
 @Controller
-@RequestMapping("/comment")
 public class CommentPageController {
 
     private final BookService bookService;
@@ -18,7 +17,7 @@ public class CommentPageController {
         this.bookService = bookService;
     }
 
-    @GetMapping({"/addcomment/{bookId}"})
+    @GetMapping({"/comment/addcomment/{bookId}"})
     public String addCommentPage(@PathVariable("bookId") long bookId, Model model) {
         BookDTO bookDTO = bookService.findById(bookId);
         model.addAttribute("bookDTO", bookDTO);
