@@ -10,7 +10,6 @@ import ru.otus.testing.model.Comment;
 import ru.otus.testing.service.CommentService;
 
 @RestController
-@RequestMapping("/api/comment")
 public class CommentRestController {
     private final CommentService commentService;
 
@@ -18,7 +17,7 @@ public class CommentRestController {
         this.commentService = commentService;
     }
 
-    @PostMapping()
+    @PostMapping("/api/comment")
     public void addComment(@RequestBody @NotNull CommentDTO comment) {
         commentService.saveBooksComment(new Comment(comment.getCommentText(), comment.getBook().toDomainObject()));
     }

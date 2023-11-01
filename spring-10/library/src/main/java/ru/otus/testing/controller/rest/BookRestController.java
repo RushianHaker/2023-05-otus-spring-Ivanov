@@ -10,7 +10,6 @@ import ru.otus.testing.service.BookService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/book")
 public class BookRestController {
     private final BookService bookService;
 
@@ -18,31 +17,31 @@ public class BookRestController {
         this.bookService = bookService;
     }
 
-    @GetMapping()
+    @GetMapping("/api/book")
     public List<BookDTO> getAllBooks() {
         return bookService.findAll();
     }
 
-    @GetMapping({"/{id}"})
+    @GetMapping({"/api/book/{id}"})
     public BookDTO infoPageBook(@PathVariable long id) {
         return bookService.findById(id);
     }
 
-    @PostMapping()
+    @PostMapping("/api/book")
     public void addBook(@RequestBody @NotNull BookDTO book) {
         bookService.save(book.getName(), book.getYear(),
                 new Author(book.getAuthor().getName(), book.getAuthor().getYear()),
                 new Genre(book.getGenre().getName()));
     }
 
-    @PutMapping({"/{id}"})
+    @PutMapping({"/api/book/{id}"})
     public void editBook(@PathVariable long id, @RequestBody @NotNull BookDTO book) {
         bookService.update(id, book.getName(), book.getYear(),
                 new Author(book.getAuthor().getName(), book.getAuthor().getYear()),
                 new Genre(book.getGenre().getName()));
     }
 
-    @DeleteMapping({"/{id}"})
+    @DeleteMapping({"/api/book/{id}"})
     public void deleteBookById(@PathVariable("id") long id) {
         bookService.delete(id);
     }
