@@ -35,7 +35,7 @@ public class BookRestController {
                 new Genre(book.getGenre().getName()));
     }
 
-    @PatchMapping({"/{id}"})
+    @PutMapping({"/{id}"})
     public void editBook(@PathVariable long id, @RequestBody @NotNull BookDTO book) {
         bookService.update(id, book.getName(), book.getYear(),
                 new Author(book.getAuthor().getName(), book.getAuthor().getYear()),

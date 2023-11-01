@@ -96,7 +96,7 @@
         console.log("exec update_book with param:" + JSON.stringify(book));
         $.ajax({
             url: '/api/book/' + bookId,
-            type: 'PATCH',
+            type: 'PUT',
             contentType: "application/json",
             dataType: "application/json",
             data: JSON.stringify(book)
