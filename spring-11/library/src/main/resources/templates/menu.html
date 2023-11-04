@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Menu</title>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            padding: 50px;
+        }
+
+        .menu, .menu td {
+            color: #000000;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Welcome to library!</h1>
+<h3 class="menu"> See books -> <a th:href="@{book}" href="booklist.html">Enter</a></h3>
+</body>
+</html>
