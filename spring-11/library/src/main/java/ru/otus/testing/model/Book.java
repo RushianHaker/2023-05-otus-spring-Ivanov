@@ -1,77 +1,28 @@
 package ru.otus.testing.model;
 
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import java.util.List;
-
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "books")
-@AllArgsConstructor
+@Builder
+@Document(collection = "books")
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
-    private long id;
+    private String id;
 
-    @Column(name = "book_name", nullable = false)
-    private String name;
+    private String title;
 
-    @Column(name = "book_year", nullable = false)
-    private Long year;
+    private String author;
 
-    @Fetch(FetchMode.SELECT)
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
-    private Author author;
+    private String genre;
 
-    @Fetch(FetchMode.SELECT)
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id")
-    private Genre genre;
-
-    @Fetch(FetchMode.SELECT)
-    @BatchSize(size = 20)
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.LAZY)
-    private List<Comment> comments;
-
-
-    public Book(String name, Long year, Author author, Genre genre, List<Comment> comments) {
-        this.name = name;
-        this.year = year;
-        this.author = author;
+    public Book(String title, String author, String genre) {
+        this.title = title;
         this.genre = genre;
-        this.comments = comments;
-    }
-
-    public Book(long id, String name, Long year, Author author, Genre genre) {
-        this.id = id;
-        this.name = name;
-        this.year = year;
         this.author = author;
-        this.genre = genre;
-    }
-
-    public Book(String name, Long year, Author author, Genre genre) {
-        this.name = name;
-        this.year = year;
-        this.author = author;
-        this.genre = genre;
-    }
-
-    public Book(long id) {
-        this.id = id;
-    }
-
-    public Book() {
-
     }
 }

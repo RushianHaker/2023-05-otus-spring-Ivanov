@@ -1,28 +1,13 @@
 spring:
   profiles:
     active: dev
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-  sql:
-    init:
-      mode: always
+  data:
+    mongodb:
+      database: library
+      port: 27017
+      host: localhost
 
-  jpa:
-    generate-ddl: false
-    hibernate:
-      ddl-auto: none
-    show-sql: false
-    open-in-view: false
-
-  h2:
-    console:
-      path: /h2-console
-      enabled: true
-      settings:
-        web-allow-others: true
-
-  mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.testing.mongock.changelog

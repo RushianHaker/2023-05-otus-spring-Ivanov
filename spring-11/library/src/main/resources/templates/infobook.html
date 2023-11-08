@@ -29,46 +29,50 @@
 
 <div class="row">
     <label for="id-input">ID:</label>
-    <input id="id-input" name="id" type="text" readonly="readonly" th:value="${book.id}"/>
+    <input id="id-input" name="id" type="text" readonly="readonly"/>
 </div>
 
 <div class="row">
-    <label for="name-input">Name:</label>
-    <input id="name-input" name="name" type="text" readonly="readonly" th:value="${book.name}"/>
+    <label for="title-input">Title:</label>
+    <input id="title-input" name="title" type="text" readonly="readonly"/>
 </div>
 
 <div class="row">
-    <label for="year-input">Year:</label>
-    <input id="year-input" name="year" type="text" readonly="readonly" th:value="${book.year}"/>
-</div>
-
-<div class="row">
-    <label for="authname-input">Author name:</label>
-    <input id="authname-input" name="authorName" type="text" readonly="readonly" th:value="${book.author.name}"/>
-</div>
-
-<div class="row">
-    <label for="authyear-input">Author year:</label>
-    <input id="authyear-input" name="authorYear" type="text" readonly="readonly" th:value="${book.author.year}"/>
+    <label for="author-input">Author:</label>
+    <input id="author-input" name="author" type="text" readonly="readonly"/>
 </div>
 
 <div class="row">
     <label for="genre-input">Genre:</label>
-    <input id="genre-input" name="genreName" type="text" readonly="readonly" th:value="${book.genre.name}"/>
-</div>
-
-<div class="row">
-    <div class="form-group blu-margin">
-        <label>Comments:</label>
-        <span class="form-control" th:name="comment.id" id="commentId">
-           <option th:each="comment : ${book.comments}" th:value="${comment.id}" th:text="'- ' + ${comment.commentText}"/>
-        </span>
-    </div>
+    <input id="genre-input" name="genre" type="text" readonly="readonly"/>
 </div>
 
 <div class="row">
     <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
 </div>
 
+<script>
+    const params = {
+        method: 'GET'
+    }
+
+    const bookId = "[[${bookId}]]"
+
+    console.log("exec get book with id: " + bookId);
+
+    fetch("/api/book/" + bookId, params)
+        .then(response => response.json())
+        .then(data => {
+            const idInput = document.getElementById("id-input")
+            const titleInput = document.getElementById("title-input")
+            const authorInput = document.getElementById("author-input")
+            const genreInput = document.getElementById("genre-input")
+
+            idInput.value = data.id
+            titleInput.value = data.title
+            authorInput.value = data.author
+            genreInput.value = data.genre
+        })
+</script>
 </body>
 </html>
