@@ -16,7 +16,7 @@ public class DatabaseChangeLog {
     }
 
     @ChangeSet(order = "002", id = "insertBooks", author = "max i", runAlways = true)
-    public void insertBooks(MongoDatabase db, BookRepository bookRepository) {
+    public void insertBooks(BookRepository bookRepository) {
         Book book = new Book();
         book.setTitle("Time to walk");
         book.setAuthor("Andrey Tolmotov");
