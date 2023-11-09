@@ -12,8 +12,11 @@ import ru.otus.testing.model.Book;
 @AllArgsConstructor
 public final class BookDTO {
     private String id;
+
     private String title;
+
     private String author;
+
     private String genre;
 
     public Book dtoToBook() {
