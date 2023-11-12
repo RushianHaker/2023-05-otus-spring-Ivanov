@@ -14,13 +14,17 @@
             padding: 5px;
         }
     </style>
-    <script src="/webjars/jquery/3.6.4/jquery.min.js"></script>
 </head>
 
 <body>
 
 <h1>Books:</h1>
 
+<button>
+    <thead>
+    <a th:href="@{/logout}">Logout</a>
+    </thead>
+</button>
 <button>
     <thead>
     <a th:href="@{/book/addbook}" href="addbook.html">Add</a>
@@ -38,32 +42,37 @@
     </tr>
     </thead>
 
-    <tbody>
-    </tbody>
-
+    <tbody id="bookTable"/>
 </table>
 
-<script th:inline="javascript">
+<script>
     console.log("exec api/book ")
-    $(function () {
-        $.get('/api/book').done(function (books) {
-            books.forEach(function (book) {
-                $('tbody').append(`
-                    <tr>
-                        <td>${book.id}</td>
-                        <td>${book.name}</td>
-                        <td>${book.year}</td>
-                        <td>${book.author.name}</td>
-                        <td>${book.genre.name}</td>
-                        <td> <a href="book/infobook/${book.id}">Info</a> </td>
-                        <td> <a href="comment/addcomment/${book.id}">Add Comment</a> </td>
-                        <td> <a href="book/editbook/${book.id}">Edit</a> </td>
-                        <td> <a href="book/delbook/${book.id}">Delete</a> </td>
-                    </tr>
-                `)
-            });
-        })
-    });
+
+    const params = {
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        },
+        method: 'GET'
+    }
+
+    fetch("/api/book", params)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(book => {
+                bookTable.innerHTML +=
+                    "<tr>" +
+                    "<td>" + book.id + "</td>" +
+                    "<td>" + book.name + "</td>" +
+                    "<td>" + book.year + "</td>" +
+                    "<td>" + book.author.name + "</td>" +
+                    "<td>" + book.genre.name + "</td>" +
+                    "<td> <a href=\"/book/infobook/" + book.id + "\"> <button type=\"button\">Info</button> </td>" +
+                    "<td> <a href=\"/comment/addcomment/" + book.id + "\"> <button type=\"button\">Add Comment</button> </td>" +
+                    "<td> <a href=\"/book/editbook/" + book.id + "\"> <button type=\"button\">Edit</button> </td>" +
+                    "<td> <a href=\"/book/delbook/" + book.id + "\"> <button type=\"button\">Delete</button> </td>" +
+                    "</tr>";
+            })
+        });
 </script>
 </body>
 </html>
