@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import ru.otus.testing.controller.page.CommentPageController;
@@ -37,6 +38,10 @@ public class CommentRestControllerTest {
 
 
     @DisplayName("Получение страницы добавления")
+    @WithMockUser(
+            username = "admin",
+            authorities = { "ROLE_ADMIN" }
+    )
     @Test
     public void getAddBookPagetTest() throws Exception {
         Mockito.when(bookService.findById(1L)).thenReturn(getBookDTOsForTest());

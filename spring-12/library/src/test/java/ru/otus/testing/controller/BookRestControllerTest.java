@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.testing.controller.page.BookPageController;
 import ru.otus.testing.dto.BookDTO;
@@ -40,16 +41,24 @@ public class BookRestControllerTest {
     private final static long TEST_BOOK_ID = 1L;
 
     @DisplayName("Получение страницы со списком книг")
+    @WithMockUser(
+            username = "admin",
+            authorities = { "ROLE_ADMIN" }
+    )
     @Test
     public void getAllBookListPageTest() throws Exception {
         Mockito.when(bookService.findAll()).thenReturn(getBooksForTest());
 
         mockMvc.perform(get("/book")).andExpect(status().isOk()).andExpect(
                 content().contentType("text/html;charset=UTF-8")).andExpect(
-                content().string(containsString("<td> <a href=\"comment/addcomment/${book.id}\">Add Comment</a> </td>")));
+                content().string(containsString("<td> <a href=\\\"/book/infobook/\" + book.id + \"\\\"> <button type=\\\"button\\\">Info</button> </td>")));
     }
 
     @DisplayName("Получение страницы добавления")
+    @WithMockUser(
+            username = "admin",
+            authorities = { "ROLE_ADMIN" }
+    )
     @Test
     public void getAddBookPagetTest() throws Exception {
         mockMvc.perform(get("/book/addbook")).andExpect(
@@ -59,6 +68,10 @@ public class BookRestControllerTest {
     }
 
     @DisplayName("Получение страницы редактирования")
+    @WithMockUser(
+            username = "admin",
+            authorities = { "ROLE_ADMIN" }
+    )
     @Test
     public void getEditBookPageTest() throws Exception {
         Mockito.when(bookService.findById(TEST_BOOK_ID)).thenReturn(getBookDTOsForTest());
@@ -72,6 +85,10 @@ public class BookRestControllerTest {
     }
 
     @DisplayName("Получение страницы полной информации по книге")
+    @WithMockUser(
+            username = "admin",
+            authorities = { "ROLE_ADMIN" }
+    )
     @Test
     public void getInfoBookPageTest() throws Exception {
         Mockito.when(bookService.findById(TEST_BOOK_ID)).thenReturn(getBookDTOsForTest());
@@ -84,6 +101,10 @@ public class BookRestControllerTest {
     }
 
     @DisplayName("Получение страницы удаления книги")
+    @WithMockUser(
+            username = "admin",
+            authorities = { "ROLE_ADMIN" }
+    )
     @Test
     public void getDeleteBookPageTest() throws Exception {
         Mockito.when(bookService.findById(TEST_BOOK_ID)).thenReturn(getBookDTOsForTest());
