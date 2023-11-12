@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Info book</title>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: rgba(128, 126, 126, 0.32);
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Book Info:</h1>
+
+<div class="row">
+    <label for="id-input">ID:</label>
+    <input id="id-input" name="id" type="text" readonly="readonly"/>
+</div>
+
+<div class="row">
+    <label for="title-input">Title:</label>
+    <input id="title-input" name="title" type="text" readonly="readonly"/>
+</div>
+
+<div class="row">
+    <label for="author-input">Author:</label>
+    <input id="author-input" name="author" type="text" readonly="readonly"/>
+</div>
+
+<div class="row">
+    <label for="genre-input">Genre:</label>
+    <input id="genre-input" name="genre" type="text" readonly="readonly"/>
+</div>
+
+<div class="row">
+    <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
+</div>
+
+<script>
+    const params = {
+        method: 'GET'
+    }
+
+    const bookId = "[[${bookId}]]"
+
+    console.log("exec get book with id: " + bookId);
+
+    fetch("/api/book/" + bookId, params)
+        .then(response => response.json())
+        .then(data => {
+            const idInput = document.getElementById("id-input")
+            const titleInput = document.getElementById("title-input")
+            const authorInput = document.getElementById("author-input")
+            const genreInput = document.getElementById("genre-input")
+
+            idInput.value = data.id
+            titleInput.value = data.title
+            authorInput.value = data.author
+            genreInput.value = data.genre
+        })
+</script>
+</body>
+</html>
