@@ -9,3 +9,9 @@ values ('Dev Book', 2003, 1, 1);
 
 insert into comments (comment_text, book_id)
 values ('I like that!', 1);
+
+insert into users (username, password, role)
+values ('admin', 'admin', 'ADMIN');
+
+insert into users (username, password, role)
+values ('user', 'user', 'USER');

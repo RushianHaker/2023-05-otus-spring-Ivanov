@@ -15,3 +15,9 @@ insert into comments (comment_text, book_id)
 values ('I can write better!', 1);
 insert into comments (comment_text, book_id)
 values ('Cool!', 1);
+
+insert into users (username, password, role)
+values ('admin', 'admin', 'ADMIN');
+
+insert into users (username, password, role)
+values ('user', 'user', 'USER');

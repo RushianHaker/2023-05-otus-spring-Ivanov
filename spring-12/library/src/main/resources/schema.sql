@@ -34,3 +34,11 @@ CREATE TABLE comments
     book_id      bigint references books (id) on delete restrict,
     primary key (id)
 );
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+    id bigserial,
+    username VARCHAR(255),
+    password VARCHAR(255),
+    role VARCHAR(255)
+);
