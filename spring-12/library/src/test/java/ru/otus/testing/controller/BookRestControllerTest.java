@@ -116,6 +116,15 @@ public class BookRestControllerTest {
                 content().string(containsString("testAuthorBookDTO")));
     }
 
+    @Test
+    public void unauthorizedUserTest() throws Exception {
+        mockMvc.perform(get("/book")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/book/addbook")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/book/editbook/1")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/book/infobook/1")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/book/delbook/1")).andExpect(status().isUnauthorized());
+    }
+
     private List<BookDTO> getBooksForTest() {
         return List.of(new BookDTO(1L, "testBook", 2222L,
                 new Author(1L, "testAuthor", 1111), new Genre(1L, "horror"),
