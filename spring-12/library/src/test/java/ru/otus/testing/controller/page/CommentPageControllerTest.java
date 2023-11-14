@@ -38,7 +38,7 @@ public class CommentPageControllerTest {
     @DisplayName("Получение страницы добавления")
     @WithMockUser(
             username = "admin",
-            authorities = { "ROLE_ADMIN" }
+            authorities = {"ROLE_ADMIN"}
     )
     @Test
     public void getAddBookPagetTest() throws Exception {

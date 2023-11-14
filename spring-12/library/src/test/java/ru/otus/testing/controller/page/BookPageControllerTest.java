@@ -42,7 +42,7 @@ public class BookPageControllerTest {
     @DisplayName("Получение страницы со списком книг")
     @WithMockUser(
             username = "admin",
-            authorities = { "ROLE_ADMIN" }
+            authorities = {"ROLE_ADMIN"}
     )
     @Test
     public void getAllBookListPageTest() throws Exception {
@@ -56,7 +56,7 @@ public class BookPageControllerTest {
     @DisplayName("Получение страницы добавления")
     @WithMockUser(
             username = "admin",
-            authorities = { "ROLE_ADMIN" }
+            authorities = {"ROLE_ADMIN"}
     )
     @Test
     public void getAddBookPagetTest() throws Exception {
@@ -69,7 +69,7 @@ public class BookPageControllerTest {
     @DisplayName("Получение страницы редактирования")
     @WithMockUser(
             username = "admin",
-            authorities = { "ROLE_ADMIN" }
+            authorities = {"ROLE_ADMIN"}
     )
     @Test
     public void getEditBookPageTest() throws Exception {
@@ -86,7 +86,7 @@ public class BookPageControllerTest {
     @DisplayName("Получение страницы полной информации по книге")
     @WithMockUser(
             username = "admin",
-            authorities = { "ROLE_ADMIN" }
+            authorities = {"ROLE_ADMIN"}
     )
     @Test
     public void getInfoBookPageTest() throws Exception {
@@ -102,7 +102,7 @@ public class BookPageControllerTest {
     @DisplayName("Получение страницы удаления книги")
     @WithMockUser(
             username = "admin",
-            authorities = { "ROLE_ADMIN" }
+            authorities = {"ROLE_ADMIN"}
     )
     @Test
     public void getDeleteBookPageTest() throws Exception {
