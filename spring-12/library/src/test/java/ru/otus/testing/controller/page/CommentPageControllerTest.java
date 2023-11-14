@@ -1,4 +1,4 @@
-package ru.otus.testing.controller;
+package ru.otus.testing.controller.page;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,8 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.LinkedMultiValueMap;
-import ru.otus.testing.controller.page.CommentPageController;
 import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
@@ -26,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CommentPageController.class)
-public class CommentRestControllerTest {
+public class CommentPageControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
