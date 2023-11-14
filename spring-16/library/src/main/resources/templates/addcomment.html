@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add comment</title>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: rgba(128, 126, 126, 0.32);
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="add-form">
+    <h1>Add Comment:</h1>
+
+    <div class="row">
+        <label for="id-input">Book ID:</label>
+        <input id="id-input" name="id" type="text" readonly="readonly" th:value="${bookDTO.id}"/>
+    </div>
+
+    <div class="row">
+        <label for="name-input">Book name:</label>
+        <input id="name-input" name="name" type="text" readonly="readonly" th:value="${bookDTO.name}"/>
+    </div>
+
+    <div class="row">
+        <label for="year-input">Book year:</label>
+        <input id="year-input" name="year" type="text" readonly="readonly" th:value="${bookDTO.year}"/>
+    </div>
+
+    <div class="row">
+        <label for="commentText-input">Comment:</label>
+        <input id="commentText-input" name="commentText" type="text"/>
+    </div>
+
+
+    <div class="row">
+        <button type="button" th:attr="onclick=|addComment(buildCommentObj())|">Save</button>
+    </div>
+    <div class="row">
+        <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
+    </div>
+</form>
+
+<script th:inline="javascript">
+    function buildCommentObj() {
+        console.log("exec buildCommentObj");
+        var comment = new Object();
+        comment.commentText = document.getElementById("commentText-input").value;
+        comment.book = [[${bookDTO}]];
+        console.log("exec buildCommentObj result: " + JSON.stringify(comment));
+        return comment;
+    }
+</script>
+
+<script>
+    function addComment(comment) {
+        console.log("exec addComment with param:" + JSON.stringify(comment));
+        fetch("/api/comment", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+        }).then(() => location.href = "/book");
+    };
+</script>
+</body>
+</html>
