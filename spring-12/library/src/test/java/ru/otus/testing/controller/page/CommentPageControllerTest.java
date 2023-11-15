@@ -2,28 +2,35 @@ package ru.otus.testing.controller.page;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.testing.dto.BookDTO;
 import ru.otus.testing.model.Author;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.model.Comment;
 import ru.otus.testing.model.Genre;
+import ru.otus.testing.security.SecurityConfiguration;
 import ru.otus.testing.service.BookService;
 import ru.otus.testing.service.CommentService;
 
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(CommentPageController.class)
+@Import(SecurityConfiguration.class)
 public class CommentPageControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -51,6 +58,14 @@ public class CommentPageControllerTest {
                 content().string(containsString("2222")));
     }
 
+    @Test
+    public void unauthorizedUserRedirectToLoginPageTest() throws Exception {
+        String redirectUrl = "http://localhost/login";
+        String headerLocation = "Location";
+
+        assertEquals(redirectUrl, mockMvc.perform(get("/comment/addcomment/1"))
+                .andExpect(status().is3xxRedirection()).andReturn().getResponse().getHeader(headerLocation));
+    }
 
     private BookDTO getBookDTOsForTest() {
         return new BookDTO(1L, "testBookDTO", 2222L,
