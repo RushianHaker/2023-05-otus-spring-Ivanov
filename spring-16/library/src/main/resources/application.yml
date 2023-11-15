@@ -27,6 +27,16 @@ spring:
       filter:
         enabled: true
 
+logging:
+  file:
+    name: logs/spring-outs-05-2023.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: spring-outs-05-2023.%d{yyyy-MM-dd}.%i.gz
+      max-file-size: 10MB
+  level:
+    org.springframework.web: DEBUG
+
 management:
   endpoints:
     web:
@@ -35,6 +45,8 @@ management:
   endpoint:
     health:
       show-details: always
+    logfile:
+      enabled: true
   health:
     defaults:
       enabled: true
