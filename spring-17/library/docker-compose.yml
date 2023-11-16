@@ -8,14 +8,15 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=deploy
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5679/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
   postgres:
     image: "postgres:13"
     ports:
-      - "5432:5432"
+      - "5679:5679"
     environment:
+      - PGPORT=5679
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
