@@ -4,7 +4,7 @@ ENV VERTICLE_HOME /usr/app
 
 ARG CACHEBUST=1
 
-COPY target/test-0.0.1-jar-with-dependencies.jar $VERTICLE_HOME/library.jar
+COPY target/library-jar-with-dependencies.jar $VERTICLE_HOME/library.jar
 
 ARG JAVA_OPTS=""
 WORKDIR $VERTICLE_HOME
