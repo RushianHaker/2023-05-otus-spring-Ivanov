@@ -1,0 +1,6 @@
+# otus_spring
+Домашнее задание: Использовать метрики, healthchecks и logfile
+
+Цель: Реализовать production-grade мониторинг и прозрачность в приложении
+
+Результат: Приложение с применением Spring Boot Actuator

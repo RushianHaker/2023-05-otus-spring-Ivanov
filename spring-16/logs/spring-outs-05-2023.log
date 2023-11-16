@@ -1,0 +1,53 @@
+2023-11-16T00:13:17.683+03:00  INFO 2489579 --- [main] ru.otus.testing.LibraryApplication       : Starting LibraryApplication using Java 18.0.1.1 with PID 2489579 (/home/centerinform/ideaProgect/Spring_OTUS_HomeWork/2023-05-otus-spring-Ivanov/spring-16/library/target/classes started by centerinform in /home/centerinform/ideaProgect/Spring_OTUS_HomeWork/2023-05-otus-spring-Ivanov/spring-16)
+2023-11-16T00:13:17.686+03:00  INFO 2489579 --- [main] ru.otus.testing.LibraryApplication       : The following 1 profile is active: "dev"
+2023-11-16T00:13:19.098+03:00  INFO 2489579 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-11-16T00:13:19.175+03:00  INFO 2489579 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 68 ms. Found 4 JPA repository interfaces.
+2023-11-16T00:13:20.100+03:00  INFO 2489579 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-11-16T00:13:20.116+03:00  INFO 2489579 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-11-16T00:13:20.117+03:00  INFO 2489579 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.10]
+2023-11-16T00:13:20.274+03:00  INFO 2489579 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-11-16T00:13:20.274+03:00  INFO 2489579 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2517 ms
+2023-11-16T00:13:20.504+03:00  INFO 2489579 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-11-16T00:13:20.749+03:00  INFO 2489579 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2023-11-16T00:13:20.751+03:00  INFO 2489579 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-11-16T00:13:20.768+03:00  INFO 2489579 --- [main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2023-11-16T00:13:20.854+03:00 DEBUG 2489579 --- [main] o.s.w.f.ServerHttpObservationFilter      : Filter 'webMvcObservationFilter' configured for use
+2023-11-16T00:13:20.981+03:00  INFO 2489579 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-11-16T00:13:21.051+03:00  INFO 2489579 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.5.Final
+2023-11-16T00:13:21.055+03:00  INFO 2489579 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-11-16T00:13:21.739+03:00  INFO 2489579 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-11-16T00:13:22.432+03:00  INFO 2489579 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-11-16T00:13:23.158+03:00  INFO 2489579 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-11-16T00:13:24.167+03:00  INFO 2489579 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-11-16T00:13:24.170+03:00  INFO 2489579 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-11-16T00:13:24.740+03:00 DEBUG 2489579 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2023-11-16T00:13:24.826+03:00 DEBUG 2489579 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : 15 mappings in 'requestMappingHandlerMapping'
+2023-11-16T00:13:24.846+03:00 DEBUG 2489579 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2023-11-16T00:13:24.861+03:00 DEBUG 2489579 --- [main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2023-11-16T00:13:25.257+03:00  INFO 2489579 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 15 endpoint(s) beneath base path '/actuator'
+2023-11-16T00:13:25.361+03:00  INFO 2489579 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-11-16T00:13:25.379+03:00  INFO 2489579 --- [main] ru.otus.testing.LibraryApplication       : Started LibraryApplication in 8.39 seconds (process running for 9.213)
+2023-11-16T00:13:25.895+03:00  INFO 2489579 --- [RMI TCP Connection(5)-10.0.59.178] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-11-16T00:13:25.895+03:00  INFO 2489579 --- [RMI TCP Connection(5)-10.0.59.178] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-11-16T00:13:25.896+03:00 DEBUG 2489579 --- [RMI TCP Connection(5)-10.0.59.178] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2023-11-16T00:13:25.896+03:00 DEBUG 2489579 --- [RMI TCP Connection(5)-10.0.59.178] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2023-11-16T00:13:25.896+03:00 DEBUG 2489579 --- [RMI TCP Connection(5)-10.0.59.178] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2023-11-16T00:13:25.898+03:00 DEBUG 2489579 --- [RMI TCP Connection(5)-10.0.59.178] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@33efa7d4
+2023-11-16T00:13:25.898+03:00 DEBUG 2489579 --- [RMI TCP Connection(5)-10.0.59.178] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@4ac26092
+2023-11-16T00:13:25.899+03:00 DEBUG 2489579 --- [RMI TCP Connection(5)-10.0.59.178] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2023-11-16T00:13:25.899+03:00  INFO 2489579 --- [RMI TCP Connection(5)-10.0.59.178] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2023-11-16T00:13:28.716+03:00 DEBUG 2489579 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/actuator/logfile", parameters={}
+2023-11-16T00:13:28.757+03:00 DEBUG 2489579 --- [http-nio-8080-exec-1] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain;charset=UTF-8;q=0.8', given [text/html, application/xhtml+xml, image/avif, image/webp, application/xml;q=0.9, */*;q=0.8] and supported [text/plain;charset=UTF-8]
+2023-11-16T00:13:28.758+03:00 DEBUG 2489579 --- [http-nio-8080-exec-1] m.m.a.RequestResponseBodyMethodProcessor : Writing [file [/home/centerinform/ideaProgect/Spring_OTUS_HomeWork/2023-05-otus-spring-Ivanov/spring-16/logs/ (truncated)...]
+2023-11-16T00:13:28.767+03:00 DEBUG 2489579 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-11-16T00:13:30.227+03:00 DEBUG 2489579 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/actuator", parameters={}
+2023-11-16T00:13:30.234+03:00 DEBUG 2489579 --- [http-nio-8080-exec-2] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/vnd.spring-boot.actuator.v3+json;q=0.8', given [text/html, application/xhtml+xml, image/avif, image/webp, application/xml;q=0.9, */*;q=0.8] and supported [application/vnd.spring-boot.actuator.v3+json, application/vnd.spring-boot.actuator.v2+json, application/json]
+2023-11-16T00:13:30.243+03:00 DEBUG 2489579 --- [http-nio-8080-exec-2] m.m.a.RequestResponseBodyMethodProcessor : Writing [{_links={self=[Link@71119688 href = 'http://localhost:8080/actuator'], beans=[Link@33686a4 href = 'h (truncated)...]
+2023-11-16T00:13:30.257+03:00 DEBUG 2489579 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-11-16T00:13:31.557+03:00 DEBUG 2489579 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/actuator/logfile", parameters={}
+2023-11-16T00:13:31.560+03:00 DEBUG 2489579 --- [http-nio-8080-exec-3] m.m.a.RequestResponseBodyMethodProcessor : Using 'text/plain;charset=UTF-8;q=0.8', given [text/html, application/xhtml+xml, image/avif, image/webp, application/xml;q=0.9, */*;q=0.8] and supported [text/plain;charset=UTF-8]
+2023-11-16T00:13:31.561+03:00 DEBUG 2489579 --- [http-nio-8080-exec-3] m.m.a.RequestResponseBodyMethodProcessor : Writing [file [/home/centerinform/ideaProgect/Spring_OTUS_HomeWork/2023-05-otus-spring-Ivanov/spring-16/logs/ (truncated)...]
+2023-11-16T00:13:31.563+03:00 DEBUG 2489579 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-11-16T00:14:08.835+03:00  INFO 2489579 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-11-16T00:14:08.851+03:00  INFO 2489579 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-11-16T00:14:08.860+03:00  INFO 2489579 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
