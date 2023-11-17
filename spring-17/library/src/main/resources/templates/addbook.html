@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add book</title>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: #000000;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="add-form">
+    <h1>Add Book Info:</h1>
+
+    <div class="row">
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="name" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="year-input">Year:</label>
+        <input id="year-input" name="year" type="number"/>
+    </div>
+
+
+    <div class="row">
+        <span>
+            <b>Chose the author</b>
+        </span>
+    </div>
+    <div class="row">
+        <div class="form-group blu-margin">
+            <label>Authors:</label>
+            <select class="form-control" th:name="authorName" id="authorName">
+                <option th:each="author : ${authors}" th:value="${author.name}" th:text="${author.name}"></option>
+            </select>
+            <select class="form-control" th:name="authorYear" id="authorYear">
+                <option th:each="author : ${authors}" th:value="${author.year}" th:text="${author.year}"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <span>
+            <b>If you can’t find the author, write your own version</b>
+        </span>
+    </div>
+    <div class="row">
+        <label for="authname-input">Author name:</label>
+        <input id="authname-input" name="authname-input" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="authyear-input">Author year:</label>
+        <input id="authyear-input" name="authyear-input" type="number"/>
+    </div>
+
+
+    <div class="row">
+        <span>
+            <b>Chose the genre</b>
+        </span>
+    </div>
+    <div class="row">
+        <div class="form-group blu-margin">
+            <label>Genres:</label>
+            <select class="form-control" th:name="genreName" id="genreName">
+                <option th:each="genre : ${genres}" th:value="${genre.name}" th:text="${genre.name}"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <span>
+            <b>If you can’t find the genre, write your own version</b>
+        </span>
+    </div>
+    <div class="row">
+        <label for="genre-input">Genre:</label>
+        <input id="genre-input" name="genre-input" type="text"/>
+    </div>
+
+
+    <div class="row">
+        <button type="button" th:attr="onclick=|addBook(buildBookObj())|">Save</button>
+    </div>
+    <div class="row">
+        <button><a th:href="@{/book}" href="booklist.html">Back</a></button>
+    </div>
+</form>
+
+<script>
+    function buildBookObj() {
+        console.log("exec buildBookObj");
+
+        var author = new Object();
+        var authorN = document.getElementById("authname-input").value;
+        var authorY = document.getElementById("authyear-input").value;
+
+        if (authorN.length > 0 && authorY.length > 0) {
+            author.name = authorN;
+            author.year = authorY;
+        } else {
+            author.name = document.getElementById("authorName").value;
+            author.year = document.getElementById("authorYear").value;
+        }
+
+        var genre = new Object();
+        var genreN = document.getElementById("genre-input").value
+
+        if (genreN.length > 0) {
+            genre.name = genreN;
+        } else {
+            genre.name = document.getElementById("genreName").value
+        }
+
+        var book = new Object();
+        book.name = document.getElementById("name-input").value;
+        book.year = document.getElementById("year-input").value;
+        book.author = author;
+        book.genre = genre;
+
+        console.log("exec buildBookObj result: " + JSON.stringify(book));
+        return book;
+    }
+</script>
+
+<script>
+    function addBook(book) {
+        console.log("exec addBook with param:" + JSON.stringify(book));
+        fetch("/api/book", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(book)
+        }).then(() => location.href="/book");
+    };
+</script>
+</body>
+</html>

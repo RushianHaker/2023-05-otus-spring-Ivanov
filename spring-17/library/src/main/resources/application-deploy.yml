@@ -1,0 +1,35 @@
+server:
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+
+spring:
+  application:
+    name: library
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: postgres
+
+  sql:
+    init:
+      mode: always
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    open-in-view: false
+
+  h2:
+    console:
+      enabled: false
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true

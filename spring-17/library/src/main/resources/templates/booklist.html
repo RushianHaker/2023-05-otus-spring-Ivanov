@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all Books</title>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            padding: 50px;
+        }
+
+        .books, .books td {
+            border: 1px solid #000000;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Books:</h1>
+
+<button>
+    <thead>
+    <a th:href="@{/logout}">Logout</a>
+    </thead>
+</button>
+<button>
+    <thead>
+    <a th:href="@{/book/addbook}" href="addbook.html">Add</a>
+    </thead>
+</button>
+
+<table class="books">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Year</th>
+        <th>Author</th>
+        <th>Genre</th>
+    </tr>
+    </thead>
+
+    <tbody id="bookTable"/>
+</table>
+
+<script>
+    console.log("exec api/book ")
+
+    const params = {
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        },
+        method: 'GET'
+    }
+
+    fetch("/api/book", params)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(book => {
+                bookTable.innerHTML +=
+                    "<tr>" +
+                    "<td>" + book.id + "</td>" +
+                    "<td>" + book.name + "</td>" +
+                    "<td>" + book.year + "</td>" +
+                    "<td>" + book.author.name + "</td>" +
+                    "<td>" + book.genre.name + "</td>" +
+                    "<td> <a href=\"/book/infobook/" + book.id + "\"> <button type=\"button\">Info</button> </td>" +
+                    "<td> <a href=\"/comment/addcomment/" + book.id + "\"> <button type=\"button\">Add Comment</button> </td>" +
+                    "<td> <a href=\"/book/editbook/" + book.id + "\"> <button type=\"button\">Edit</button> </td>" +
+                    "<td> <a href=\"/book/delbook/" + book.id + "\"> <button type=\"button\">Delete</button> </td>" +
+                    "</tr>";
+            })
+        });
+</script>
+</body>
+</html>
