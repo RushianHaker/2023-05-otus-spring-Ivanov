@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+
+  data:
+    mongodb:
+      database: library
+      port: 27017
+      host: localhost
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.testing.changelog
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream, info, health
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"
