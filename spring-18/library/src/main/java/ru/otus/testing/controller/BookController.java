@@ -1,7 +1,5 @@
 package ru.otus.testing.controller;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -11,10 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.service.BookService;
 
-import java.util.Optional;
-import java.util.Random;
-
-@Slf4j
 @Controller
 public class BookController {
 
@@ -29,32 +23,12 @@ public class BookController {
         return "menu";
     }
 
-    @HystrixCommand(commandKey = "waitPage", fallbackMethod = "callWaitPage")
     @GetMapping("/book")
     public String getLibrary(@RequestParam(name = "page", defaultValue = "0") int page,
                              @RequestParam(name = "size", defaultValue = "10") int size, Model model) {
-        randomSleep();
-
-        log.info("Get all books in library");
-
         Page<Book> books = bookService.findPaginated(PageRequest.of(page, size));
         model.addAttribute("books", books);
 
         return "booklist";
-    }
-
-    public String callWaitPage(int page, int size, Model model) {
-        log.warn("fallBackMethod");
-        return "waitPage";
-    }
-
-    private void randomSleep() {
-        if (new Random().nextInt(5) > 3) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 }
