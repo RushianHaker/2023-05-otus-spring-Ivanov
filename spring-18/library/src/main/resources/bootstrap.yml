@@ -1,7 +1,0 @@
-hystrix:
-  command:
-    waitPage:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 3000

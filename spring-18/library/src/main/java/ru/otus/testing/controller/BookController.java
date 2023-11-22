@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.testing.model.Book;
 import ru.otus.testing.service.BookService;
@@ -32,23 +31,19 @@ public class BookController {
 
     @HystrixCommand(commandKey = "waitPage", fallbackMethod = "callWaitPage")
     @GetMapping("/book")
-    public String getLibrary(@RequestParam("page") Optional<Integer> page,
-                             @RequestParam("size") Optional<Integer> size, Model model) {
+    public String getLibrary(@RequestParam(name = "page", defaultValue = "0") int page,
+                             @RequestParam(name = "size", defaultValue = "10") int size, Model model) {
         randomSleep();
 
         log.info("Get all books in library");
 
-        int currentPage = page.orElse(0);
-        int pageSize = size.orElse(5);
-
-        Page<Book> books = bookService.findPaginated(PageRequest.of(currentPage, pageSize));
+        Page<Book> books = bookService.findPaginated(PageRequest.of(page, size));
         model.addAttribute("books", books);
 
         return "booklist";
     }
 
-    public String callWaitPage(@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size,
-                               Model model) {
+    public String callWaitPage(int page, int size, Model model) {
         log.warn("fallBackMethod");
         return "waitPage";
     }

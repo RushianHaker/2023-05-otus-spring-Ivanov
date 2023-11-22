@@ -26,3 +26,9 @@ management:
 hystrix:
   dashboard:
     proxy-stream-allow-list: "*"
+  command:
+    waitPage:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000

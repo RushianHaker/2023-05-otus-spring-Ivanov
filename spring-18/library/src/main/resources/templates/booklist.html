@@ -52,13 +52,13 @@
                 <span th:if="${books.number == i}" class="selected">[[${i}+1]] </span>
                     <span th:unless="${books.number == i}">
                         <li>
-                            <a th:href="@{/library(page=${i},size=${books.size})}">[[${i}+1]] </a>
+                            <a th:href="@{/book(page=${i},size=${books.size})}">[[${i}+1]] </a>
                         </li>
                     </span>
             </th:block>
             <span th:if="${books.hasNext()}">
                 <li>
-                    <a th:href="@{/library(page=${books.number+1},size=${books.size})}">Next </a>
+                    <a th:href="@{/book(page=${books.number+1},size=${books.size})}">Next </a>
                 </li>
             </span>
         </ul>
