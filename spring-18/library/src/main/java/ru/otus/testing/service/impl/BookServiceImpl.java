@@ -30,7 +30,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @HystrixCommand(commandKey = "waitPage", fallbackMethod = "callWaitPage")
-    @Transactional
     public Page<Book> findPaginated(Pageable pageable) {
         randomSleep();
 
