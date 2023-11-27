@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all Books</title>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            padding: 50px;
+        }
+
+        .books, .books td {
+            border: 1px solid #000000;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Books:</h1>
+<table class="books">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Year</th>
+        <th>Author</th>
+        <th>Genre</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}"></td>
+        <td th:text="${book.name}"></td>
+        <td th:text="${book.year}"></td>
+        <td th:text="${book.author.name}"></td>
+        <td th:text="${book.genre.name}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<nav aria-label="..." class="container text-center">
+    <div class="pagination-div">
+        <ul>
+            <span th:if="${books.hasPrevious()}">
+                <li>
+                    <a th:href="@{/book(page=${books.number - 1}, size=${books.size})}">Previous </a>
+                </li>
+            </span>
+            <th:block th:each="i: ${#numbers.sequence(0, books.totalPages - 1)}">
+                <span th:if="${books.number == i}" class="selected">[[${i}+1]] </span>
+                    <span th:unless="${books.number == i}">
+                        <li>
+                            <a th:href="@{/book(page=${i},size=${books.size})}">[[${i}+1]] </a>
+                        </li>
+                    </span>
+            </th:block>
+            <span th:if="${books.hasNext()}">
+                <li>
+                    <a th:href="@{/book(page=${books.number+1},size=${books.size})}">Next </a>
+                </li>
+            </span>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>
